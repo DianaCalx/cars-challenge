@@ -1,0 +1,20 @@
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+  background-color: white;
+  font-family: 'Roboto',sans-serif, 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body{
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+html, body, #root {
+  height: 100vh;
+  width: 100%;
+}
