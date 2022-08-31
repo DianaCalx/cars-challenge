@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { useSearchParams } from '../hooks/useSearchParams';
 import { emailRegex } from '../utils/regularExp';
 import { IoMdCloseCircle } from 'react-icons/io';
+import { useUserLazyQuery } from '../generated/graphql';
+import { useCarContext } from '../context/carContext';
+import { useEffect } from 'react';
 
 const Container = styled.div`
   position: fixed;
@@ -65,10 +68,26 @@ interface LoginFormInputs {
 const Login = () => {
   const { removeSearchParam } = useSearchParams();
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>();
+  const [execute, { loading, data, error }] = useUserLazyQuery();
+  const { setUser } = useCarContext();
+
+  useEffect(() => {
+    if (data && !loading && !error) {
+      setUser(data.users.at(0));
+    }
+  }, [data, error, loading, setUser]);
 
   const onSubmit: SubmitHandler<LoginFormInputs> = data => {
-    console.log(data.email);
-  }
+    execute({ 
+      variables: {
+        where: {
+          email: {
+            _eq: data.email
+          }
+        }
+      }
+    });
+  };
 
   return (
     <Container>

@@ -1,13 +1,27 @@
-import { ReactNode, createContext, useContext }  from 'react'
+import { ReactNode, createContext, useContext, useState }  from 'react'
+import { Users } from '../generated/graphql';
+
+type CarContextValue = {
+  user: Users | undefined;
+  setUser: React.Dispatch<React.SetStateAction<Users | undefined>>
+}
 
 type CarContextProviderProps = {
   children: ReactNode
 }
 
-const CarContext = createContext({});
+const CarContext = createContext<CarContextValue>({
+  user: undefined,
+  setUser: () => {}
+});
 
 export const CarContextProvider = ({children}: CarContextProviderProps) => {
-  return <CarContext.Provider value={{}}>{children}</CarContext.Provider>
+  const [user, setUser] = useState<Users>();
+
+  return <CarContext.Provider value={{
+    user,
+    setUser
+  }}>{children}</CarContext.Provider>
 }
 
 export function useCarContext() {
