@@ -3557,6 +3557,11 @@ export type UserQueryVariables = Exact<{
 
 export type UserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, first_name: string, last_name: string, email: string, uuid: any }> };
 
+export type CarsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CarsQuery = { __typename?: 'query_root', cars: Array<{ __typename?: 'cars', id: number, title?: string | null, year?: number | null, batch: any, odometer?: number | null, price: any, damage_type?: string | null, sale_date: any, condition: any, model: { __typename?: 'models', name: string }, city: { __typename?: 'cities', name: string, state: { __typename?: 'states', name: string } }, color: { __typename?: 'colors', name: string } }> };
+
 
 export const UserDocument = gql`
     query User($where: users_bool_exp) {
@@ -3597,3 +3602,57 @@ export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQ
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
+export const CarsDocument = gql`
+    query Cars {
+  cars {
+    id
+    title
+    model {
+      name
+    }
+    year
+    batch
+    odometer
+    price
+    damage_type
+    sale_date
+    city {
+      name
+      state {
+        name
+      }
+    }
+    color {
+      name
+    }
+    condition
+  }
+}
+    `;
+
+/**
+ * __useCarsQuery__
+ *
+ * To run a query within a React component, call `useCarsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCarsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCarsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCarsQuery(baseOptions?: Apollo.QueryHookOptions<CarsQuery, CarsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CarsQuery, CarsQueryVariables>(CarsDocument, options);
+      }
+export function useCarsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CarsQuery, CarsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CarsQuery, CarsQueryVariables>(CarsDocument, options);
+        }
+export type CarsQueryHookResult = ReturnType<typeof useCarsQuery>;
+export type CarsLazyQueryHookResult = ReturnType<typeof useCarsLazyQuery>;
+export type CarsQueryResult = Apollo.QueryResult<CarsQuery, CarsQueryVariables>;
