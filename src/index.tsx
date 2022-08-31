@@ -11,11 +11,12 @@ const root = ReactDOM.createRoot(
 
 const theme = {
   colors: {
-    mainColor: "#fdfd96",
-    secondaryColor : "#77dd77",
+    mainColor: "#2196f3",
+    secondaryColor : "#81c9fa",
     errorColor: "#ff6961",
-    successColor: "#84b6f4",
-    neutralColor: "#fdcae1"
+    successColor: "#81c9fa",
+    neutralColor: "#fdcae1",
+    darkColor: "#003785",
   }
 };
 
