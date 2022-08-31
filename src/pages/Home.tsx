@@ -1,6 +1,8 @@
 import { useSearchParams } from '../hooks/useSearchParams';
 import styled from 'styled-components';
 import Login from '../components/Login';
+import { useCarContext } from '../context/carContext';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const HomePage = styled.div`
   background-color: ${props => props.theme.colors.mainColor};
@@ -39,14 +41,25 @@ const Greeting = styled.div`
 `;
 
 const Home = () => {
-  const { searchParams, setSearchParam } = useSearchParams();
+  const { searchParams, setSearchParam} = useSearchParams();
+  const { user, setUser } = useCarContext();
+  const { removeLS } = useLocalStorage('user');
+
+  const onSubmitLogout = () => {
+    removeLS();
+    setUser(undefined);
+  }
 
   return (
     <HomePage>
       {searchParams.login === 'true' && <Login />}
       <Buttons>
+        { user && <Button>My Favorites</Button>}
         <Button>Cars</Button>
-        <Button onClick={() => setSearchParam('login', 'true')}>Login</Button>
+        { user 
+          ? <Button onClick={onSubmitLogout}>Logout</Button>
+          : <Button onClick={() => setSearchParam('login', 'true')}>Login</Button>
+        }       
       </Buttons>
       <Greeting>Welcome</Greeting>
     </HomePage>
