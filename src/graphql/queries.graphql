@@ -7,3 +7,29 @@ query User($where: users_bool_exp) {
     uuid
   }
 }
+
+query Cars {
+  cars {
+    id
+    title
+    model {
+      name
+    }
+    year
+    batch
+    odometer
+    price
+    damage_type
+    sale_date
+    city {
+      name
+      state {
+        name
+      }
+    }
+    color {
+      name
+    }
+    condition
+  }
+}
