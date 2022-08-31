@@ -6,6 +6,7 @@ import { IoMdCloseCircle } from 'react-icons/io';
 import { useUserLazyQuery } from '../generated/graphql';
 import { useCarContext } from '../context/carContext';
 import { useEffect } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const Container = styled.div`
   position: fixed;
@@ -70,23 +71,28 @@ const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>();
   const [execute, { loading, data, error }] = useUserLazyQuery();
   const { setUser } = useCarContext();
+  const { setLS } = useLocalStorage('user');
 
   useEffect(() => {
-    if (data && !loading && !error) {
+    if (data?.users?.length && !loading && !error) {
       setUser(data.users.at(0));
+      setLS(data.users.at(0));
+      removeSearchParam('login');
     }
-  }, [data, error, loading, setUser]);
+  }, [data, error, loading, removeSearchParam, setLS, setUser]);
 
   const onSubmit: SubmitHandler<LoginFormInputs> = data => {
-    execute({ 
-      variables: {
-        where: {
-          email: {
-            _eq: data.email
+    if (!Object.keys(errors).length) {
+      execute({ 
+        variables: {
+          where: {
+            email: {
+              _eq: data.email
+            }
           }
         }
-      }
-    });
+      });
+    }
   };
 
   return (
