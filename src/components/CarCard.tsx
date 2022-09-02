@@ -3,6 +3,7 @@ import Condition from './Condition';
 import styled from 'styled-components';
 import { Cars } from '../generated/graphql';
 import { HiDotsHorizontal } from 'react-icons/hi';
+import Description from './Description';
 
 interface CarCardProps {
   car: Cars
@@ -21,11 +22,6 @@ const ImageCar = styled.div`
   object-fit: cover;
 `
 
-const Sales = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-`;
 
 const InformationLot = styled.div`
 display: flex;
@@ -40,6 +36,13 @@ p {
     }
   }
 `;
+
+const Sales = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+`;
+
 
 const DescriptionVehicle = styled.div`
   display: flex;
@@ -56,7 +59,7 @@ const DescriptionVehicle = styled.div`
 `;
 
 const Conditions = styled.div`
-  width: 15%;
+  width: 10%;
 `;
 
 const SelectButton = styled(HiDotsHorizontal)`
@@ -78,28 +81,31 @@ const FavoriteButton = styled.button`
 
 const CarCard = ({car}: CarCardProps) => {
   return (
-   <Car>
-      <ImageCar>
-        <Image/>
-      </ImageCar>
-      <InformationLot>
-        <p>{car.title}</p>
-        <p>Batch number <span>{car.batch}</span></p>
-        <FavoriteButton>Favorite</FavoriteButton>
-      </InformationLot>
-      <DescriptionVehicle>
-        <p>Odometer <span>{car.odometer}</span></p>
-        <p>Price <span>{car.price}</span></p>
-      </DescriptionVehicle>
-      <Conditions>
-        <Condition condition={car.condition}/>
-      </Conditions>
-      <Sales>
-        <p>{car.city.name} - {car.city.state.name}</p>
-        <p>{car.sale_date}</p>
-      </Sales>
-      <SelectButton/>
-    </Car>
+    <>
+      <Description/>
+      <Car>
+          <ImageCar>
+            <Image/>
+          </ImageCar>
+          <InformationLot>
+            <p>{car.title}</p>
+            <p>Batch number <span>{car.batch}</span></p>
+            <FavoriteButton>Favorite</FavoriteButton>
+          </InformationLot>
+          <DescriptionVehicle>
+            <p>Odometer <span>{car.odometer}</span></p>
+            <p>Price <span>{car.price}</span></p>
+          </DescriptionVehicle>
+          <Conditions>
+            <Condition condition={car.condition}/>
+          </Conditions>
+          <Sales>
+            <p>{car.city.name} - {car.city.state.name}</p>
+            <p>{car.sale_date}</p>
+          </Sales>
+          <SelectButton/>
+        </Car>
+    </>
   )
 }
 
