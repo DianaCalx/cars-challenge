@@ -1,0 +1,33 @@
+query Cars {
+  cars {
+    id
+    title
+    model {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
+    color {
+      id
+      name
+    }
+    odometer
+    sale_date
+    city {
+      name
+      id
+      state {
+        id
+        name
+      }
+    }
+    year
+    condition
+    price
+    batch
+    vin
+  }
+}

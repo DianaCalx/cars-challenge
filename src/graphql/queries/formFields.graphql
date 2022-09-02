@@ -1,0 +1,24 @@
+query FormFields {
+  brands {
+    id
+    name
+  }
+  models {
+    id
+    name
+    brand_id
+  }
+  colors {
+    id
+    name
+  }
+  states {
+    id
+    name
+  }
+  cities {
+    id
+    name
+    state_id
+  }
+}
