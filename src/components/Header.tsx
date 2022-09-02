@@ -1,8 +1,8 @@
-import { useSearchParams } from '../hooks/useSearchParams';
 import styled from 'styled-components';
-import { useCarContext } from '../context/carContext';
+import { useAppContext } from '../context/appContext';
 import useLocalStorage from '../hooks/useLocalStorage';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const Buttons = styled.div`
   width: 100%;
@@ -23,23 +23,37 @@ const Button = styled.button`
 `;
 
 const Header = () => {
-  const { setSearchParam} = useSearchParams();
-  const { user, setUser } = useCarContext();
-  const { removeLS } = useLocalStorage('user');
+
+  const [createButton, setCreateButton] = useState<boolean>(false);
+  const {pathname} = useLocation();
+  const { user, setUser, setIsLoginModalOpen } = useAppContext();
+  const { removeLocalStorage } = useLocalStorage();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if(pathname === '/dashboard'){
+      setCreateButton(true);
+    }
+  
+    return () => {
+      setCreateButton(false);
+    }
+  }, [pathname]);
+  
+
   const onSubmitLogout = () => {
-    removeLS();
+    removeLocalStorage('user');
     setUser(undefined);
   }
 
   return (
     <Buttons>
+      { createButton && <Button onClick={() => navigate('/car-form')}>Create</Button>}
       { user && <Button>My Favorites</Button>}
       <Button onClick={() => navigate('/dashboard')}>Cars</Button>
       { user 
         ? <Button onClick={onSubmitLogout}>Logout</Button>
-        : <Button onClick={() => setSearchParam('login', 'true')}>Login</Button>
+        : <Button onClick={()=> setIsLoginModalOpen(true)}>Login</Button>
       }       
     </Buttons>
   )

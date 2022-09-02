@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import CarsList from '../components/CarsList';
 import Header from '../components/Header'
 import Login from '../components/Login';
-import { useSearchParams } from '../hooks/useSearchParams';
+import { useAppContext } from '../context/appContext';
 
 const DashboardPage = styled.div`
-  background-color: ${props => props.theme.colors.mainColor};
+  background-color: ${props => props.theme.colors.secondaryColor};
   height: 100vh;
   padding: 1.5rem;
   display: flex;
@@ -14,11 +14,11 @@ const DashboardPage = styled.div`
 
 const Dashboard = () => {
   
-  const { searchParams } = useSearchParams();
+  const { isLoginModalOpen } = useAppContext();
 
   return (
     <DashboardPage>
-      {searchParams.login === 'true' && <Login />}
+      {isLoginModalOpen && <Login />}
       <Header />
       <CarsList />
     </DashboardPage>

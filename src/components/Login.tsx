@@ -1,11 +1,10 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import styled from 'styled-components';
-import { useSearchParams } from '../hooks/useSearchParams';
 import { emailRegex } from '../utils/regularExp';
 import { IoMdCloseCircle } from 'react-icons/io';
 import { useUserLazyQuery } from '../generated/graphql';
-import { useCarContext } from '../context/carContext';
-import { useEffect } from 'react';
+import { useAppContext } from '../context/appContext';
+import { useEffect, useState } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 const Container = styled.div`
@@ -67,39 +66,56 @@ interface LoginFormInputs {
 }
 
 const Login = () => {
-  const { removeSearchParam } = useSearchParams();
+
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>();
+  const [errorForm, setErrorForm] = useState<string>('');
   const [execute, { loading, data, error }] = useUserLazyQuery();
-  const { setUser } = useCarContext();
-  const { setLS } = useLocalStorage('user');
+  const { setUser, setIsLoginModalOpen } = useAppContext();
+  const { setLocalStorage } = useLocalStorage();
 
   useEffect(() => {
+    if(errors.email?.type === 'required'){
+      addAlert('Email cannot be empty');
+    }
+
+    if(errors.email?.type === 'pattern'){
+      addAlert('Invalid Email');
+    }
+    
     if (data?.users?.length && !loading && !error) {
       setUser(data.users.at(0));
-      setLS(data.users.at(0));
-      removeSearchParam('login');
+      setLocalStorage('user', data.users.at(0));
+      setIsLoginModalOpen(false);
     }
-  }, [data, error, loading, removeSearchParam, setLS, setUser]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, error, loading, errors]);
+
+  const addAlert = (message:string) => {
+    setErrorForm(message);
+    setTimeout(() => {
+      setErrorForm('');
+    }, 2000);
+  };
 
   const onSubmit: SubmitHandler<LoginFormInputs> = data => {
-    if (!Object.keys(errors).length) {
-      execute({ 
-        variables: {
-          where: {
-            email: {
-              _eq: data.email
-            }
+    execute({ 
+      variables: {
+        where: {
+          email: {
+            _eq: data.email
           }
         }
-      });
-    }
+      }
+    });
   };
 
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <XButton onClick={() => removeSearchParam('login')} />
+        <XButton onClick={() => setIsLoginModalOpen(false)} />
         <input placeholder="Your email..." {...register("email", { required: true, pattern: emailRegex })} />
+        { errorForm && <p>{errorForm}</p> }
         <input type="submit" value="Login" />
       </Form>
     </Container>

@@ -1,7 +1,7 @@
-import { useSearchParams } from '../hooks/useSearchParams';
-import styled from 'styled-components';
+import { useAppContext } from '../context/appContext';
 import Login from '../components/Login';
 import Header from '../components/Header';
+import styled from 'styled-components';
 
 const HomePage = styled.div`
   background-color: ${props => props.theme.colors.mainColor};
@@ -22,11 +22,11 @@ const Greeting = styled.div`
 `;
 
 const Home = () => {
-  const { searchParams } = useSearchParams();
+  const { isLoginModalOpen } = useAppContext();
 
   return (
     <HomePage>
-      {searchParams.login === 'true' && <Login />}
+      { isLoginModalOpen  && <Login />}
       <Header />
       <Greeting>Welcome</Greeting>
     </HomePage>
