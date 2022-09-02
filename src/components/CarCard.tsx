@@ -2,9 +2,7 @@ import Image from './Image';
 import Condition from './Condition';
 import styled from 'styled-components';
 import { Cars } from '../generated/graphql';
-import { HiDotsHorizontal } from 'react-icons/hi';
-import Description from './Description';
-
+import { HiDotsHorizontal, HiOutlineStar } from 'react-icons/hi';
 interface CarCardProps {
   car: Cars
 }
@@ -18,10 +16,7 @@ const Car = styled.div`
 
 const ImageCar = styled.div`
   width: 20%;
-  height: 100%;
-  object-fit: cover;
-`
-
+`;
 
 const InformationLot = styled.div`
 display: flex;
@@ -43,7 +38,6 @@ const Sales = styled.div`
   width: 20%;
 `;
 
-
 const DescriptionVehicle = styled.div`
   display: flex;
   flex-direction: column;
@@ -62,27 +56,28 @@ const Conditions = styled.div`
   width: 10%;
 `;
 
+const Favorite = styled(HiOutlineStar)`
+  width: 5%;
+  cursor: pointer;
+  font-size: 5rem;
+`;
+
 const SelectButton = styled(HiDotsHorizontal)`
   width: 5%;
-  margin: 1rem;
   cursor: pointer;
   font-size: 3rem;
 `;
 
-const FavoriteButton = styled.button`
-  width: 10rem;
-  background-color: ${props => props.theme.colors.darkColor};
-  border: none;
-  border-radius: 0.5rem;
-  color: white;
-  cursor: pointer;
-`;
 
+const Line = styled.div`
+  width: 100%;
+  border-bottom: 2px solid black;
+  margin-bottom: 1rem;
+`;
 
 const CarCard = ({car}: CarCardProps) => {
   return (
     <>
-      <Description/>
       <Car>
           <ImageCar>
             <Image/>
@@ -90,7 +85,7 @@ const CarCard = ({car}: CarCardProps) => {
           <InformationLot>
             <p>{car.title}</p>
             <p>Batch number <span>{car.batch}</span></p>
-            <FavoriteButton>Favorite</FavoriteButton>
+            <Favorite/>
           </InformationLot>
           <DescriptionVehicle>
             <p>Odometer <span>{car.odometer}</span></p>
@@ -105,6 +100,7 @@ const CarCard = ({car}: CarCardProps) => {
           </Sales>
           <SelectButton/>
         </Car>
+        <Line/>
     </>
   )
 }
