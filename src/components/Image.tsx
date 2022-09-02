@@ -2,8 +2,7 @@ import carImage from './../images/car.svg';
 import styled from 'styled-components';
 
 const ImageComp = styled.img`
-  width: 20rem;
-  height: 14rem;
+  width: 100%;
   object-fit: cover;
 `
 
