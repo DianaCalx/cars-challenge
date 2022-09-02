@@ -9,19 +9,26 @@ const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
+  margin-bottom: 2rem;
 `;
+
 
 const Button = styled.button`
-  background-color: ${props => props.theme.colors.darkColor};
-  letter-spacing: 0.1rem;
-  color: white;
-  border: 1px solid black;
-  cursor: pointer;
+  min-width: 13rem;
+  height: 4rem;
   padding: 0.5rem 1rem;
+  font-size: 1.7rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid ${props => props.theme.colors.darkColor};
   border-radius: 0.5rem;
-  padding: 1rem 2rem;
-`;
+  background: ${props => props.theme.colors.mainColor}; 
 
+  &:hover{
+    background: ${props => props.theme.colors.darkColor};
+    color: white;
+  }
+`;
 const Header = () => {
 
   const [createButton, setCreateButton] = useState<boolean>(false);
@@ -48,7 +55,7 @@ const Header = () => {
 
   return (
     <Buttons>
-      { createButton && <Button onClick={() => navigate('/car-form')}>Create</Button>}
+      { createButton && <Button onClick={() => navigate('/car-form')}>Create Car</Button>}
       { user && <Button>My Favorites</Button>}
       <Button onClick={() => navigate('/dashboard')}>Cars</Button>
       { user 
