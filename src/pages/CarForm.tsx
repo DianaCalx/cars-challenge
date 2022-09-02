@@ -169,7 +169,7 @@ const CarForm = () => {
             <label>Model</label>
             <select {...register('model')}>
               <option value="">Select</option>
-              {fields.selectedBrand && fields.models.filter(model => model.brand_id === fields.selectedBrand).map(model => 
+              {fields.models.filter(model => model.brand_id === fields.selectedBrand).map(model => 
               <option value={model.id}>{model.name}</option>)}
             </select>
             {errors?.model?.message && <Error>Select one option</Error>}
@@ -211,7 +211,7 @@ const CarForm = () => {
             <label>City</label>
             <select {...register('city')}>
               <option value="">Select</option>
-              {fields.selectedState && fields.cities.filter(city => city.state_id === fields.selectedState).map(city => <option value={city.id}>{city.name}</option>)}
+              {fields.cities.filter(city => city.state_id === fields.selectedState).map(city => <option value={city.id}>{city.name}</option>)}
             </select>
             {errors?.city?.message && <Error>Select one Option</Error>}
           </div>
