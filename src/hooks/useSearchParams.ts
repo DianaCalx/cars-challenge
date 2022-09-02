@@ -6,13 +6,13 @@ export const useSearchParams = () => {
   const searchParams = Object.fromEntries(search);
 
   const setSearchParam = (key: string, value: string) => {
-    setSearch({ ...searchParams, [key]: value })
+    setSearch({ ...searchParams, [key]: value });
   }
 
   const removeSearchParam = (key: string) => {
-    const newSearchParams = { ...searchParams }
-    delete newSearchParams[key]
-    setSearch({ ...newSearchParams })
+    const newSearchParams = { ...searchParams };
+    delete newSearchParams[key];
+    setSearch({ ...newSearchParams });
   }
 
   return {
