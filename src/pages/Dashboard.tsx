@@ -6,7 +6,7 @@ import { useAppContext } from '../context/appContext';
 
 const DashboardPage = styled.div`
   background-color: ${props => props.theme.colors.secondaryColor};
-  height: 100vh;
+  min-height: 100%;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
