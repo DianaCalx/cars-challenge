@@ -6,17 +6,17 @@ const Container = styled.div`
   align-items: center;
   background-color: black;
   color: white;
-  padding: 1rem 0;
+  padding: 1rem;
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
 `;
 
 const ImageCarDesc = styled.div`
-  width: 20%;
+  width: 15%;
 `;
 
 const InformationLotDesc = styled.div`
-  width: 30%;
+  width: 25%;
 `;
 
 const SalesDesc = styled.div`
@@ -26,6 +26,10 @@ const SalesDesc = styled.div`
 const DescriptionVehDesc = styled.div`
   width: 15%;
 `;
+
+const BranModel = styled.div`
+  width: 10%;
+`
 
 const ConditionDesc = styled.div`
   width: 10%;
@@ -41,6 +45,7 @@ const Description = () => {
       <ImageCarDesc>Image</ImageCarDesc>
       <InformationLotDesc>Lot Information</InformationLotDesc>
       <DescriptionVehDesc>Vehicle Information</DescriptionVehDesc>
+      <BranModel>Brand/Model</BranModel>
       <ConditionDesc>Condition</ConditionDesc>
       <SalesDesc>Sales Information</SalesDesc>    
       <SelectButtonDesc>Others</SelectButtonDesc>
