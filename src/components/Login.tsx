@@ -6,6 +6,7 @@ import { useUserLazyQuery } from '../generated/graphql';
 import { useAppContext } from '../context/appContext';
 import { useEffect, useState } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
+import Button from './Button';
 
 const Container = styled.div`
   position: fixed;
@@ -113,7 +114,7 @@ const Login = () => {
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <XButton onClick={() => setIsLoginModalOpen(false)} />
+        <Button StyledButton={XButton} onClick={() => setIsLoginModalOpen(false)} />
         <input placeholder="Your email..." {...register("email", { required: true, pattern: emailRegex })} />
         { errorForm && <p>{errorForm}</p> }
         <input type="submit" value="Login" />
