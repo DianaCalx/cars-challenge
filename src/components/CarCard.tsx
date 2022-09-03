@@ -3,6 +3,7 @@ import Condition from './Condition';
 import styled from 'styled-components';
 import { Cars } from '../generated/graphql';
 import { HiDotsHorizontal, HiOutlineStar } from 'react-icons/hi';
+import Button from './Button';
 interface CarCardProps {
   car: Cars
 }
@@ -12,16 +13,17 @@ const Car = styled.div`
   gap: 1.5rem;
   align-items: center;
   margin-bottom: 2rem;
+  padding: 0 1rem;
 `;
 
 const ImageCar = styled.div`
-  width: 20%;
+  width: 15%;
 `;
 
 const InformationLot = styled.div`
 display: flex;
 flex-direction: column;
-width: 30%;
+width: 25%;
 p {
   display: flex;
   flex-direction: column;
@@ -52,14 +54,26 @@ const DescriptionVehicle = styled.div`
   }
 `;
 
+const BrandModel = styled.div`
+  width: 10%;
+  p {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    span{
+      font-weight: lighter;
+    }
+  }
+`;
+
 const Conditions = styled.div`
   width: 10%;
 `;
 
 const Favorite = styled(HiOutlineStar)`
-  width: 5%;
   cursor: pointer;
-  font-size: 5rem;
+  font-size: 3rem;
+  color: #ecc861;
 `;
 
 const SelectButton = styled(HiDotsHorizontal)`
@@ -85,12 +99,16 @@ const CarCard = ({car}: CarCardProps) => {
           <InformationLot>
             <p>{car.title}</p>
             <p>Batch number <span>{car.batch}</span></p>
-            <Favorite/>
+            <Button StyledButton={Favorite} onClick={() => console.log('favorite clicked')} />
           </InformationLot>
           <DescriptionVehicle>
             <p>Odometer <span>{car.odometer}</span></p>
             <p>Price <span>{car.price}</span></p>
           </DescriptionVehicle>
+          <BrandModel>
+            <p>Brand <span>{car.model.name}</span></p>
+            <p>Model <span>{car.model.brand.name}</span></p>
+          </BrandModel>
           <Conditions>
             <Condition condition={car.condition}/>
           </Conditions>
