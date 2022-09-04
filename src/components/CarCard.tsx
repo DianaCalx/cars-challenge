@@ -1,11 +1,15 @@
 import Image from './Image';
 import Condition from './Condition';
 import styled from 'styled-components';
-import { Cars } from '../generated/graphql';
-import { HiDotsHorizontal, HiOutlineStar } from 'react-icons/hi';
+import { HiDotsHorizontal, HiOutlineStar, HiStar } from 'react-icons/hi';
 import Button from './Button';
+import { CarItem } from './CarsList';
+import { useAddFavoriteCarMutation, useRemoveFavoriteCarMutation } from '../generated/graphql';
+import { useAppContext } from '../context/appContext';
+import { useEffect } from 'react';
 interface CarCardProps {
-  car: Cars
+  car: CarItem,
+  setCars: React.Dispatch<React.SetStateAction<CarItem[]>>
 }
 
 const Car = styled.div`
@@ -70,7 +74,13 @@ const Conditions = styled.div`
   width: 10%;
 `;
 
-const Favorite = styled(HiOutlineStar)`
+const FillStar = styled(HiStar)`
+  cursor: pointer;
+  font-size: 3rem;
+  color: #ecc861;
+`;
+
+const OutlineStar = styled(HiOutlineStar)`
   cursor: pointer;
   font-size: 3rem;
   color: #ecc861;
@@ -89,7 +99,57 @@ const Line = styled.div`
   margin-bottom: 1rem;
 `;
 
-const CarCard = ({car}: CarCardProps) => {
+const CarCard = ({ car, setCars }: CarCardProps) => {
+  const { user } = useAppContext();
+  const [addFavorite, { loading: loadingAddFavorite, data: dataAddFavorite }] = useAddFavoriteCarMutation();
+  const [removeFavorite, { loading: loadingRemoveFavorite, data: dataRemoveFavorite }] = useRemoveFavoriteCarMutation();
+
+  useEffect(() => {
+    if (!loadingAddFavorite && !loadingRemoveFavorite && (dataAddFavorite || dataRemoveFavorite)) {
+      setCars(cars => (
+        cars.map(currentCar => {
+          if (currentCar.id === car.id) {
+            return {
+              ...currentCar,
+              isFavorite: !currentCar.isFavorite
+            }
+          }
+          return currentCar
+        })
+      ));
+    }
+  }, [car.id, dataAddFavorite, dataRemoveFavorite, loadingAddFavorite, loadingRemoveFavorite, setCars]);
+
+  const handleFavoriteButton = () => {
+    if (!loadingAddFavorite && !loadingRemoveFavorite) {
+      if (car.isFavorite) {
+        removeFavorite({
+          variables: {
+            where: {
+              _and: [{
+                user_id: {
+                  _eq: user?.id
+                },
+                car_id: {
+                  _eq: car.id
+                }
+              }]
+            }
+          }
+        });
+      } else {
+        addFavorite({
+          variables: {
+            object: {
+              car_id: car.id,
+              user_id: user?.id
+            }
+          }
+        });
+      }
+    }
+  }
+
   return (
     <>
       <Car>
@@ -99,7 +159,10 @@ const CarCard = ({car}: CarCardProps) => {
           <InformationLot>
             <p>{car.title}</p>
             <p>Batch number <span>{car.batch}</span></p>
-            <Button StyledButton={Favorite} onClick={() => console.log('favorite clicked')} />
+            <Button
+              StyledButton={car.isFavorite ? FillStar : OutlineStar}
+              onClick={handleFavoriteButton}
+            />
           </InformationLot>
           <DescriptionVehicle>
             <p>Odometer <span>{car.odometer}</span></p>
