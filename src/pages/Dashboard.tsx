@@ -13,7 +13,6 @@ const DashboardPage = styled.div`
 `;
 
 const Dashboard = () => {
-  
   const { isLoginModalOpen } = useAppContext();
 
   return (

@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useFormFieldsQuery, useInsert_Cars_OneMutation } from '../generated/graphql';
+import { useFormFieldsQuery, useCreateCarMutation } from '../generated/graphql';
 import { useEffect, useState } from 'react';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -129,7 +129,7 @@ const schema = Yup.object().shape({
 
 const CarForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({resolver: yupResolver(schema)});
-  const [insertCarsOneMutation, { data: dataInsertCar, error: errorInsertCar }]= useInsert_Cars_OneMutation();
+  const [insertCarsOneMutation, { data: dataInsertCar, error: errorInsertCar }]= useCreateCarMutation();
   const { loading: fieldsLoading, data: fieldsData, error: fieldsError } = useFormFieldsQuery();
   const [fields, setFields] = useState<Fields>({
     brands: [],
