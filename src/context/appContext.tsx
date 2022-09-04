@@ -1,5 +1,6 @@
-import { ReactNode, createContext, useContext, useState }  from 'react';
-import { Users } from '../generated/graphql';
+import { ReactNode, createContext, useContext, useState, useEffect }  from 'react';
+import { Users, useUserLazyQuery } from '../generated/graphql';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 type AppContextValue = {
   user: Users | undefined;
@@ -22,6 +23,32 @@ const AppContext = createContext<AppContextValue>({
 export const AppContextProvider = ({children}: AppContextProviderProps) => {
   const [user, setUser] = useState<Users>();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [execute, { loading, data, error }] = useUserLazyQuery();
+  const { getLocalStorage, removeLocalStorage } = useLocalStorage();
+
+  useEffect(() => {
+    const userLocalStorage = getLocalStorage('user');
+    if (userLocalStorage && !user) {
+      execute({ 
+        variables: {
+          where: {
+            email: {
+              _eq: userLocalStorage.email
+            }
+          }
+        }
+      });
+    }
+  }, [execute, getLocalStorage, user]);
+
+  useEffect(() => {
+    if (data?.users?.length && !loading && !error) {
+      setUser(data.users.at(0));
+    }
+    if ((data && !data?.users?.length) || error) {
+      removeLocalStorage('user');
+    }
+  }, [data, error, loading, removeLocalStorage]);
 
   return <AppContext.Provider value={{
     user,
