@@ -15,6 +15,7 @@ const App = () => {
             <Route path='/' element={<Home/>}/>
             <Route path='/dashboard' element={<Dashboard/>}/>
             <Route path='/car-form' element={<CarForm/>}/>
+            <Route path='/favorites' element={<Dashboard/>}/>
           </Routes>
         </BrowserRouter>
       </AppContextProvider>
