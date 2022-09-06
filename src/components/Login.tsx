@@ -37,30 +37,47 @@ const Form = styled.form`
   background-color: ${props => props.theme.colors.mainColor};
   z-index: 100;
   border-radius: 1rem;
-
-  & > input {
-    padding: 1rem 2rem;
-    outline: none;
-
-    &:last-of-type {
-      border: 1px solid black;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      background-color: ${props => props.theme.colors.successColor};
-    }
-  }
 `;
 
 const XButton = styled(IoMdCloseCircle)`
   fill: ${props => props.theme.colors.errorColor};;
   position: absolute;
-  top: -3rem;
+  top: -4rem;
   right: -0.5rem;
-  width: 3rem;
-  height: 3rem;
+  width: 4rem;
+  height: 4rem;
   padding: 0.5rem;
   cursor: pointer;
 `;
+
+const InputEmail = styled.input`
+  background-color: white;
+  border-style: none;
+  height: 3rem;
+  border-radius: 0.5rem;
+  padding: 0.4rem;
+  width: 20rem;
+`;
+
+const Submit = styled.button`
+  min-width: 13rem;
+  height: 3rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid ${props => props.theme.colors.darkColor};
+  border-radius: 0.5rem;
+  background: ${props => props.theme.colors.mainColor}; 
+  color: ${props => props.theme.colors.darkColor2}; 
+
+  &:hover{
+    background: ${props => props.theme.colors.darkColor};
+    color: white;
+  }
+
+`;
+
 
 interface LoginFormInputs {
   email: string
@@ -113,11 +130,11 @@ const Login = () => {
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form>
         <Button StyledButton={XButton} onClick={() => setIsLoginModalOpen(false)} />
-        <input placeholder="Your email..." {...register("email", { required: true, pattern: emailRegex })} />
+        <InputEmail placeholder="Your email..." {...register("email", { required: true, pattern: emailRegex })} />
         { errorForm && <p>{errorForm}</p> }
-        <input type="submit" value="Login" />
+        <Button type="submit" onClick={handleSubmit(onSubmit)} StyledButton={Submit} > Login </Button>
       </Form>
     </Container>
   )
