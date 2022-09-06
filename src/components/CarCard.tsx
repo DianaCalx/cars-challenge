@@ -77,13 +77,13 @@ const Conditions = styled.div`
 const FillStar = styled(HiStar)`
   cursor: pointer;
   font-size: 3rem;
-  color: #ecc861;
+  color:  ${props => props.theme.colors.starColor};
 `;
 
 const OutlineStar = styled(HiOutlineStar)`
   cursor: pointer;
   font-size: 3rem;
-  color: #ecc861;
+  color:  ${props => props.theme.colors.starColor};
 `;
 
 const SelectButton = styled(HiDotsHorizontal)`
@@ -100,7 +100,7 @@ const Line = styled.div`
 `;
 
 const CarCard = ({ car, setCars }: CarCardProps) => {
-  const { user } = useAppContext();
+  const { user, setIsLoginModalOpen } = useAppContext();
   const [addFavorite, { loading: loadingAddFavorite, data: dataAddFavorite }] = useAddFavoriteCarMutation();
   const [removeFavorite, { loading: loadingRemoveFavorite, data: dataRemoveFavorite }] = useRemoveFavoriteCarMutation();
 
@@ -121,6 +121,10 @@ const CarCard = ({ car, setCars }: CarCardProps) => {
   }, [car.id, dataAddFavorite, dataRemoveFavorite, loadingAddFavorite, loadingRemoveFavorite, setCars]);
 
   const handleFavoriteButton = () => {
+    if (!user) {
+      setIsLoginModalOpen(true);
+      return;
+    }
     if (!loadingAddFavorite && !loadingRemoveFavorite) {
       if (car.isFavorite) {
         removeFavorite({
