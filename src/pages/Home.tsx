@@ -16,9 +16,9 @@ const Greeting = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  text-transform: uppercase;
   font-weight: bold;
-  font-size: 6rem;
+  font-size: 9rem;
+  font-family: "Dancing Script", sans-serif;
 `;
 
 const Home = () => {
