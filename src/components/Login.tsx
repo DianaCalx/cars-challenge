@@ -1,12 +1,14 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
-import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 import { emailRegex } from '../utils/regularExp';
 import { IoMdCloseCircle } from 'react-icons/io';
 import { useUserLazyQuery } from '../generated/graphql';
 import { useAppContext } from '../context/appContext';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import Button from './Button';
+import styled from 'styled-components';
 
 const Container = styled.div`
   position: fixed;
@@ -40,7 +42,7 @@ const Form = styled.form`
 `;
 
 const XButton = styled(IoMdCloseCircle)`
-  fill: ${props => props.theme.colors.errorColor};;
+  fill: ${props => props.theme.colors.errorColor};
   position: absolute;
   top: -4rem;
   right: -0.5rem;
@@ -78,45 +80,37 @@ const Submit = styled.button`
 
 `;
 
-
+const Error = styled.p`
+ color: ${props => props.theme.colors.errorColor};
+ font-weight: bold;
+ margin:0;
+ text-align: center;
+`;
 interface LoginFormInputs {
   email: string
 }
 
+const schema = Yup.object().shape({
+  email: Yup.string().required().matches(emailRegex,'Invalid Email'),
+});
+
 const Login = () => {
 
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>();
-  const [errorForm, setErrorForm] = useState<string>('');
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({resolver: yupResolver(schema)});
   const [execute, { loading, data, error }] = useUserLazyQuery();
   const { setUser, setIsLoginModalOpen } = useAppContext();
   const { setLocalStorage } = useLocalStorage();
 
-  useEffect(() => {
-    if(errors.email?.type === 'required'){
-      addAlert('Email cannot be empty');
-    }
-
-    if(errors.email?.type === 'pattern'){
-      addAlert('Invalid Email');
-    }
-    
+  useEffect(() => {  
     if (data?.users?.length && !loading && !error) {
       setUser(data.users.at(0));
       setLocalStorage('user', data.users.at(0));
       setIsLoginModalOpen(false);
     }
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, error, loading, errors]);
+  }, [data, error, loading]);
 
-  const addAlert = (message:string) => {
-    setErrorForm(message);
-    setTimeout(() => {
-      setErrorForm('');
-    }, 2000);
-  };
-
-  const onSubmit: SubmitHandler<LoginFormInputs> = data => {
+  const onSubmit= (data:LoginFormInputs) => {
     execute({ 
       variables: {
         where: {
@@ -132,8 +126,8 @@ const Login = () => {
     <Container>
       <Form>
         <Button StyledButton={XButton} onClick={() => setIsLoginModalOpen(false)} />
-        <InputEmail placeholder="Your email..." {...register("email", { required: true, pattern: emailRegex })} />
-        { errorForm && <p>{errorForm}</p> }
+        <InputEmail placeholder="Your email..." {...register("email")} />
+        {errors?.email?.message && <Error>{errors?.email?.message}</Error>}
         <Button type="submit" onClick={handleSubmit(onSubmit)} StyledButton={Submit} > Login </Button>
       </Form>
     </Container>
