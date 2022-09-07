@@ -1,0 +1,5 @@
+mutation AddFavoriteCar($object: user_cars_insert_input!) {
+  insert_user_cars_one(object: $object) {
+    id
+  }
+}

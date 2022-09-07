@@ -1,0 +1,37 @@
+query Cars($orderBy: [cars_order_by!], $whereCars: cars_bool_exp, $whereUserCars: user_cars_bool_exp) {
+  cars(where: $whereCars, order_by: $orderBy) {
+    id
+    title
+    model {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
+    color {
+      id
+      name
+    }
+    odometer
+    sale_date
+    city {
+      name
+      id
+      state {
+        id
+        name
+      }
+    }
+    year
+    condition
+    price
+    batch
+    vin
+  }
+  user_cars(where: $whereUserCars) {
+    id
+    car_id
+  }
+}

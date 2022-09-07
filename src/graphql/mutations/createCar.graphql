@@ -1,0 +1,17 @@
+mutation CreateCar($object: cars_insert_input!) {
+  insert_cars_one(object: $object) {
+    title
+    brand_id
+    model_id
+    color_id
+    odometer
+    sale_date
+    state_id
+    city_id
+    year
+    condition
+    price
+    batch
+    vin
+  }
+}

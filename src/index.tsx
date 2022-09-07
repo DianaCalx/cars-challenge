@@ -1,15 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ThemeProvider } from "styled-components";
+import './index.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const theme = {
+  colors: {
+    mainColor: "#8c8c8c",
+    secondaryColor : "#666666",
+    errorColor: "#e00000",
+    successColor: "#81c9fa",
+    neutralColor: "#c9c9c9",
+    darkColor: "#45484a",
+    darkColor2: "#3c3c3c",
+    starColor: '#c06500'
+  }
+};
+
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );
 
