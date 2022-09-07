@@ -1,6 +1,6 @@
-query Cars($orderBy: [cars_order_by!], $whereCars: cars_bool_exp, $whereUserCars: user_cars_bool_exp) {
-  cars(where: $whereCars, order_by: $orderBy) {
-    id
+query Car($where: cars_bool_exp) {
+  cars(where: $where) {
+        id
     title
     model {
       id
@@ -29,9 +29,5 @@ query Cars($orderBy: [cars_order_by!], $whereCars: cars_bool_exp, $whereUserCars
     price
     batch
     vin
-  }
-  user_cars(where: $whereUserCars) {
-    id
-    car_id
   }
 }
