@@ -5,7 +5,6 @@ import Header from '../components/Header'
 import Login from '../components/Login';
 import { useAppContext } from '../context/appContext';
 import useLocalStorage from '../hooks/useLocalStorage';
-import Filters from '../components/Filters';
 
 const DashboardPage = styled.div`
   background-color: ${props => props.theme.colors.mainColor};
@@ -28,7 +27,6 @@ const Dashboard = () => {
     <DashboardPage>
       {isLoginModalOpen && <Login />}
       <Header />
-      <Filters/>
       <CarsList />
     </DashboardPage>
   )
