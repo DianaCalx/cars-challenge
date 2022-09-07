@@ -5,6 +5,7 @@ import { AppContextProvider } from './context/appContext';
 import CarForm from './pages/CarForm';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
+import CarDetails from './pages/CarDetails';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
             <Route path='/dashboard' element={<Dashboard/>}/>
             <Route path='/car-form' element={<CarForm/>}/>
             <Route path='/favorites' element={<Dashboard/>}/>
+            <Route path='/car-details/:id' element={<CarDetails/>}/>
           </Routes>
         </BrowserRouter>
       </AppContextProvider>
