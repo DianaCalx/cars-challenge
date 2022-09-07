@@ -1,27 +1,29 @@
 import Image from './Image';
 import Condition from './Condition';
 import styled from 'styled-components';
-import { HiDotsHorizontal, HiOutlineStar, HiStar } from 'react-icons/hi';
+import { HiOutlineStar, HiStar } from 'react-icons/hi';
 import Button from './Button';
 import { CarItem } from './CarsList';
 import { useAddFavoriteCarMutation, useRemoveFavoriteCarMutation } from '../generated/graphql';
 import { useAppContext } from '../context/appContext';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 interface CarCardProps {
   car: CarItem,
   setCars: React.Dispatch<React.SetStateAction<CarItem[]>>
 }
 
-const Car = styled.div`
+const CarContainer = styled.div`
   display: flex;
   gap: 1.5rem;
   align-items: center;
   margin-bottom: 2rem;
   padding: 0 1rem;
+  width: 100%;
 `;
 
 const ImageCar = styled.div`
-  width: 15%;
+  width: 20%;
 `;
 
 const InformationLot = styled.div`
@@ -86,18 +88,18 @@ const OutlineStar = styled(HiOutlineStar)`
   color:  ${props => props.theme.colors.starColor};
 `;
 
-const SelectButton = styled(HiDotsHorizontal)`
-  width: 5%;
-  cursor: pointer;
-  font-size: 3rem;
-`;
-
-
 const Line = styled.div`
   width: 100%;
   border-bottom: 2px solid black;
   margin-bottom: 1rem;
 `;
+
+const Car = styled(Link)`
+  display: flex;
+  text-decoration: none;
+  color: black;
+  width: 20%;
+`
 
 const CarCard = ({ car, setCars }: CarCardProps) => {
   const { user, setIsLoginModalOpen } = useAppContext();
@@ -156,10 +158,10 @@ const CarCard = ({ car, setCars }: CarCardProps) => {
 
   return (
     <>
-      <Car>
-          <ImageCar>
-            <Image/>
-          </ImageCar>
+        <CarContainer>
+          <Car to={`/car-details/${car.id}`}>
+              <Image/>
+          </Car>
           <InformationLot>
             <p>{car.title}</p>
             <p>Batch number <span>{car.batch}</span></p>
@@ -183,8 +185,7 @@ const CarCard = ({ car, setCars }: CarCardProps) => {
             <p>{car.city.name} - {car.city.state.name}</p>
             <p>{car.sale_date}</p>
           </Sales>
-          <SelectButton/>
-        </Car>
+          </CarContainer>
         <Line/>
     </>
   )
