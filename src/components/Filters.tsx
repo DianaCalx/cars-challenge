@@ -1,3 +1,6 @@
+import { useForm } from 'react-hook-form';
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 import styled from 'styled-components';
 import Button from './Button';
 
@@ -38,18 +41,38 @@ const ButtonSearch = styled.button`
   }
 `;
 
+export interface FilterFormInputs {
+  search?: string
+  sale_date?: string
+}
 
-const Filters = () => {
+interface FiltersProps {
+  setFilters: React.Dispatch<React.SetStateAction<FilterFormInputs | undefined>>
+}
+
+const schema = Yup.object().shape({
+  search: Yup.string(),
+  sale_date: Yup.string(),
+});
+
+const Filters = ({ setFilters }: FiltersProps) => {
+
+  const { register, handleSubmit, formState: { errors } } = useForm<FilterFormInputs>({resolver: yupResolver(schema)});
+
+  const onSubmit = (data: FilterFormInputs) => {
+    setFilters(data);
+  };
+
   return (
     <FormFilter>
       <SearchBarContainer>
-        <Filter type="text"></Filter>
-        <Button StyledButton={ButtonSearch} onClick={()=>{}}>Search</Button>
+        <Filter type="text" {...register("search")} ></Filter>
+        <Button StyledButton={ButtonSearch} type="submit" onClick={handleSubmit(onSubmit)}>Search</Button>
       </SearchBarContainer>
-      <select>
-        <option value="0">Select</option>
-        <option value="1">Sale date decreasing</option>
-        <option value="2">Sale date increasing</option>
+      <select {...register("sale_date", { onChange: handleSubmit(onSubmit)}) } >
+        <option value="">Select</option>
+        <option value="desc">Sale date decreasing</option>
+        <option value="asc">Sale date increasing</option>
       </select>
     </FormFilter>
   )
