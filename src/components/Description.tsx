@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 
 const ImageCarDesc = styled.div`
-  width: 15%;
+  width: 20%;
 `;
 
 const InformationLotDesc = styled.div`
@@ -35,9 +35,7 @@ const ConditionDesc = styled.div`
   width: 10%;
 `;
 
-const SelectButtonDesc = styled.div`
-  width: 5%;
-`;
+
 
 const Description = () => {
   return (
@@ -48,7 +46,6 @@ const Description = () => {
       <BranModel>Brand/Model</BranModel>
       <ConditionDesc>Condition</ConditionDesc>
       <SalesDesc>Sales Information</SalesDesc>    
-      <SelectButtonDesc>Others</SelectButtonDesc>
     </Container>
   )
 }
