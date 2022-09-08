@@ -7,7 +7,7 @@ import { CarItem } from './CarsList';
 import { useAddFavoriteCarMutation, useRemoveFavoriteCarMutation } from '../generated/graphql';
 import { useAppContext } from '../context/appContext';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 interface CarCardProps {
   car: CarItem,
   setCars: React.Dispatch<React.SetStateAction<CarItem[]>>
@@ -40,12 +40,6 @@ p {
   }
 `;
 
-const Sales = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-`;
-
 const DescriptionVehicle = styled.div`
   display: flex;
   flex-direction: column;
@@ -76,6 +70,12 @@ const Conditions = styled.div`
   width: 10%;
 `;
 
+const Sales = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 15%;
+`;
+
 const FillStar = styled(HiStar)`
   cursor: pointer;
   font-size: 3rem;
@@ -94,14 +94,12 @@ const Line = styled.div`
   margin-bottom: 1rem;
 `;
 
-const Car = styled(Link)`
-  display: flex;
-  text-decoration: none;
-  color: black;
-  width: 20%;
-`
+const DetailsButton = styled.button`
+  width: 5%;
+`;
 
 const CarCard = ({ car, setCars }: CarCardProps) => {
+  const navigate = useNavigate();
   const { user, setIsLoginModalOpen } = useAppContext();
   const [addFavorite, { loading: loadingAddFavorite, data: dataAddFavorite }] = useAddFavoriteCarMutation();
   const [removeFavorite, { loading: loadingRemoveFavorite, data: dataRemoveFavorite }] = useRemoveFavoriteCarMutation();
@@ -159,9 +157,9 @@ const CarCard = ({ car, setCars }: CarCardProps) => {
   return (
     <>
         <CarContainer>
-          <Car to={`/car-details/${car.id}`}>
+          <ImageCar>
               <Image/>
-          </Car>
+          </ImageCar>
           <InformationLot>
             <p>{car.title}</p>
             <p>Batch number <span>{car.batch}</span></p>
@@ -182,9 +180,12 @@ const CarCard = ({ car, setCars }: CarCardProps) => {
             <Condition condition={car.condition}/>
           </Conditions>
           <Sales>
-            <p>{car.city.name} - {car.city.state.name}</p>
+            <p>{car.city.state.name} - {car.city.name}</p>
             <p>{car.sale_date}</p>
           </Sales>
+          <Button StyledButton={DetailsButton} onClick={()=>navigate(`/car-details/${car.id}`)}>
+            Details
+          </Button>
           </CarContainer>
         <Line/>
     </>
