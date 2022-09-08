@@ -7,8 +7,9 @@ import Button from './Button';
 const FormFilter = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2rem;
   gap: 2rem;
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%);
+  padding: 0 2rem 2rem 1rem;
 `;
 
 const SearchBarContainer = styled.div`
@@ -24,20 +25,18 @@ const Filter = styled.input`
 `;
 
 const ButtonSearch = styled.button`
-  background-color: blue;
   min-width: 13rem;
-  height: 3rem;
+  height: 3.5rem;
+  padding: 0.5rem 1rem;
   font-size: 1.7rem;
   font-weight: bold;
   cursor: pointer;
   border: 2px solid ${props => props.theme.colors.darkColor};
   border-radius: 0.5rem;
-  background: ${props => props.theme.colors.mainColor}; 
-  color: ${props => props.theme.colors.darkColor2}; 
+  background: ${props => props.theme.colors.darkColor}; 
 
   &:hover{
-    background: ${props => props.theme.colors.darkColor};
-    color: white;
+    background: ${props => props.theme.colors.darkColor2};
   }
 `;
 
@@ -67,7 +66,7 @@ const Filters = ({ setFilters }: FiltersProps) => {
     <FormFilter>
       <SearchBarContainer>
         <Filter type="text" {...register("search")} ></Filter>
-        <Button StyledButton={ButtonSearch} type="submit" onClick={handleSubmit(onSubmit)}>Search</Button>
+        <Button StyledButton={ButtonSearch} type="submit" onClick={handleSubmit(onSubmit)}>Search Inventory</Button>
       </SearchBarContainer>
       <select {...register("sale_date", { onChange: handleSubmit(onSubmit)}) } >
         <option value="">Select</option>
