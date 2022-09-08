@@ -36,7 +36,7 @@ const Form = styled.form`
   flex-direction: column;
   gap: 1rem;
   padding: 3rem;
-  background-color: ${props => props.theme.colors.mainColor};
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%);
   z-index: 100;
   border-radius: 1rem;
 `;
@@ -63,21 +63,19 @@ const InputEmail = styled.input`
 
 const Submit = styled.button`
   min-width: 13rem;
-  height: 3rem;
+  height: 3.5rem;
   padding: 0.5rem 1rem;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: bold;
   cursor: pointer;
-  border: 2px solid ${props => props.theme.colors.darkColor};
+  border: 2px solid ${props => props.theme.colors.successColor};
   border-radius: 0.5rem;
-  background: ${props => props.theme.colors.mainColor}; 
-  color: ${props => props.theme.colors.darkColor2}; 
+  background: ${props => props.theme.colors.successColor}; 
+  color: white;
 
   &:hover{
-    background: ${props => props.theme.colors.darkColor};
-    color: white;
+    background: ${props => props.theme.colors.successColor2};
   }
-
 `;
 
 const Error = styled.p`
