@@ -3786,6 +3786,13 @@ export type CreateCarMutationVariables = Exact<{
 
 export type CreateCarMutation = { __typename?: 'mutation_root', insert_cars_one?: { __typename?: 'cars', title?: string | null, brand_id: number, model_id: number, color_id: number, odometer?: number | null, sale_date: any, state_id: number, city_id: number, year?: number | null, condition: any, price: any, batch: any, vin: string } | null };
 
+export type DeleteCarMutationVariables = Exact<{
+  deleteCarsByPkId: Scalars['Int'];
+}>;
+
+
+export type DeleteCarMutation = { __typename?: 'mutation_root', delete_cars_by_pk?: { __typename?: 'cars', id: number } | null };
+
 export type RemoveFavoriteCarMutationVariables = Exact<{
   where: User_Cars_Bool_Exp;
 }>;
@@ -3900,6 +3907,39 @@ export function useCreateCarMutation(baseOptions?: Apollo.MutationHookOptions<Cr
 export type CreateCarMutationHookResult = ReturnType<typeof useCreateCarMutation>;
 export type CreateCarMutationResult = Apollo.MutationResult<CreateCarMutation>;
 export type CreateCarMutationOptions = Apollo.BaseMutationOptions<CreateCarMutation, CreateCarMutationVariables>;
+export const DeleteCarDocument = gql`
+    mutation DeleteCar($deleteCarsByPkId: Int!) {
+  delete_cars_by_pk(id: $deleteCarsByPkId) {
+    id
+  }
+}
+    `;
+export type DeleteCarMutationFn = Apollo.MutationFunction<DeleteCarMutation, DeleteCarMutationVariables>;
+
+/**
+ * __useDeleteCarMutation__
+ *
+ * To run a mutation, you first call `useDeleteCarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCarMutation, { data, loading, error }] = useDeleteCarMutation({
+ *   variables: {
+ *      deleteCarsByPkId: // value for 'deleteCarsByPkId'
+ *   },
+ * });
+ */
+export function useDeleteCarMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCarMutation, DeleteCarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCarMutation, DeleteCarMutationVariables>(DeleteCarDocument, options);
+      }
+export type DeleteCarMutationHookResult = ReturnType<typeof useDeleteCarMutation>;
+export type DeleteCarMutationResult = Apollo.MutationResult<DeleteCarMutation>;
+export type DeleteCarMutationOptions = Apollo.BaseMutationOptions<DeleteCarMutation, DeleteCarMutationVariables>;
 export const RemoveFavoriteCarDocument = gql`
     mutation RemoveFavoriteCar($where: user_cars_bool_exp!) {
   delete_user_cars(where: $where) {
