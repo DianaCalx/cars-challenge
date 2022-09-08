@@ -19,9 +19,9 @@ const Condition = ({condition}: ConditionProp) => {
   }, [condition]);
 
   return (
-    <p>
+    <div>
       {value}
-    </p>
+    </div>
   )
 }
 
