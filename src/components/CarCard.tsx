@@ -20,6 +20,8 @@ const CarContainer = styled.div`
   margin-bottom: 2rem;
   padding: 0 1rem;
   width: 100%;
+  box-shadow: 0 1px 5px 0 rgb(0 0 0 / 32%);
+  border-radius: 5px 0 0 5px;
 `;
 
 const ImageCar = styled.div`
@@ -88,14 +90,20 @@ const OutlineStar = styled(HiOutlineStar)`
   color:  ${props => props.theme.colors.starColor};
 `;
 
-const Line = styled.div`
-  width: 100%;
-  border-bottom: 2px solid black;
-  margin-bottom: 1rem;
-`;
-
 const DetailsButton = styled.button`
   width: 5%;
+  height: 3.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.7rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid ${props => props.theme.colors.darkColor};
+  border-radius: 0.5rem;
+  background: ${props => props.theme.colors.darkColor}; 
+
+  &:hover{
+    background: ${props => props.theme.colors.darkColor2};
+  }
 `;
 
 const CarCard = ({ car, setCars }: CarCardProps) => {
@@ -155,40 +163,38 @@ const CarCard = ({ car, setCars }: CarCardProps) => {
   }
 
   return (
-    <>
-        <CarContainer>
-          <ImageCar>
-              <Image/>
-          </ImageCar>
-          <InformationLot>
-            <p>{car.title}</p>
-            <p>Batch number <span>{car.batch}</span></p>
-            <Button
-              StyledButton={car.isFavorite ? FillStar : OutlineStar}
-              onClick={handleFavoriteButton}
-            />
-          </InformationLot>
-          <DescriptionVehicle>
-            <p>Odometer <span>{car.odometer}</span></p>
-            <p>Price <span>{car.price}</span></p>
-          </DescriptionVehicle>
-          <BrandModel>
-            <p>Brand <span>{car.model.name}</span></p>
-            <p>Model <span>{car.model.brand.name}</span></p>
-          </BrandModel>
-          <Conditions>
-            <Condition condition={car.condition}/>
-          </Conditions>
-          <Sales>
-            <p>{car.city.state.name} - {car.city.name}</p>
-            <p>{car.sale_date}</p>
-          </Sales>
-          <Button StyledButton={DetailsButton} onClick={()=>navigate(`/car-details/${car.id}`)}>
-            Details
-          </Button>
-          </CarContainer>
-        <Line/>
-    </>
+    <CarContainer>
+      <ImageCar>
+          <Image/>
+      </ImageCar>
+      <InformationLot>
+        <p>{car.title}</p>
+        <p>Batch number <span>{car.batch}</span></p>
+        <Button
+          StyledButton={car.isFavorite ? FillStar : OutlineStar}
+          onClick={handleFavoriteButton}
+        />
+      </InformationLot>
+      <DescriptionVehicle>
+        <p>Odometer <span>{car.odometer}</span></p>
+        <p>Price <span>{car.price}</span></p>
+      </DescriptionVehicle>
+      <BrandModel>
+        <p>Brand <span>{car.model.name}</span></p>
+        <p>Model <span>{car.model.brand.name}</span></p>
+      </BrandModel>
+      <Conditions>
+        <Condition condition={car.condition}/>
+      </Conditions>
+      <Sales>
+        <p>{car.city.state.name} - {car.city.name}</p>
+        <p>{car.sale_date}</p>
+      </Sales>
+      <Button StyledButton={DetailsButton} onClick={()=>navigate(`/car-details/${car.id}`)}>
+        Details
+      </Button>
+      </CarContainer>
+   
   )
 }
 
