@@ -11,7 +11,7 @@ import Spinner from '../components/Spinner';
 import Swal from 'sweetalert2';
 
 const ContainerCreateCar = styled.div`
-    background-color: ${props => props.theme.colors.neutralColor};
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%);
     width: 100%;
     min-height: 100%;
     padding: 1rem 0;
@@ -47,6 +47,8 @@ const FormCreateCar = styled.form`
 const Title = styled.h1`
   text-align: center;
   margin: 0;
+  font-family: "Dancing Script", sans-serif;
+  font-size: 4rem;
 `;
 
 const Conditions = styled.div`
@@ -59,11 +61,14 @@ const Submit = styled.button`
   height: 3rem;
   color: white;
   font-size: 1.5rem;
-  background-color: ${props => props.theme.colors.mainColor};
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: ${props => props.theme.colors.successColor};
   :hover {
-    background-color: ${props => props.theme.colors.darkColor};
+    background-color: ${props => props.theme.colors.successColor2};
   }
-
 `;
 
 const Error = styled.p`
