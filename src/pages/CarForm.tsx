@@ -1,19 +1,20 @@
 import { useForm } from 'react-hook-form';
 import { useFormFieldsQuery, useCreateCarMutation } from '../generated/graphql';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import Button from '../components/Button';
 import Spinner from '../components/Spinner';
-
+import Swal from 'sweetalert2';
 
 const ContainerCreateCar = styled.div`
-    background-color: ${props => props.theme.colors.secondaryColor};
+    background-color: ${props => props.theme.colors.neutralColor};
     width: 100%;
     min-height: 100%;
-    padding: 4rem 0;
+    padding: 1rem 0;
     display: flex;
     align-items: center;
 `;
@@ -128,6 +129,7 @@ const schema = Yup.object().shape({
 });
 
 const CarForm = () => {
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({resolver: yupResolver(schema)});
   const [insertCarsOneMutation, { data: dataInsertCar, error: errorInsertCar }]= useCreateCarMutation();
   const { loading: fieldsLoading, data: fieldsData, error: fieldsError } = useFormFieldsQuery();
@@ -144,6 +146,19 @@ const CarForm = () => {
       setFields({ ...fieldsData });
     }
   }, [fieldsData]);
+
+  useEffect(() => {
+    if(dataInsertCar){
+      Swal.fire({
+        icon: 'success',
+        title: 'Car created',
+        text: 'Car was created successfully'
+      })
+      navigate('/dashboard');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataInsertCar]);
+  
 
   const onSubmit = (data:IFormInputs) => {
     insertCarsOneMutation({
@@ -165,7 +180,6 @@ const CarForm = () => {
         }
       }
     })
-    console.log(data);
   };
 
   return (
@@ -287,6 +301,7 @@ const CarForm = () => {
               </div>
               <Button onClick={handleSubmit(onSubmit)} StyledButton={Submit} type="submit">Create</Button>
             </FormCreateCar>
+            {errorInsertCar && <Error>There was an error creating car</Error>}
           </ContainerForm>
       }
     </ContainerCreateCar>
