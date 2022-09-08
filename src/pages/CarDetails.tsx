@@ -13,7 +13,7 @@ const CarDetailsContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-color: ${props => props.theme.colors.neutralColor};;
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%);
 `;
 
 const CarDetail = styled.div`
@@ -24,6 +24,9 @@ const CarDetail = styled.div`
     }
     margin: 0.5rem 0;
   }
+  background-color: white;
+  padding: 2rem 3rem;
+  border-radius: 0.5rem;
 `;
 
 const DeleteButton = styled.button`
