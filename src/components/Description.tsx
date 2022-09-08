@@ -19,10 +19,6 @@ const InformationLotDesc = styled.div`
   width: 25%;
 `;
 
-const SalesDesc = styled.div`
-  width: 20%;
-`;
-
 const DescriptionVehDesc = styled.div`
   width: 15%;
 `;
@@ -35,6 +31,13 @@ const ConditionDesc = styled.div`
   width: 10%;
 `;
 
+const SalesDesc = styled.div`
+  width: 15%;
+`;
+
+const Others = styled.div`
+  width: 5%;
+`;
 
 
 const Description = () => {
@@ -45,7 +48,8 @@ const Description = () => {
       <DescriptionVehDesc>Vehicle Information</DescriptionVehDesc>
       <BranModel>Brand/Model</BranModel>
       <ConditionDesc>Condition</ConditionDesc>
-      <SalesDesc>Sales Information</SalesDesc>    
+      <SalesDesc>Sales Information</SalesDesc> 
+      <Others>Others</Others>     
     </Container>
   )
 }
