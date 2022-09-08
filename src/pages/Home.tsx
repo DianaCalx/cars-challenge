@@ -19,6 +19,7 @@ const Greeting = styled.div`
   font-weight: bold;
   font-size: 9rem;
   font-family: "Dancing Script", sans-serif;
+  color: white;
 `;
 
 const Home = () => {
