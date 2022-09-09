@@ -26,7 +26,7 @@ const StyledSpinner = styled.div`
     display: block;
     width: 25%;
     height: 25%;
-    background-color: #fff;
+    background-color: #ffb838;
     border-radius: 100%;
     animation: sk-chase-dot-before 2.0s infinite ease-in-out both; 
   }
