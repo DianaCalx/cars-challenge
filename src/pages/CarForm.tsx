@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Button from '../components/Button';
 import Spinner from '../components/Spinner';
 import Swal from 'sweetalert2';
+import moment from 'moment'
 
 const ContainerCreateCar = styled.div`
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%);
@@ -69,13 +70,17 @@ const Submit = styled.button`
   :hover {
     background-color: ${props => props.theme.colors.successColor2};
   }
+  :disabled {
+    cursor: not-allowed;
+    background-color: #ccc;
+  }
 `;
 
 const Error = styled.p`
   margin: 0;
   font-size: 1.2rem;
-  color: ${props => props.theme.colors.errorColor};
-`
+  color: ${props => props.theme.colors.errorColorLight};
+`;
 interface IFormInputs {
   title: string
   brand: number
@@ -127,7 +132,7 @@ const schema = Yup.object().shape({
   sale_date: Yup.string().required(),
   state: Yup.number().required(),
   city: Yup.number().required(),
-  year: Yup.string().required().matches(/^[0-9]+$/, "Must be only digits").min(4, 'Must be exactly 4 digits').max(4, 'Must be 4 digits'),
+  year: Yup.number().typeError('Must be a number').required().lessThan(Number(moment().format('YYYY'))+1),
   price: Yup.number().typeError('Must be a number').required(),
   condition: Yup.string().required(),
   vin: Yup.string().min(8).max(20).required(),
@@ -136,7 +141,7 @@ const schema = Yup.object().shape({
 const CarForm = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({resolver: yupResolver(schema)});
-  const [insertCarsOneMutation, { data: dataInsertCar, error: errorInsertCar }]= useCreateCarMutation();
+  const [insertCarsOneMutation, { data: dataInsertCar, error: errorInsertCar, loading: loadingInsertCar }]= useCreateCarMutation();
   const { loading: fieldsLoading, data: fieldsData, error: fieldsError } = useFormFieldsQuery();
   const [fields, setFields] = useState<Fields>({
     brands: [],
@@ -239,7 +244,7 @@ const CarForm = () => {
             
               <div>
                 <label>Sale Date</label>
-                <input type="date" {...register('sale_date')}/>
+                <input type="date" {...register('sale_date')} min={moment().format('YYYY-MM-DD')}/>
                 {errors?.sale_date?.message && <Error>Select a Date</Error>}
               </div>
               
@@ -304,7 +309,9 @@ const CarForm = () => {
                     </label> 
                   </Conditions>          
               </div>
-              <Button onClick={handleSubmit(onSubmit)} StyledButton={Submit} type="submit">Create</Button>
+              <Button onClick={handleSubmit(onSubmit)} StyledButton={Submit} type="submit" disabled={loadingInsertCar}>
+                {loadingInsertCar ? 'Loading...' : 'Create'}
+              </Button>
             </FormCreateCar>
             {errorInsertCar && <Error>There was an error creating car</Error>}
           </ContainerForm>
