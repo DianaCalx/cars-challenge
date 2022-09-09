@@ -42,7 +42,7 @@ const Form = styled.form`
 `;
 
 const XButton = styled(IoMdCloseCircle)`
-  fill: ${props => props.theme.colors.errorColor};
+  fill: ${props => props.theme.colors.errorColorLight};
   position: absolute;
   top: -4rem;
   right: -0.5rem;
@@ -126,7 +126,8 @@ const Login = () => {
         <Button StyledButton={XButton} onClick={() => setIsLoginModalOpen(false)} />
         <InputEmail placeholder="Your email..." {...register("email")} />
         {errors?.email?.message && <Error>{errors?.email?.message}</Error>}
-        <Button type="submit" onClick={handleSubmit(onSubmit)} StyledButton={Submit} > Login </Button>
+        <Button type="submit" onClick={handleSubmit(onSubmit)} StyledButton={Submit}>{loading ? 'loading...': 'login'}</Button>
+        { error && <p>There was an error </p>}
       </Form>
     </Container>
   )
