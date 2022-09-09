@@ -6,11 +6,12 @@ interface ButtonProps {
   onClick: () => void;
   type?: 'button' | 'submit'
   StyledButton: StyledComponent<"button" | IconType, any, {}, never>
+  disabled?: boolean,
 }
 
-const Button = ({ children, type='button', onClick, StyledButton }: ButtonProps) => {
+const Button = ({ children, type='button', onClick, StyledButton, disabled=false}: ButtonProps) => {
   return (
-    <StyledButton type={type} onClick={onClick}>{children}</StyledButton>
+    <StyledButton type={type} onClick={onClick} disabled={disabled}>{children}</StyledButton>
   )
 }
 
