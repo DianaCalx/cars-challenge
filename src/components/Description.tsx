@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 
 const ImageCarDesc = styled.div`
-  width: 20%;
+  width: 15%;
 `;
 
 const InformationLotDesc = styled.div`
@@ -36,7 +36,7 @@ const SalesDesc = styled.div`
 `;
 
 const Others = styled.div`
-  width: 5%;
+  width: 10%;
 `;
 
 
