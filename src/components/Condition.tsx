@@ -1,28 +1,16 @@
-import { useState, useEffect } from 'react';
-
 interface ConditionProp {
   condition: string
 }
 
-const Condition = ({condition}: ConditionProp) => {
-
-  const [value, setValue] = useState('');
-
-  useEffect(() => {
-    if(condition === 'A'){
-      setValue('Salvage Title');
-    } else if (condition === 'N'){
-      setValue('New');
-    } else{
-      setValue('N/A');
+const Condition = ({condition}: ConditionProp) => (
+  <div>
+    {condition === 'A'
+      ? 'Salvage Title'
+      : condition === 'N'
+      ? 'New'
+      : 'N/A'
     }
-  }, [condition]);
-
-  return (
-    <div>
-      {value}
-    </div>
-  )
-}
+  </div>
+)
 
 export default Condition
