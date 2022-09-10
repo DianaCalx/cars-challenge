@@ -1,6 +1,6 @@
 query Car($where: cars_bool_exp) {
   cars(where: $where) {
-        id
+    id
     title
     model {
       id
