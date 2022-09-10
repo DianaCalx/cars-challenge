@@ -7,13 +7,12 @@ import styled from 'styled-components';
 import Spinner from '../components/Spinner';
 import Swal from 'sweetalert2';
 
-
 const CarDetailsContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%);
+  min-height: 100%;
+  background: ${props => props.theme.gradient};
 `;
 
 const CarDetail = styled.div`
@@ -22,7 +21,9 @@ const CarDetail = styled.div`
     span{
       font-weight: lighter;
     }
-    margin: 0.5rem 0;
+    &:not(:last-of-type) {
+      margin: 0.5rem 0;
+    }
   }
   background-color: white;
   padding: 2rem 3rem;
@@ -49,14 +50,15 @@ const CarTitle = styled.div`
 `;
 
 const Buttons = styled.div`
+  margin-top: 2rem;
   width: 100%;
   display: flex;
   justify-content: center;
-`
+`;
 
 const CarDetails = () => {
 
-  const {id} = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const { loading, data, error } = useCarQuery({
@@ -92,6 +94,8 @@ const CarDetails = () => {
     });
   }
 
+  const { title, batch, model, odometer, price, vin, year, color, sale_date, city, condition } = data?.cars?.at(0) || {}
+
   return (
     <CarDetailsContainer>
       { loading 
@@ -99,21 +103,21 @@ const CarDetails = () => {
         :<CarDetail>
           <CarTitle>Car Details</CarTitle>
           <Image/>
-          <div>{data?.cars[0]?.title}</div>
-          <div>Batch: <span>{data?.cars[0]?.batch}</span></div>
-          <div>Brand: <span>{data?.cars[0]?.model.brand.name}</span></div>
-          <div>Model: <span>{data?.cars[0]?.model.name}</span></div>
-          <div>Odometer: <span>{data?.cars[0]?.odometer}</span></div>
-          <div>Price: <span>{data?.cars[0]?.price}</span></div>
-          <div>Vin: <span>{data?.cars[0]?.vin}</span></div>
-          <div>Year: <span>{data?.cars[0]?.year}</span></div>
-          <div>Color: <span>{data?.cars[0]?.color.name}</span></div>
-          <div>Sale Date: <span>{data?.cars[0]?.sale_date}</span></div>
-          <div>State: <span>{data?.cars[0]?.city.state.name}</span></div>
-          <div>State: <span>{data?.cars[0]?.city.name}</span></div>
-          <Condition condition={data?.cars[0].condition}/>
+          <div>{title}</div>
+          <div>Batch: <span>{batch}</span></div>
+          <div>Brand: <span>{model?.brand?.name}</span></div>
+          <div>Model: <span>{model?.name}</span></div>
+          <div>Odometer: <span>{odometer}</span></div>
+          <div>Price: <span>{price}</span></div>
+          <div>Vin: <span>{vin}</span></div>
+          <div>Year: <span>{year}</span></div>
+          <div>Color: <span>{color?.name}</span></div>
+          <div>Sale Date: <span>{sale_date}</span></div>
+          <div>State: <span>{city?.state?.name}</span></div>
+          <div>State: <span>{city?.name}</span></div>
+          <Condition condition={condition}/>
           <Buttons>
-            <Button StyledButton={DeleteButton} onClick={()=>deleteCar(Number(data?.cars[0].id))}>Delete Car</Button>
+            <Button StyledButton={DeleteButton} onClick={()=>deleteCar(Number(id))}>Delete Car</Button>
           </Buttons>
         </CarDetail>
       }
