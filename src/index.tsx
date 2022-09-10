@@ -11,15 +11,18 @@ const root = ReactDOM.createRoot(
 
 const theme = {
   colors: {
-    mainColor: "#8c8c8c",
-    secondaryColor : "#666666",
-    errorColor: "#e00000",
-    successColor: "#81c9fa",
-    neutralColor: "#c9c9c9",
-    darkColor: "#45484a",
-    darkColor2: "#3c3c3c",
+    mainColor: "#0352db",
+    secondaryColor : "#ABABAF",
+    errorColorLight: "#f52e2ef6",
+    errorColorDark: "#e00000",
+    successColor: "#1e78ff",
+    successColor2: "#0066ff",
+    neutralColor: "#f8f9fa",
+    darkColor: "#ffb838",
+    darkColor2: "rgb(255, 166, 0)",
     starColor: '#c06500'
-  }
+  },
+  gradient: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%)"
 };
 
 root.render(
