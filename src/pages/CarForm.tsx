@@ -3,13 +3,13 @@ import { useFormFieldsQuery, useCreateCarMutation } from '../generated/graphql';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import Button from '../components/Button';
 import Spinner from '../components/Spinner';
 import Swal from 'sweetalert2';
 import moment from 'moment'
+import { formSchema } from '../utils/yupSchemas';
 
 const ContainerCreateCar = styled.div`
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%);
@@ -123,24 +123,9 @@ interface Fields {
   }[]
 }
 
-const schema = Yup.object().shape({
-  title: Yup.string().typeError('Must be a string').min(8).max(40).required(),
-  brand: Yup.number().required(),
-  model: Yup.number().required(),
-  color: Yup.number().required(),
-  odometer: Yup.number().typeError('Must be a number').min(0).required(),
-  sale_date: Yup.string().required(),
-  state: Yup.number().required(),
-  city: Yup.number().required(),
-  year: Yup.number().typeError('Must be a number').required().lessThan(Number(moment().format('YYYY'))+1),
-  price: Yup.number().typeError('Must be a number').required(),
-  condition: Yup.string().required(),
-  vin: Yup.string().min(8).max(20).required(),
-});
-
 const CarForm = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({resolver: yupResolver(schema)});
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({resolver: yupResolver(formSchema)});
   const [insertCarsOneMutation, { data: dataInsertCar, error: errorInsertCar, loading: loadingInsertCar }]= useCreateCarMutation();
   const { loading: fieldsLoading, data: fieldsData, error: fieldsError } = useFormFieldsQuery();
   const [fields, setFields] = useState<Fields>({
@@ -163,8 +148,7 @@ const CarForm = () => {
         icon: 'success',
         title: 'Car created',
         text: 'Car was created successfully'
-      })
-      navigate('/dashboard');
+      }).then( () => navigate('/dashboard'));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataInsertCar]);
