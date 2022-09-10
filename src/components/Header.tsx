@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { useAppContext } from '../context/appContext';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { useNavigate, useLocation} from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import Button from './Button';
 
 const HeaderContainer = styled.header`
@@ -40,6 +39,7 @@ const StyledButton = styled.button`
     background: ${props => props.theme.colors.darkColor2};
   }
 `;
+
 const LogButton = styled.button`
   min-width: 13rem;
   height: 4rem;
@@ -56,24 +56,12 @@ const LogButton = styled.button`
     background: ${props => props.theme.colors.successColor2};
   }
 `;
-const Header = () => {
 
-  const [createButton, setCreateButton] = useState<boolean>(false);
+const Header = () => {
   const {pathname} = useLocation();
   const { user, setUser, setIsLoginModalOpen } = useAppContext();
   const { removeLocalStorage } = useLocalStorage();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if(pathname === '/dashboard'){
-      setCreateButton(true);
-    }
-  
-    return () => {
-      setCreateButton(false);
-    }
-  }, [pathname]);
-  
 
   const onSubmitLogout = () => {
     removeLocalStorage('user');
@@ -84,14 +72,18 @@ const Header = () => {
     <HeaderContainer>
       {user && <UserName>{`Welcome ${user.first_name} ${user.last_name}!`}</UserName>}
       <Buttons>
-        { createButton && <Button StyledButton={StyledButton} onClick={() => navigate('/car-form')}>Create Car</Button>}
-        { user && <Button StyledButton={StyledButton} onClick={() => navigate('/favorites')}>My Favorites</Button>}
+        {
+          pathname === '/dashboard' && <Button StyledButton={StyledButton} onClick={() => navigate('/car-form')}>Create Car</Button>
+        }
+        {
+          user && <Button StyledButton={StyledButton} onClick={() => navigate('/favorites')}>My Favorites</Button>
+        }
         <Button StyledButton={StyledButton} onClick={() => navigate('/dashboard')}>Cars</Button>
         { user 
           ? <Button StyledButton={LogButton} onClick={onSubmitLogout}>Logout</Button>
           : <Button StyledButton={LogButton} onClick={()=> setIsLoginModalOpen(true)}>Login</Button>
         }       
-    </Buttons>
+      </Buttons>
     </HeaderContainer>
   )
 }
