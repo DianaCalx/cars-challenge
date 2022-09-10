@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface CarCardProps {
   car: CarItem,
-  setCars: React.Dispatch<React.SetStateAction<CarItem[]>>
+  refetchCars: Function
 }
 
 const CarContainer = styled.div`
@@ -25,7 +25,7 @@ const CarContainer = styled.div`
 `;
 
 const ImageCar = styled.div`
-  width: 20%;
+  width: 15%;
 `;
 
 const InformationLot = styled.div`
@@ -91,7 +91,7 @@ const OutlineStar = styled(HiOutlineStar)`
 `;
 
 const DetailsButton = styled.button`
-  width: 5%;
+  width: 10%;
   height: 3.5rem;
   padding: 0.5rem 1rem;
   font-size: 1.7rem;
@@ -106,7 +106,7 @@ const DetailsButton = styled.button`
   }
 `;
 
-const CarCard = ({ car, setCars }: CarCardProps) => {
+const CarCard = ({ car, refetchCars }: CarCardProps) => {
   const navigate = useNavigate();
   const { user, setIsLoginModalOpen } = useAppContext();
   const [addFavorite, { loading: loadingAddFavorite, data: dataAddFavorite }] = useAddFavoriteCarMutation();
@@ -114,19 +114,9 @@ const CarCard = ({ car, setCars }: CarCardProps) => {
 
   useEffect(() => {
     if (!loadingAddFavorite && !loadingRemoveFavorite && (dataAddFavorite || dataRemoveFavorite)) {
-      setCars(cars => (
-        cars.map(currentCar => {
-          if (currentCar.id === car.id) {
-            return {
-              ...currentCar,
-              isFavorite: !currentCar.isFavorite
-            }
-          }
-          return currentCar
-        })
-      ));
+      refetchCars();
     }
-  }, [car.id, dataAddFavorite, dataRemoveFavorite, loadingAddFavorite, loadingRemoveFavorite, setCars]);
+  }, [dataAddFavorite, dataRemoveFavorite, loadingAddFavorite, loadingRemoveFavorite, refetchCars]);
 
   const handleFavoriteButton = () => {
     if (!user) {
@@ -165,7 +155,7 @@ const CarCard = ({ car, setCars }: CarCardProps) => {
   return (
     <CarContainer>
       <ImageCar>
-          <Image/>
+        <Image/>
       </ImageCar>
       <InformationLot>
         <p>{car.title}</p>
@@ -193,8 +183,7 @@ const CarCard = ({ car, setCars }: CarCardProps) => {
       <Button StyledButton={DetailsButton} onClick={()=>navigate(`/car-details/${car.id}`)}>
         Details
       </Button>
-      </CarContainer>
-   
+    </CarContainer>   
   )
 }
 
