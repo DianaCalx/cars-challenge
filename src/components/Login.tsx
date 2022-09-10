@@ -1,7 +1,5 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import { emailRegex } from '../utils/regularExp';
 import { IoMdCloseCircle } from 'react-icons/io';
 import { useUserLazyQuery } from '../generated/graphql';
 import { useAppContext } from '../context/appContext';
@@ -9,6 +7,7 @@ import { useEffect } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import Button from './Button';
 import styled from 'styled-components';
+import { loginSchema } from '../utils/yupSchemas';
 
 const Container = styled.div`
   position: fixed;
@@ -36,7 +35,7 @@ const Form = styled.form`
   flex-direction: column;
   gap: 1rem;
   padding: 3rem;
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%);
+  background: ${props => props.theme.gradient};
   z-index: 100;
   border-radius: 1rem;
 `;
@@ -79,22 +78,19 @@ const Submit = styled.button`
 `;
 
 const Error = styled.p`
- color: ${props => props.theme.colors.errorColor};
- font-weight: bold;
+ color: white;
+ background-color: ${props => props.theme.colors.errorColorLight};
  margin:0;
  text-align: center;
+ padding: 0.5rem 1rem;
 `;
 interface LoginFormInputs {
   email: string
-}
-
-const schema = Yup.object().shape({
-  email: Yup.string().required().matches(emailRegex,'Invalid Email'),
-});
+};
 
 const Login = () => {
 
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({resolver: yupResolver(schema)});
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({resolver: yupResolver(loginSchema)});
   const [execute, { loading, data, error }] = useUserLazyQuery();
   const { setUser, setIsLoginModalOpen } = useAppContext();
   const { setLocalStorage } = useLocalStorage();
@@ -126,8 +122,8 @@ const Login = () => {
         <Button StyledButton={XButton} onClick={() => setIsLoginModalOpen(false)} />
         <InputEmail placeholder="Your email..." {...register("email")} />
         {errors?.email?.message && <Error>{errors?.email?.message}</Error>}
-        <Button type="submit" onClick={handleSubmit(onSubmit)} StyledButton={Submit}>{loading ? 'loading...': 'login'}</Button>
-        { error && <p>There was an error </p>}
+        <Button type="submit" onClick={handleSubmit(onSubmit)} StyledButton={Submit} disabled={loading}>{loading ? 'loading...': 'login'}</Button>
+        { error && <Error>There was an error</Error> }
       </Form>
     </Container>
   )
