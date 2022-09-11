@@ -12,12 +12,13 @@ import moment from 'moment'
 import { formSchema } from '../utils/yupSchemas';
 
 const ContainerCreateCar = styled.div`
-    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%);
+    background: ${props => props.theme.gradient};
     width: 100%;
     min-height: 100%;
     padding: 1rem 0;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    overflow-y: scroll;
 `;
 
 const ContainerForm = styled.div`
@@ -26,6 +27,7 @@ const ContainerForm = styled.div`
   background-color: white;
   border-radius: 1rem;
   padding: 2rem;
+  flex: 1;
 `;
 
 const FormCreateCar = styled.form`
