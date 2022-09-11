@@ -3772,6 +3772,8 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['uuid']>>;
 };
 
+export type CarFieldsFragment = { __typename?: 'cars', id: number, title?: string | null, odometer?: number | null, sale_date: any, year?: number | null, condition: any, price: any, batch: any, vin: string, model: { __typename?: 'models', id: number, name: string, brand: { __typename?: 'brands', id: number, name: string } }, color: { __typename?: 'colors', id: number, name: string }, city: { __typename?: 'cities', name: string, id: number, state: { __typename?: 'states', id: number, name: string } } };
+
 export type AddFavoriteCarMutationVariables = Exact<{
   object: User_Cars_Insert_Input;
 }>;
@@ -3828,7 +3830,39 @@ export type UserQueryVariables = Exact<{
 
 export type UserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, first_name: string, last_name: string, email: string, uuid: any }> };
 
-
+export const CarFieldsFragmentDoc = gql`
+    fragment carFields on cars {
+  id
+  title
+  model {
+    id
+    name
+    brand {
+      id
+      name
+    }
+  }
+  color {
+    id
+    name
+  }
+  odometer
+  sale_date
+  city {
+    name
+    id
+    state {
+      id
+      name
+    }
+  }
+  year
+  condition
+  price
+  batch
+  vin
+}
+    `;
 export const AddFavoriteCarDocument = gql`
     mutation AddFavoriteCar($object: user_cars_insert_input!) {
   insert_user_cars_one(object: $object) {
@@ -3976,38 +4010,10 @@ export type RemoveFavoriteCarMutationOptions = Apollo.BaseMutationOptions<Remove
 export const CarDocument = gql`
     query Car($where: cars_bool_exp) {
   cars(where: $where) {
-    id
-    title
-    model {
-      id
-      name
-      brand {
-        id
-        name
-      }
-    }
-    color {
-      id
-      name
-    }
-    odometer
-    sale_date
-    city {
-      name
-      id
-      state {
-        id
-        name
-      }
-    }
-    year
-    condition
-    price
-    batch
-    vin
+    ...carFields
   }
 }
-    `;
+    ${CarFieldsFragmentDoc}`;
 
 /**
  * __useCarQuery__
@@ -4039,42 +4045,14 @@ export type CarQueryResult = Apollo.QueryResult<CarQuery, CarQueryVariables>;
 export const CarsDocument = gql`
     query Cars($orderBy: [cars_order_by!], $whereCars: cars_bool_exp, $whereUserCars: user_cars_bool_exp) {
   cars(where: $whereCars, order_by: $orderBy) {
-    id
-    title
-    model {
-      id
-      name
-      brand {
-        id
-        name
-      }
-    }
-    color {
-      id
-      name
-    }
-    odometer
-    sale_date
-    city {
-      name
-      id
-      state {
-        id
-        name
-      }
-    }
-    year
-    condition
-    price
-    batch
-    vin
+    ...carFields
   }
   user_cars(where: $whereUserCars) {
     id
     car_id
   }
 }
-    `;
+    ${CarFieldsFragmentDoc}`;
 
 /**
  * __useCarsQuery__
