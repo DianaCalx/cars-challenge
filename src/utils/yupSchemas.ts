@@ -12,8 +12,8 @@ export const formSchema = Yup.object().shape({
   sale_date: Yup.string().required(),
   state: Yup.number().required(),
   city: Yup.number().required(),
-  year: Yup.number().typeError('Must be a number').required().lessThan(Number(moment().format('YYYY'))+1),
-  price: Yup.number().typeError('Must be a number').required(),
+  year: Yup.number().typeError('Must be a number').required().lessThan(Number(moment().format('YYYY'))+1).min(1970),
+  price: Yup.number().typeError('Must be a number').required().min(0, 'Must be greater than zero'),
   condition: Yup.string().required(),
   vin: Yup.string().min(8).max(20).required(),
 });
