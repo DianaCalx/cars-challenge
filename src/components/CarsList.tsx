@@ -36,7 +36,7 @@ const CarsList = () => {
       whereCars,
       whereUserCars: {
         user_id: {
-          _eq: user?.id || undefined
+          _eq: user?.id || -1
         }
       }
     },
