@@ -4,6 +4,8 @@ const StyledSpinner = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  flex: 1;
+  align-items: center;
 
   .sk-chase {
     width: 40px;
