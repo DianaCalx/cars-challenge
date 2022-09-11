@@ -22,6 +22,12 @@ const CarListContainer = styled.div`
   flex-direction: column;
 `;
 
+const Error = styled.p`
+  text-align: center;
+  font-weight: bold;
+  font-size: 2rem;
+`;
+
 const CarsList = () => {
 
   const {pathname} = useLocation();
@@ -55,7 +61,7 @@ const CarsList = () => {
       <Filters/>
       <CarListContainer>    
         <Description/>
-        {error && <p>Was an error</p>}
+        {error && <Error>Was an error</Error>}
         {loading ?  <Spinner/> 
         : data?.cars.map(car => {
             const carWithFavorite = {
