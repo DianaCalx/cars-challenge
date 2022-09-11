@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
-import { useFormFieldsQuery, useCreateCarMutation } from '../generated/graphql';
-import { useEffect, useState } from 'react';
+import { useFormFieldsQuery, useCreateCarMutation, useModelsLazyQuery, useCitiesLazyQuery } from '../generated/graphql';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from "@hookform/resolvers/yup";
 import styled from 'styled-components';
@@ -10,6 +10,7 @@ import Spinner from '../components/Spinner';
 import Swal from 'sweetalert2';
 import moment from 'moment'
 import { formSchema } from '../utils/yupSchemas';
+import Dropdown from '../components/Dropdown';
 
 const ContainerCreateCar = styled.div`
     background: ${props => props.theme.gradient};
@@ -78,12 +79,13 @@ const Submit = styled.button`
   }
 `;
 
-const Error = styled.p`
+export const Error = styled.p`
   margin: 0;
   font-size: 1.2rem;
   color: ${props => props.theme.colors.errorColorLight};
 `;
-interface IFormInputs {
+
+export interface IFormInputs {
   title: string
   brand: number
   model: number
@@ -98,51 +100,21 @@ interface IFormInputs {
   vin: string
 }
 
-interface Fields {
-  brands: {
-    id: number,
-    name: string,
-  }[],
-  selectedBrand?: number
-  models: {
-    id: number,
-    name: string,
-    brand_id: number
-  }[],
-  colors: {
-    id: number,
-    name: string
-  }[],
-  states: {
-    id: number,
-    name: string,
-  }[],
-  selectedState?: number
-  cities: {
-    id: number,
-    name: string,
-    state_id: number
-  }[]
-}
+export type FormImputKeys = "title" | "brand" | "model" | "color" | "odometer" | "sale_date" | "state" | "city" | "year" | "price" | "condition" | "vin"
 
 const CarForm = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({resolver: yupResolver(formSchema)});
-  const [insertCarsOneMutation, { data: dataInsertCar, error: errorInsertCar, loading: loadingInsertCar }]= useCreateCarMutation();
-  const { loading: fieldsLoading, data: fieldsData, error: fieldsError } = useFormFieldsQuery();
-  const [fields, setFields] = useState<Fields>({
-    brands: [],
-    models: [],
-    colors: [],
-    states: [],
-    cities: []
-  });
 
-  useEffect(() => {
-    if(fieldsData) {
-      setFields({ ...fieldsData });
-    }
-  }, [fieldsData]);
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<IFormInputs>({resolver: yupResolver(formSchema)});
+
+  const { loading: fieldsLoading, data: fieldsData, error: fieldsError } = useFormFieldsQuery();
+  const [fetchModels, { data: modelsData }] = useModelsLazyQuery();
+  const [fetchCities, { data: citiesData }] = useCitiesLazyQuery();
+
+  const [insertCarsOneMutation, { data: dataInsertCar, error: errorInsertCar, loading: loadingInsertCar }]= useCreateCarMutation();
+
+  const selectedBrand = watch('brand');
+  const selectedState = watch('state');
 
   useEffect(() => {
     if(dataInsertCar){
@@ -155,6 +127,33 @@ const CarForm = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataInsertCar]);
   
+  useEffect(() => {
+    if (selectedBrand) {
+      fetchModels({
+        variables: {
+          where: {
+            brand_id: {
+              _eq: Number(selectedBrand)
+            }
+          }
+        }
+      });
+    }
+  }, [fetchModels, selectedBrand]);
+
+  useEffect(() => {
+    if (selectedState) {
+      fetchCities({
+        variables: {
+          where: {
+            state_id: {
+              _eq: Number(selectedState)
+            }
+          }
+        }
+      });
+    }
+  }, [fetchCities, selectedState]);
 
   const onSubmit = (data:IFormInputs) => {
     insertCarsOneMutation({
@@ -191,68 +190,57 @@ const CarForm = () => {
                 {errors?.title?.message && <Error>{errors?.title?.message}</Error>}
               </div>
 
-              <div>
-                <label>Brand</label>
-                <select {...register('brand', { onChange: e => {
-                  setFields({...fields, selectedBrand: Number(e.target.value)})
-                }})}>
-                  <option value="">Select</option>
-                  {fields?.brands.map(brand => 
-                  <option value={brand.id}>{brand.name}</option>)}
-                </select>
-                {errors?.brand?.message && <Error>Select one option</Error>}
-              </div>
-            
-              <div>
-                <label>Model</label>
-                <select {...register('model')}>
-                  <option value="">Select</option>
-                  {fields.models.filter(model => model.brand_id === fields.selectedBrand).map(model => 
-                  <option value={model.id}>{model.name}</option>)}
-                </select>
-                {errors?.model?.message && <Error>Select one option</Error>}
-              </div>        
-            
-              <div>
-                <label>Color</label>
-                <select {...register('color')}>
-                  <option value="">Select</option>
-                  {fields.colors.map(color => <option value={color.id}>{color.name}</option>)}
-                </select>
-                {errors?.color?.message && <Error>Select one option</Error>}
-              </div>
-                        
+              <Dropdown
+                label='Brand'
+                fieldName='brand'
+                options={fieldsData?.brands ?? []}
+                isError={!!errors?.brand?.message}
+                register={register}
+              />
+
+              <Dropdown
+                label='Model'
+                fieldName='model'
+                options={modelsData?.models ?? []}
+                isError={!!errors?.model?.message}
+                register={register}
+              />
+
+              <Dropdown
+                label='Color'
+                fieldName='color'
+                options={fieldsData?.colors ?? []}
+                isError={!!errors?.color?.message}
+                register={register}
+              />
+
               <div>
                 <label>Odometer</label>
                 <input type="number" {...register('odometer')}/>
                 {errors?.odometer?.message && <Error>{errors?.odometer?.message}</Error>}
               </div>
-            
+
               <div>
                 <label>Sale Date</label>
                 <input type="date" {...register('sale_date')} min={moment().format('YYYY-MM-DD')}/>
                 {errors?.sale_date?.message && <Error>Select a Date</Error>}
               </div>
-              
-              <div>
-                <label>State</label>
-                <select {...register('state', { onChange: e => {
-                  setFields({...fields, selectedState: Number(e.target.value)})
-                }})}>
-                  <option value="">Select</option>
-                  {fields.states.map(state => <option value={state.id}>{state.name}</option>)}
-                </select>
-                {errors?.state?.message && <Error>Select one Option</Error>}
-              </div>
-            
-              <div>
-                <label>City</label>
-                <select {...register('city')}>
-                  <option value="">Select</option>
-                  {fields.cities.filter(city => city.state_id === fields.selectedState).map(city => <option value={city.id}>{city.name}</option>)}
-                </select>
-                {errors?.city?.message && <Error>Select one Option</Error>}
-              </div>
+
+              <Dropdown
+                label='State'
+                fieldName='state'
+                options={fieldsData?.states ?? []}
+                isError={!!errors?.state?.message}
+                register={register}
+              />
+
+              <Dropdown
+                label='City'
+                fieldName='city'
+                options={citiesData?.cities ?? []}
+                isError={!!errors?.city?.message}
+                register={register}
+              />
 
               <div>
                 <label>Year</label>
@@ -262,7 +250,7 @@ const CarForm = () => {
 
               <div>
                 <label>Price</label>
-                <input type="number" {...register('price')}/>
+                <input type="number" min="0" {...register('price')}/>
                 {errors?.price?.message && <Error>{errors?.price?.message}</Error>}
               </div>
 
@@ -295,7 +283,12 @@ const CarForm = () => {
                     </label> 
                   </Conditions>          
               </div>
-              <Button onClick={handleSubmit(onSubmit)} StyledButton={Submit} type="submit" disabled={loadingInsertCar}>
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                StyledButton={Submit}
+                type="submit"
+                disabled={loadingInsertCar}
+              >
                 {loadingInsertCar ? 'Loading...' : 'Create'}
               </Button>
             </FormCreateCar>
@@ -303,7 +296,6 @@ const CarForm = () => {
           </ContainerForm>
       }
     </ContainerCreateCar>
-
   )
 }
 
