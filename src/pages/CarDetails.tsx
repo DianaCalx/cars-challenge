@@ -8,10 +8,12 @@ import Spinner from '../components/Spinner';
 import Swal from 'sweetalert2';
 
 const CarDetailsContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
   min-height: 100%;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
   background: ${props => props.theme.gradient};
 `;
 
@@ -25,6 +27,8 @@ const CarDetail = styled.div`
       margin: 0.5rem 0;
     }
   }
+  margin: 0px auto;
+  width: 50rem;
   background-color: white;
   padding: 2rem 3rem;
   border-radius: 0.5rem;
