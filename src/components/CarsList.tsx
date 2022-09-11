@@ -17,6 +17,9 @@ export interface CarItem extends Cars {
 const CarListContainer = styled.div`
   background-color: ${props => props.theme.colors.neutralColor};
   border-radius: 0.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const CarsList = () => {
@@ -52,17 +55,17 @@ const CarsList = () => {
       <Filters/>
       <CarListContainer>    
         <Description/>
-        {loading && <Spinner/>}
         {error && <p>Was an error</p>}
-        {data?.cars.map(car => {
-          const carWithFavorite = {
-            ...car,
-            isFavorite: favorites.includes(car.id)
-          }
-          return pathname === '/favorites' 
-          ? carWithFavorite.isFavorite ?  <CarCard key={car.id} car={carWithFavorite as CarItem} refetchCars={refetch} /> : null
-          :  <CarCard key={car.id} car={carWithFavorite as CarItem} refetchCars={refetch} />   
-        })}
+        {loading ?  <Spinner/> 
+        : data?.cars.map(car => {
+            const carWithFavorite = {
+              ...car,
+              isFavorite: favorites.includes(car.id)
+            }
+            return pathname === '/favorites' 
+            ? carWithFavorite.isFavorite ?  <CarCard key={car.id} car={carWithFavorite as CarItem} refetchCars={refetch} /> : null
+            :  <CarCard key={car.id} car={carWithFavorite as CarItem} refetchCars={refetch} />   
+          })}      
       </CarListContainer>
     </>
   )
