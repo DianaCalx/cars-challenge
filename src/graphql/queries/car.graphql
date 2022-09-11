@@ -1,33 +1,7 @@
+#import { carFields } from '../fragments/car.graphql'
+
 query Car($where: cars_bool_exp) {
   cars(where: $where) {
-    id
-    title
-    model {
-      id
-      name
-      brand {
-        id
-        name
-      }
-    }
-    color {
-      id
-      name
-    }
-    odometer
-    sale_date
-    city {
-      name
-      id
-      state {
-        id
-        name
-      }
-    }
-    year
-    condition
-    price
-    batch
-    vin
+    ...carFields
   }
 }
