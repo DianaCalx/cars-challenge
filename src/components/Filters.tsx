@@ -52,23 +52,23 @@ const schema = Yup.object().shape({
 });
 
 const Filters = () => {
-  const { setSearchParam } = useSearchParams();
+  const { searchParams: { search, sort }, setSearchParam } = useSearchParams();
   const { register, handleSubmit } = useForm<FilterFormInputs>({resolver: yupResolver(schema)});
 
   const onSubmit = (data: FilterFormInputs) => {
-      setSearchParam({
-        search: data.search || '',
-        sort: data.sale_date || '',
-      });
+    setSearchParam({
+      search: data.search || '',
+      sort: data.sale_date || '',
+    });
   };
 
   return (
     <FormFilter onSubmit={handleSubmit(onSubmit)}>
       <SearchBarContainer>
-        <Filter type="text" {...register("search")} ></Filter>
+        <Filter type="text" {...register("search")} defaultValue={search} ></Filter>
         <Button StyledButton={ButtonSearch} type="submit" onClick={handleSubmit(onSubmit)}>Search Inventory</Button>
       </SearchBarContainer>
-      <select {...register("sale_date", { onChange: handleSubmit(onSubmit)}) } >
+      <select {...register("sale_date", { onChange: handleSubmit(onSubmit)}) } defaultValue={sort} >
         <option value="">Select</option>
         <option value="desc">Sale date decreasing</option>
         <option value="asc">Sale date increasing</option>
