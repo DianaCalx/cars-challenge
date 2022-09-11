@@ -18,10 +18,14 @@ const CarContainer = styled.div`
   gap: 1.5rem;
   align-items: center;
   margin-bottom: 2rem;
-  padding: 0 1rem;
+  padding: 1rem;
   width: 100%;
   box-shadow: 0 1px 5px 0 rgb(0 0 0 / 32%);
   border-radius: 5px 0 0 5px;
+  p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
 `;
 
 const ImageCar = styled.div`
@@ -81,13 +85,13 @@ const Sales = styled.div`
 const FillStar = styled(HiStar)`
   cursor: pointer;
   font-size: 3rem;
-  color:  ${props => props.theme.colors.starColor};
+  color:  ${props => props.theme.colors.darkColor2};
 `;
 
 const OutlineStar = styled(HiOutlineStar)`
   cursor: pointer;
   font-size: 3rem;
-  color:  ${props => props.theme.colors.starColor};
+  color:  ${props => props.theme.colors.darkColor2};
 `;
 
 const DetailsButton = styled.button`
