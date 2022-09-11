@@ -3,11 +3,6 @@ query FormFields {
     id
     name
   }
-  models {
-    id
-    name
-    brand_id
-  }
   colors {
     id
     name
@@ -16,9 +11,18 @@ query FormFields {
     id
     name
   }
-  cities {
+}
+
+query Models($where: models_bool_exp) {
+  models(where: $where) {
     id
     name
-    state_id
+  }
+}
+
+query Cities($where: cities_bool_exp) {
+  cities(where: $where) {
+    id
+    name
   }
 }
