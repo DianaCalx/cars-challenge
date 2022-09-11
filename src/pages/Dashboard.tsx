@@ -7,9 +7,9 @@ import { useAppContext } from '../context/appContext';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 const DashboardPage = styled.div`
-  min-height: 100%;
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 const DashboarHeader = styled.div`
