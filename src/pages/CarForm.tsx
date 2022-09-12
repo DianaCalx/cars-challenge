@@ -85,6 +85,13 @@ export const Error = styled.p`
   color: ${props => props.theme.colors.errorColorLight};
 `;
 
+const ErrorForm = styled.p`
+  margin: 0 auto;
+  font-size: 2rem;
+  color: white;
+  text-align: center;
+`;
+
 export interface IFormInputs {
   title: string
   brand: number
@@ -99,8 +106,6 @@ export interface IFormInputs {
   condition: string
   vin: string
 }
-
-export type FormImputKeys = "title" | "brand" | "model" | "color" | "odometer" | "sale_date" | "state" | "city" | "year" | "price" | "condition" | "vin"
 
 const CarForm = () => {
   const navigate = useNavigate();
@@ -176,6 +181,14 @@ const CarForm = () => {
       }
     })
   };
+
+  if(fieldsError) {
+    return(
+      <ContainerCreateCar>
+        <ErrorForm>Was an error</ErrorForm>
+      </ContainerCreateCar>
+    )
+  }
 
   return (
     <ContainerCreateCar>
