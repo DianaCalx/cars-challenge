@@ -164,6 +164,7 @@ const CarCard = ({ car, refetchCars }: CarCardProps) => {
       <InformationLot>
         <p>{car.title}</p>
         <p>Batch number <span>{car.batch}</span></p>
+        <p>Vin number <span>{car.vin}</span></p>
         <Button
           StyledButton={car.isFavorite ? FillStar : OutlineStar}
           onClick={handleFavoriteButton}
