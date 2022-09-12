@@ -60,6 +60,13 @@ const Buttons = styled.div`
   justify-content: center;
 `;
 
+const Error = styled.p`
+  margin: 0 auto;
+  font-size: 2rem;
+  color: white;
+  text-align: center;
+`;
+
 const CarDetails = () => {
 
   const { id } = useParams();
@@ -75,7 +82,7 @@ const CarDetails = () => {
     }
   });
 
-  const [deleteCarMutation, {data : dataDeleteCar, loading: loadingDeleteCar, error: errorDeleteCar}] = useDeleteCarMutation();
+  const [deleteCarMutation, {error: errorDeleteCar}] = useDeleteCarMutation();
 
   const deleteCar = (id:number) => {
     Swal.fire({
@@ -100,6 +107,14 @@ const CarDetails = () => {
 
   const { title, batch, model, odometer, price, vin, year, color, sale_date, city, condition } = data?.cars?.at(0) || {}
 
+  if(error) {
+    return(
+    <CarDetailsContainer>
+      <Error>There was an error</Error>
+    </CarDetailsContainer>
+    )
+  }
+
   return (
     <CarDetailsContainer>
       { loading 
@@ -123,6 +138,7 @@ const CarDetails = () => {
           <Buttons>
             <Button StyledButton={DeleteButton} onClick={()=>deleteCar(Number(id))}>Delete Car</Button>
           </Buttons>
+          {errorDeleteCar && <Error>There was an error</Error>}
         </CarDetail>
       }
     </CarDetailsContainer>
