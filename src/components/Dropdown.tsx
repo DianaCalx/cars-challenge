@@ -1,5 +1,7 @@
 import { UseFormRegister } from "react-hook-form";
-import { FormImputKeys, IFormInputs, Error } from "../pages/CarForm";
+import { IFormInputs, Error } from "../pages/CarForm";
+
+type FormImputKeys = "title" | "brand" | "model" | "color" | "odometer" | "sale_date" | "state" | "city" | "year" | "price" | "condition" | "vin";
 
 interface DropdownProps {
   label: string;
