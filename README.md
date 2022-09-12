@@ -42,4 +42,6 @@ This application shows a list of cars
 
 ## Additional Information
 Set `REACT_APP_API_URL` variable in the `.env` file with [Backend Direct Endpoint](https://working-swan-45.hasura.app/v1/graphql).\
-Set `REACT_APP_TOKEN_API` variable in the `.env` file with the token.
+Set `REACT_APP_TOKEN_API` variable in the `.env` file with the token..\
+**Deploy to production** [https://car-details-challenge.netlify.app/](https://car-details-challenge.netlify.app/).
+
