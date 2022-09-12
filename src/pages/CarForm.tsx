@@ -185,7 +185,7 @@ const CarForm = () => {
   if(fieldsError) {
     return(
       <ContainerCreateCar>
-        <ErrorForm>Was an error</ErrorForm>
+        <ErrorForm>There was an error</ErrorForm>
       </ContainerCreateCar>
     )
   }

@@ -61,7 +61,7 @@ const CarsList = () => {
       <Filters/>
       <CarListContainer>    
         <Description/>
-        {error && <Error>Was an error</Error>}
+        {error && <Error>There was an error</Error>}
         {loading ?  <Spinner/> 
         : data?.cars.map(car => {
             const carWithFavorite = {
