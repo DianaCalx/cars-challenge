@@ -21,15 +21,8 @@ export const useSearchParams = () => {
     setSearch(newParams);
   }
 
-  const removeSearchParam = (key: string) => {
-    const newSearchParams = { ...searchParams };
-    delete newSearchParams[key];
-    setSearch({ ...newSearchParams });
-  }
-
   return {
     searchParams,
-    setSearchParam,
-    removeSearchParam
+    setSearchParam
   };
 }
