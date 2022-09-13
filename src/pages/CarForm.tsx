@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useFormFieldsQuery, useCreateCarMutation, useModelsLazyQuery, useCitiesLazyQuery } from '../generated/graphql';
+import { useFormFieldsQuery, useCreateCarMutation} from '../generated/graphql';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import moment from 'moment'
 import { formSchema } from '../utils/yupSchemas';
 import Dropdown from '../components/Dropdown';
+import BrandModelDropdowns from '../components/BrandModelDropdowns';
+import StateCityDropdowns from '../components/StateCityDropdowns';
 
 const ContainerCreateCar = styled.div`
     background: ${props => props.theme.gradient};
@@ -113,13 +115,9 @@ const CarForm = () => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm<IFormInputs>({resolver: yupResolver(formSchema)});
 
   const { loading: fieldsLoading, data: fieldsData, error: fieldsError } = useFormFieldsQuery();
-  const [fetchModels, { data: modelsData }] = useModelsLazyQuery();
-  const [fetchCities, { data: citiesData }] = useCitiesLazyQuery();
 
   const [insertCarsOneMutation, { data: dataInsertCar, error: errorInsertCar, loading: loadingInsertCar }]= useCreateCarMutation();
 
-  const selectedBrand = watch('brand');
-  const selectedState = watch('state');
 
   useEffect(() => {
     if(dataInsertCar){
@@ -131,34 +129,6 @@ const CarForm = () => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataInsertCar]);
-  
-  useEffect(() => {
-    if (selectedBrand) {
-      fetchModels({
-        variables: {
-          where: {
-            brand_id: {
-              _eq: Number(selectedBrand)
-            }
-          }
-        }
-      });
-    }
-  }, [fetchModels, selectedBrand]);
-
-  useEffect(() => {
-    if (selectedState) {
-      fetchCities({
-        variables: {
-          where: {
-            state_id: {
-              _eq: Number(selectedState)
-            }
-          }
-        }
-      });
-    }
-  }, [fetchCities, selectedState]);
 
   const onSubmit = (data:IFormInputs) => {
     insertCarsOneMutation({
@@ -203,26 +173,18 @@ const CarForm = () => {
                 {errors?.title?.message && <Error>{errors?.title?.message}</Error>}
               </div>
 
-              <Dropdown
-                label='Brand'
-                fieldName='brand'
-                options={fieldsData?.brands ?? []}
-                isError={!!errors?.brand?.message}
+              <BrandModelDropdowns
+                brands={fieldsData?.brands}
+                isErrorBrand={!!errors?.brand?.message}
+                isErrorModel={!!errors?.model?.message}
                 register={register}
-              />
-
-              <Dropdown
-                label='Model'
-                fieldName='model'
-                options={modelsData?.models ?? []}
-                isError={!!errors?.model?.message}
-                register={register}
+                watch={watch}
               />
 
               <Dropdown
                 label='Color'
                 fieldName='color'
-                options={fieldsData?.colors ?? []}
+                options={fieldsData?.colors}
                 isError={!!errors?.color?.message}
                 register={register}
               />
@@ -239,20 +201,12 @@ const CarForm = () => {
                 {errors?.sale_date?.message && <Error>Select a Date</Error>}
               </div>
 
-              <Dropdown
-                label='State'
-                fieldName='state'
-                options={fieldsData?.states ?? []}
-                isError={!!errors?.state?.message}
+              <StateCityDropdowns
+                states={fieldsData?.states}
+                isErrorState={!!errors?.state?.message}
+                isErrorCity={!!errors?.city?.message}
                 register={register}
-              />
-
-              <Dropdown
-                label='City'
-                fieldName='city'
-                options={citiesData?.cities ?? []}
-                isError={!!errors?.city?.message}
-                register={register}
+                watch={watch}
               />
 
               <div>
