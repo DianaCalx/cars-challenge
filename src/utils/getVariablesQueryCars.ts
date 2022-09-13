@@ -1,11 +1,9 @@
 import { validate } from 'uuid';
 import { Order_By } from '../generated/graphql';
 
-interface SearchParams {
-  [k: string]: string;
-}
+export const getVariablesQueryCars = (search: URLSearchParams, userId: number | undefined) => {
+  const searchParams = Object.fromEntries(search);
 
-export const getVariablesQueryCars = (searchParams: SearchParams) => {
   const orderBy = searchParams.sort ? { sale_date: searchParams.sort as Order_By } : {}
   const isBatch = validate(searchParams.search || '');
   const whereCars = isBatch
@@ -28,9 +26,17 @@ export const getVariablesQueryCars = (searchParams: SearchParams) => {
           }
         ]
       };
+    const whereUserCars = userId 
+    ? { 
+        user_id: {
+          _eq: userId
+        }     
+      } 
+    : { }; 
 
   return {
     orderBy,
-    whereCars
+    whereCars,
+    whereUserCars
   }
 }
