@@ -5,6 +5,7 @@ import Header from '../components/Header'
 import Login from '../components/Login';
 import { useAppContext } from '../context/appContext';
 import useLocalStorage from '../hooks/useLocalStorage';
+import Favorites from './Favorites';
 
 const DashboardPage = styled.div`
   display: flex;
@@ -34,7 +35,8 @@ const Dashboard = () => {
     </DashboarHeader>
     <DashboardPage>
       {isLoginModalOpen && <Login />}
-      <CarsList />
+      {pathname === '/favorites' && <Favorites/>}
+      {pathname === '/dashboard' && <CarsList />}     
     </DashboardPage>
     </>
   )
