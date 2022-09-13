@@ -259,7 +259,7 @@ const CarForm = () => {
                 {loadingInsertCar ? 'Loading...' : 'Create'}
               </Button>
             </FormCreateCar>
-            {errorInsertCar && <Error>There was an error creating car</Error>}
+            {errorInsertCar && <Error>{errorInsertCar.message}</Error>}
           </ContainerForm>
       }
     </ContainerCreateCar>
