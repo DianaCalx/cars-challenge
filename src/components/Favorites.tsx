@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useCarsQuery } from '../generated/graphql';
-import CarCard from '../components/CarCard';
+import CarCard from './CarCard';
 import { Cars } from '../generated/graphql';
-import Description from '../components/Description';
+import Description from './Description';
 import { useAppContext } from '../context/appContext';
-import Filters from '../components/Filters';
-import Spinner from '../components/Spinner';
+import Filters from './Filters';
+import Spinner from './Spinner';
 import styled from 'styled-components';
 import { useSearchParams } from 'react-router-dom';
 import { getVariablesQueryCars } from '../utils/getVariablesQueryCars';
@@ -48,11 +48,13 @@ const Favorites = () => {
   });
 
   useEffect(() => {
-    if (data?.user_cars) {
+    if (data?.user_cars && user) {
       const favoriteCars = data.user_cars.map(favoriteCar => favoriteCar.car_id);
       setFavorites(favoriteCars);
+    }else if(!user){
+      setFavorites([]);
     }
-  }, [data?.user_cars]);
+  }, [data?.user_cars, user]);
 
   return (
     <>
