@@ -9,16 +9,16 @@ interface DropdownProps {
   options: {
     id: number,
     name: string,
-  }[],
+  }[] | undefined,
   isError: boolean;
   register: UseFormRegister<IFormInputs>;
 }
 
-const Dropdown = ({ label, fieldName, options, isError, register }: DropdownProps) => {
+const Dropdown = ({ label, fieldName, options=[], isError, register }: DropdownProps) => {
   return (
     <div>
       <label>{label}</label>
-      <select {...register(fieldName)}>
+      <select {...register(fieldName)} disabled={!options.length}>
         <option value="">Select</option>
         {options.map(({ id, name }) => 
           <option key={`${id}-${name}`} value={id}>{name}</option>)
