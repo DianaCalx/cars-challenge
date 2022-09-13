@@ -5,7 +5,7 @@ import Header from '../components/Header'
 import Login from '../components/Login';
 import { useAppContext } from '../context/appContext';
 import useLocalStorage from '../hooks/useLocalStorage';
-import Favorites from './Favorites';
+import Favorites from '../components/Favorites';
 
 const DashboardPage = styled.div`
   display: flex;
