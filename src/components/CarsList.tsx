@@ -7,8 +7,7 @@ import { useAppContext } from '../context/appContext';
 import Filters from './Filters';
 import Spinner from './Spinner';
 import styled from 'styled-components';
-import { useSearchParams } from '../hooks/useSearchParams';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { getVariablesQueryCars } from '../utils/getVariablesQueryCars';
 export interface CarItem extends Cars {
   isFavorite: boolean
@@ -30,22 +29,13 @@ const Error = styled.p`
 
 const CarsList = () => {
 
-  const {pathname} = useLocation();
   const { user } = useAppContext();
   const [favorites, setFavorites] = useState<number[]>([]);
-  const { searchParams } = useSearchParams();
-  const {orderBy, whereCars} = getVariablesQueryCars(searchParams);
+  const [search] = useSearchParams();
+  const variables = getVariablesQueryCars(search, user?.id);
 
   const { loading, data, error, refetch } = useCarsQuery({
-    variables: {
-      orderBy,
-      whereCars,
-      whereUserCars: {
-        user_id: {
-          _eq: user?.id || -1
-        }
-      }
-    },
+    variables,
     fetchPolicy: 'no-cache'
   });
 
@@ -68,9 +58,7 @@ const CarsList = () => {
               ...car,
               isFavorite: favorites.includes(car.id)
             }
-            return pathname === '/favorites' 
-            ? carWithFavorite.isFavorite ?  <CarCard key={car.id} car={carWithFavorite as CarItem} refetchCars={refetch} /> : null
-            :  <CarCard key={car.id} car={carWithFavorite as CarItem} refetchCars={refetch} />   
+            return <CarCard key={car.id} car={carWithFavorite as CarItem} refetchCars={refetch} />
           })}      
       </CarListContainer>
     </>
