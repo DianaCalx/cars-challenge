@@ -26,13 +26,14 @@ export const getVariablesQueryCars = (search: URLSearchParams, userId: number | 
           }
         ]
       };
+
     const whereUserCars = userId 
     ? { 
         user_id: {
           _eq: userId
         }     
       } 
-    : { }; 
+    : {}; 
 
   return {
     orderBy,
