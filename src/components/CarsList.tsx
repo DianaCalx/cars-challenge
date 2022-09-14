@@ -40,11 +40,9 @@ const CarsList = () => {
   });
 
   useEffect(() => {
-    if (data?.user_cars && user) {
+    if (data?.user_cars) {
       const favoriteCars = data.user_cars.map(favoriteCar => favoriteCar.car_id);
       setFavorites(favoriteCars);
-    }else if(!user){
-      setFavorites([]);
     }
   }, [data?.user_cars, user]);
 
