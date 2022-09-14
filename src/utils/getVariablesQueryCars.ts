@@ -33,7 +33,11 @@ export const getVariablesQueryCars = (search: URLSearchParams, userId: number | 
           _eq: userId
         }     
       } 
-    : {}; 
+    : {
+      user_id: {
+        _is_null: true
+      }
+    }; 
 
   return {
     orderBy,
