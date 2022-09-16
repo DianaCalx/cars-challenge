@@ -3510,11 +3510,17 @@ export type CarQuery = { __typename?: 'query_root', cars: Array<{ __typename?: '
 export type CarsQueryVariables = Exact<{
   orderBy?: InputMaybe<Array<Cars_Order_By> | Cars_Order_By>;
   whereCars?: InputMaybe<Cars_Bool_Exp>;
+}>;
+
+
+export type CarsQuery = { __typename?: 'query_root', cars: Array<{ __typename?: 'cars', id: number, title?: string | null, odometer?: number | null, sale_date: any, year?: number | null, condition: any, price: any, batch: any, vin: string, model: { __typename?: 'models', id: number, name: string, brand: { __typename?: 'brands', id: number, name: string } }, color: { __typename?: 'colors', id: number, name: string }, city: { __typename?: 'cities', name: string, id: number, state: { __typename?: 'states', id: number, name: string } } }> };
+
+export type FavoritesQueryVariables = Exact<{
   whereUserCars?: InputMaybe<User_Cars_Bool_Exp>;
 }>;
 
 
-export type CarsQuery = { __typename?: 'query_root', cars: Array<{ __typename?: 'cars', id: number, title?: string | null, odometer?: number | null, sale_date: any, year?: number | null, condition: any, price: any, batch: any, vin: string, model: { __typename?: 'models', id: number, name: string, brand: { __typename?: 'brands', id: number, name: string } }, color: { __typename?: 'colors', id: number, name: string }, city: { __typename?: 'cities', name: string, id: number, state: { __typename?: 'states', id: number, name: string } } }>, user_cars: Array<{ __typename?: 'user_cars', id: number, car_id: number }> };
+export type FavoritesQuery = { __typename?: 'query_root', user_cars: Array<{ __typename?: 'user_cars', id: number, car_id: number }> };
 
 export type FormFieldsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3760,13 +3766,9 @@ export type CarQueryHookResult = ReturnType<typeof useCarQuery>;
 export type CarLazyQueryHookResult = ReturnType<typeof useCarLazyQuery>;
 export type CarQueryResult = Apollo.QueryResult<CarQuery, CarQueryVariables>;
 export const CarsDocument = gql`
-    query Cars($orderBy: [cars_order_by!], $whereCars: cars_bool_exp, $whereUserCars: user_cars_bool_exp) {
+    query Cars($orderBy: [cars_order_by!], $whereCars: cars_bool_exp) {
   cars(where: $whereCars, order_by: $orderBy) {
     ...carFields
-  }
-  user_cars(where: $whereUserCars) {
-    id
-    car_id
   }
 }
     ${CarFieldsFragmentDoc}`;
@@ -3785,7 +3787,6 @@ export const CarsDocument = gql`
  *   variables: {
  *      orderBy: // value for 'orderBy'
  *      whereCars: // value for 'whereCars'
- *      whereUserCars: // value for 'whereUserCars'
  *   },
  * });
  */
@@ -3800,6 +3801,42 @@ export function useCarsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CarsQ
 export type CarsQueryHookResult = ReturnType<typeof useCarsQuery>;
 export type CarsLazyQueryHookResult = ReturnType<typeof useCarsLazyQuery>;
 export type CarsQueryResult = Apollo.QueryResult<CarsQuery, CarsQueryVariables>;
+export const FavoritesDocument = gql`
+    query Favorites($whereUserCars: user_cars_bool_exp) {
+  user_cars(where: $whereUserCars) {
+    id
+    car_id
+  }
+}
+    `;
+
+/**
+ * __useFavoritesQuery__
+ *
+ * To run a query within a React component, call `useFavoritesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFavoritesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFavoritesQuery({
+ *   variables: {
+ *      whereUserCars: // value for 'whereUserCars'
+ *   },
+ * });
+ */
+export function useFavoritesQuery(baseOptions?: Apollo.QueryHookOptions<FavoritesQuery, FavoritesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FavoritesQuery, FavoritesQueryVariables>(FavoritesDocument, options);
+      }
+export function useFavoritesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FavoritesQuery, FavoritesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FavoritesQuery, FavoritesQueryVariables>(FavoritesDocument, options);
+        }
+export type FavoritesQueryHookResult = ReturnType<typeof useFavoritesQuery>;
+export type FavoritesLazyQueryHookResult = ReturnType<typeof useFavoritesLazyQuery>;
+export type FavoritesQueryResult = Apollo.QueryResult<FavoritesQuery, FavoritesQueryVariables>;
 export const FormFieldsDocument = gql`
     query FormFields {
   brands {
