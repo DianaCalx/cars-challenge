@@ -1,5 +1,6 @@
 mutation CreateCar($object: cars_insert_input!) {
   insert_cars_one(object: $object) {
+    id
     title
     brand_id
     model_id
