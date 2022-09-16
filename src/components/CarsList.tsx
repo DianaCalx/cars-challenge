@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useCarsQuery } from '../generated/graphql';
+import { useCarsQuery, useFavoritesLazyQuery } from '../generated/graphql';
 import CarCard from './CarCard';
 import { Cars } from '../generated/graphql';
 import Description from './Description';
@@ -28,37 +28,54 @@ const Error = styled.p`
 `;
 
 const CarsList = () => {
-
+ 
   const { user } = useAppContext();
   const [favorites, setFavorites] = useState<number[]>([]);
   const [search] = useSearchParams();
-  const variables = getVariablesQueryCars(search, user?.id);
+  const {orderBy, whereCars, whereUserCars} = getVariablesQueryCars(search, user?.id);  
 
-  const { loading, data, error, refetch } = useCarsQuery({
-    variables,
-    fetchPolicy: 'no-cache'
+  const { loading: loadingCars, data: dataCars, error: erroCars} = useCarsQuery({
+    variables: {
+      orderBy,
+      whereCars
+    }
   });
+  const [refectchFavorites,  { data: dataFav}] = useFavoritesLazyQuery();
 
   useEffect(() => {
-    if (data?.user_cars) {
-      const favoriteCars = data.user_cars.map(favoriteCar => favoriteCar.car_id);
-      setFavorites(favoriteCars);
+    if(user){
+      refectchFavorites({
+        variables: {
+          whereUserCars
+        }
+      });
     }
-  }, [data?.user_cars, user]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+  
+
+  useEffect(() => {
+    if (dataFav?.user_cars) {
+      const favoriteCars = dataFav.user_cars.map(favoriteCar => favoriteCar.car_id);
+      setFavorites(favoriteCars);
+    } else{
+      setFavorites([]);
+    }
+  }, [dataFav?.user_cars, user]);
 
   return (
     <>
       <Filters/>
       <CarListContainer>    
         <Description/>
-        {error && <Error>There was an error</Error>}
-        {loading ?  <Spinner/> 
-        : data?.cars.map(car => {
+        {erroCars && <Error>There was an error</Error>}
+        {loadingCars ?  <Spinner/> 
+        : dataCars?.cars.map(car => {
             const carWithFavorite = {
               ...car,
               isFavorite: favorites.includes(car.id)
             }
-            return <CarCard key={car.id} car={carWithFavorite as CarItem} refetchCars={refetch} />
+            return <CarCard key={car.id} car={carWithFavorite as CarItem}/>
           })}      
       </CarListContainer>
     </>
