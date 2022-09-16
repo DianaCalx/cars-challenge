@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useFormFieldsQuery, useCreateCarMutation} from '../generated/graphql';
+import { useFormFieldsQuery, useCreateCarMutation } from '../generated/graphql';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -116,8 +116,17 @@ const CarForm = () => {
 
   const { loading: fieldsLoading, data: fieldsData, error: fieldsError } = useFormFieldsQuery();
 
-  const [insertCarsOneMutation, { data: dataInsertCar, error: errorInsertCar, loading: loadingInsertCar }]= useCreateCarMutation();
-
+  const [insertCarsOneMutation, { data: dataInsertCar, error: errorInsertCar, loading: loadingInsertCar }] = useCreateCarMutation({
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          cars: (existingFieldsData) => {
+            return [...existingFieldsData, data?.insert_cars_one]
+          }
+        }
+      });
+    }
+  });
 
   useEffect(() => {
     if(dataInsertCar){
@@ -131,26 +140,29 @@ const CarForm = () => {
   }, [dataInsertCar]);
 
   const onSubmit = (data:IFormInputs) => {
+
+    const object = {
+      batch: uuidv4(),
+      title: data.title,
+      brand_id: data.brand,
+      model_id: data.model,
+      color_id: data.color,
+      odometer: data.odometer,
+      sale_date: data.sale_date,
+      city_id: data.city,
+      state_id: data.state,
+      year: data.year,
+      price: data.price,
+      condition: data.condition,
+      vin: data.vin
+    };
+
     insertCarsOneMutation({
       variables: {
-        object:{
-          batch: uuidv4(),
-          title: data.title,
-          brand_id: data.brand,
-          model_id: data.model,
-          color_id: data.color,
-          odometer: data.odometer,
-          sale_date: data.sale_date,
-          city_id: data.city,
-          state_id: data.state,
-          year: data.year,
-          price: data.price,
-          condition: data.condition,
-          vin: data.vin
-        }
+        object
       }
-    })
-  };
+    });
+  }
 
   if(fieldsError) {
     return(
