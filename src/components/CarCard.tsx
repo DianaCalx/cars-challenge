@@ -6,11 +6,9 @@ import Button from './Button';
 import { CarItem } from './CarsList';
 import { useAddFavoriteCarMutation, useRemoveFavoriteCarMutation } from '../generated/graphql';
 import { useAppContext } from '../context/appContext';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface CarCardProps {
-  car: CarItem,
-  refetchCars: Function
+  car: CarItem
 }
 
 const CarContainer = styled.div`
@@ -110,17 +108,47 @@ const DetailsButton = styled.button`
   }
 `;
 
-const CarCard = ({ car, refetchCars }: CarCardProps) => {
+const CarCard = ({ car }: CarCardProps) => {
   const navigate = useNavigate();
   const { user, setIsLoginModalOpen } = useAppContext();
-  const [addFavorite, { loading: loadingAddFavorite, data: dataAddFavorite }] = useAddFavoriteCarMutation();
-  const [removeFavorite, { loading: loadingRemoveFavorite, data: dataRemoveFavorite }] = useRemoveFavoriteCarMutation();
-
-  useEffect(() => {
-    if (!loadingAddFavorite && !loadingRemoveFavorite && (dataAddFavorite || dataRemoveFavorite)) {
-      refetchCars();
+  const [addFavorite, { loading: loadingAddFavorite}] = useAddFavoriteCarMutation({
+    optimisticResponse: {
+      insert_user_cars_one: {
+        id: 10,
+        car_id: car.id
+      }
+    },
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          user_cars: (existingFieldsData) => {
+            return [...existingFieldsData, data?.insert_user_cars_one]
+          }
+        },
+        optimistic: true
+      });
     }
-  }, [dataAddFavorite, dataRemoveFavorite, loadingAddFavorite, loadingRemoveFavorite, refetchCars]);
+  });
+  const [removeFavorite, { loading: loadingRemoveFavorite}] = useRemoveFavoriteCarMutation({
+    optimisticResponse: {
+      delete_user_cars: {
+        affected_rows: 1,
+        returning: [{
+          car_id: car.id
+        }]
+      }
+    },
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          user_cars: (existingFieldsData) => {
+            return existingFieldsData.filter((favorites: any) => favorites.car_id !== data?.delete_user_cars?.returning[0].car_id);
+          }
+        },
+        optimistic: true
+      });
+    }
+  });
 
   const handleFavoriteButton = () => {
     if (!user) {
