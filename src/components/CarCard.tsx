@@ -107,6 +107,10 @@ const DetailsButton = styled.button`
     background: ${props => props.theme.colors.darkColor2};
   }
 `;
+interface userCar {
+  id:number;
+  car_id:number;
+};
 
 const CarCard = ({ car }: CarCardProps) => {
   const navigate = useNavigate();
@@ -114,7 +118,7 @@ const CarCard = ({ car }: CarCardProps) => {
   const [addFavorite, { loading: loadingAddFavorite}] = useAddFavoriteCarMutation({
     optimisticResponse: {
       insert_user_cars_one: {
-        id: 10,
+        id: Number((Math.random()*100).toFixed(0)),
         car_id: car.id
       }
     },
@@ -142,7 +146,7 @@ const CarCard = ({ car }: CarCardProps) => {
       cache.modify({
         fields: {
           user_cars: (existingFieldsData) => {
-            return existingFieldsData.filter((favorites: any) => favorites.car_id !== data?.delete_user_cars?.returning[0].car_id);
+            return existingFieldsData.filter((favorites: userCar) => favorites.car_id !== data?.delete_user_cars?.returning[0].car_id);
           }
         },
         optimistic: true
