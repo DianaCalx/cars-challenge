@@ -23,7 +23,7 @@ const DashboarHeader = styled.div`
 `;
 
 const Dashboard = () => {
-  const { isLoginModalOpen, user, setFavorites } = useAppContext();
+  const { isLoginModalOpen, user, setFavorites, favorites } = useAppContext();
   const [search] = useSearchParams();
   const { whereUserCars} = getVariablesQueryCars(search, user?.id);  
   const { getLocalStorage } = useLocalStorage();
@@ -43,14 +43,13 @@ const Dashboard = () => {
 
   
   useEffect(() => {
-    if (dataFavorites?.user_cars) {
+    if(!user){
+      setFavorites([]);
+    } else if (dataFavorites?.user_cars) {
       const favoriteCars = dataFavorites.user_cars.map(favoriteCar => favoriteCar.car_id);
       setFavorites(favoriteCars);
-    } else{
-      setFavorites([]);
-    }
+    } 
   }, [dataFavorites?.user_cars, setFavorites, user]);
-
  
   if (!user && pathname === '/favorites' && !getLocalStorage('user')) {
     return <Navigate to="/dashboard" replace />;
