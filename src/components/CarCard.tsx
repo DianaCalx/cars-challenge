@@ -107,52 +107,13 @@ const DetailsButton = styled.button`
     background: ${props => props.theme.colors.darkColor2};
   }
 `;
-interface userCar {
-  id:number;
-  car_id:number;
-};
 
 const CarCard = ({ car }: CarCardProps) => {
   const navigate = useNavigate();
-  const { user, setIsLoginModalOpen } = useAppContext();
-  const [addFavorite, { loading: loadingAddFavorite}] = useAddFavoriteCarMutation({
-    optimisticResponse: {
-      insert_user_cars_one: {
-        id: Number((Math.random()*100).toFixed(0)),
-        car_id: car.id
-      }
-    },
-    update(cache, { data }) {
-      cache.modify({
-        fields: {
-          user_cars: (existingFieldsData) => {
-            return [...existingFieldsData, data?.insert_user_cars_one]
-          }
-        },
-        optimistic: true
-      });
-    }
-  });
-  const [removeFavorite, { loading: loadingRemoveFavorite}] = useRemoveFavoriteCarMutation({
-    optimisticResponse: {
-      delete_user_cars: {
-        affected_rows: 1,
-        returning: [{
-          car_id: car.id
-        }]
-      }
-    },
-    update(cache, { data }) {
-      cache.modify({
-        fields: {
-          user_cars: (existingFieldsData) => {
-            return existingFieldsData.filter((favorites: userCar) => favorites.car_id !== data?.delete_user_cars?.returning[0].car_id);
-          }
-        },
-        optimistic: true
-      });
-    }
-  });
+  const { user, setIsLoginModalOpen, setFavorites } = useAppContext();
+
+  const [addFavorite, { loading: loadingAddFavorite}] = useAddFavoriteCarMutation();
+  const [removeFavorite, { loading: loadingRemoveFavorite}] = useRemoveFavoriteCarMutation();
 
   const handleFavoriteButton = () => {
     if (!user) {
@@ -161,6 +122,7 @@ const CarCard = ({ car }: CarCardProps) => {
     }
     if (!loadingAddFavorite && !loadingRemoveFavorite) {
       if (car.isFavorite) {
+        setFavorites(prevFav => prevFav.filter(fav => fav !== car.id))
         removeFavorite({
           variables: {
             where: {
@@ -176,6 +138,7 @@ const CarCard = ({ car }: CarCardProps) => {
           }
         });
       } else {
+        setFavorites(prevFav => [...prevFav, car.id])
         addFavorite({
           variables: {
             object: {
