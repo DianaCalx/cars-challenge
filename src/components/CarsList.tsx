@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useCarsQuery, useFavoritesLazyQuery } from '../generated/graphql';
+import { useCarsQuery } from '../generated/graphql';
 import CarCard from './CarCard';
 import { Cars } from '../generated/graphql';
 import Description from './Description';
@@ -29,10 +28,9 @@ const Error = styled.p`
 
 const CarsList = () => {
  
-  const { user } = useAppContext();
-  const [favorites, setFavorites] = useState<number[]>([]);
+  const { user, favorites } = useAppContext();
   const [search] = useSearchParams();
-  const {orderBy, whereCars, whereUserCars} = getVariablesQueryCars(search, user?.id);  
+  const {orderBy, whereCars} = getVariablesQueryCars(search, user?.id);  
 
   const { loading: loadingCars, data: dataCars, error: erroCars} = useCarsQuery({
     variables: {
@@ -40,29 +38,7 @@ const CarsList = () => {
       whereCars
     }
   });
-  const [refectchFavorites,  { data: dataFav}] = useFavoritesLazyQuery();
-
-  useEffect(() => {
-    if(user){
-      refectchFavorites({
-        variables: {
-          whereUserCars
-        }
-      });
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-  
-
-  useEffect(() => {
-    if (dataFav?.user_cars) {
-      const favoriteCars = dataFav.user_cars.map(favoriteCar => favoriteCar.car_id);
-      setFavorites(favoriteCars);
-    } else{
-      setFavorites([]);
-    }
-  }, [dataFav?.user_cars, user]);
-
+ 
   return (
     <>
       <Filters/>
@@ -75,7 +51,7 @@ const CarsList = () => {
               ...car,
               isFavorite: favorites.includes(car.id)
             }
-            return <CarCard key={car.id} car={carWithFavorite as CarItem}/>
+            return <CarCard key={car.id} car={carWithFavorite as CarItem} />
           })}      
       </CarListContainer>
     </>
