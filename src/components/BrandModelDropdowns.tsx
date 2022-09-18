@@ -21,15 +21,17 @@ const BrandModelDropdowns = ({brands, isErrorBrand,isErrorModel, register, watch
   const selectedBrand = watch('brand');
 
   useEffect(() => {
-    fetchModels({
-      variables: {
-        where: {
-          brand_id: {
-            _eq: selectedBrand ? Number(selectedBrand) : null
+    if(selectedBrand) {
+      fetchModels({
+        variables: {
+          where: {
+            brand_id: {
+              _eq: Number(selectedBrand)
+            }
           }
         }
-      }
-    });    
+      });  
+    }  
   }, [fetchModels, selectedBrand]);
   
   return (

@@ -21,15 +21,17 @@ const BrandModelDropdowns = ({states, isErrorState,isErrorCity, register, watch}
   const selectedState = watch('state');
 
   useEffect(() => {
-    fetchCities({
-      variables: {
-        where: {
-          state_id: {
-            _eq: selectedState ? Number(selectedState) : null
+    if(selectedState){
+      fetchCities({
+        variables: {
+          where: {
+            state_id: {
+              _eq: Number(selectedState)
+            }
           }
         }
-      }
-    });    
+      });    
+    }
   }, [fetchCities, selectedState]);
   
   return (
