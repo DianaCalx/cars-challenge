@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import {useCarsLazyQuery} from '../generated/graphql';
+import { useCarsQuery } from '../generated/graphql';
 import CarCard from './CarCard';
 import { Cars } from '../generated/graphql';
 import Description from './Description';
@@ -39,36 +38,26 @@ const Favorites = () => {
   
   const { user, favorites } = useAppContext();
   const [search] = useSearchParams();
-  const {orderBy, whereCars } = getVariablesQueryCars(search, user?.id);  
+  const { orderBy, whereCars } = getVariablesQueryCars(search, user?.id);
 
-  const [refetchCars, { loading: loadingCars, data: dataCars, error: erroCars} ]= useCarsLazyQuery({
+  const { loading: loadingCars, data: dataCars, error: errorCars} = useCarsQuery({
     variables: {
       orderBy,
-      whereCars
-    }
-  });
-
-  useEffect(() => {
-   if(favorites){
-    refetchCars({
-      variables: {
-        whereCars: {
-          id: {
-            _in: favorites
-          }
+      whereCars: {
+        ...whereCars,
+        id: {
+          _in: favorites
         }
       }
-    })
-   }
-  }, [favorites, refetchCars]);
+    }
+  });
   
-
   return (
     <>
       <Filters/>
       <FavoritesContainer>    
         <Description/>
-        {erroCars && <Error>There was an error</Error>}
+        {errorCars && <Error>There was an error</Error>}
         {loadingCars ?  <Spinner/> 
         : dataCars?.cars.map(car => {
             const carWithFavorite = {
