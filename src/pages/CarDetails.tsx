@@ -1,5 +1,5 @@
 import { useCarQuery, useDeleteCarMutation } from '../generated/graphql';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import Condition from '../components/Condition';
 import Image from '../components/Image';
 import Button from '../components/Button';
@@ -82,7 +82,23 @@ const CarDetails = () => {
     }
   });
 
-  const [deleteCarMutation, {error: errorDeleteCar}] = useDeleteCarMutation();
+  const [deleteCarMutation, {error: errorDeleteCar}] = useDeleteCarMutation({
+    optimisticResponse: {
+      delete_cars_by_pk: {
+       id: Number(id)
+      }
+    },
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          cars: (existingFieldsData) => {
+            return existingFieldsData.filter((car: any) => car.__ref !== `cars:${data?.delete_cars_by_pk?.id}`);
+          }
+        },
+        optimistic: true
+      });
+    }
+  });
 
   const deleteCar = (id:number) => {
     Swal.fire({
@@ -92,20 +108,20 @@ const CarDetails = () => {
       denyButtonText: "Don't delete",
     }).then(async result => {
       if (result.isConfirmed) {
+        navigate('/dashboard');
         await deleteCarMutation({
           variables: {
             deleteCarsByPkId: id
           }
         })
-        navigate('/dashboard');
-        Swal.fire('Deleted', '', 'success');       
+        Swal.fire('Deleted', '', 'success');
       } else if (result.isDenied) {
         Swal.fire('Task was not deleted');
       }
     });
   }
 
-  const { title, batch, model, odometer, price, vin, year, color, sale_date, city, condition } = data?.cars?.at(0) || {}
+  const { title, batch, model, odometer, price, vin, year, color, sale_date, city, condition } = data?.cars?.at(0) || {};
 
   if(error) {
     return(
@@ -113,6 +129,10 @@ const CarDetails = () => {
       <Error>There was an error</Error>
     </CarDetailsContainer>
     )
+  }
+
+  if(!title && !loading) {
+    return  <Navigate to='/dashboard'/>
   }
 
   return (
