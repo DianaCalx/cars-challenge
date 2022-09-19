@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 
 import Button from '../components/Button';
 import Condition from '../components/Condition';
+import Error from '../components/Error';
 import Image from '../components/Image';
 import Spinner from '../components/Spinner';
 import { useCarQuery, useDeleteCarMutation } from '../generated/graphql';
@@ -59,13 +60,6 @@ const Buttons = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-`;
-
-const Error = styled.p`
-  margin: 0 auto;
-  font-size: 2rem;
-  color: white;
-  text-align: center;
 `;
 
 const CarDetails = () => {
@@ -140,7 +134,7 @@ const CarDetails = () => {
   if (error) {
     return (
       <CarDetailsContainer>
-        <Error>There was an error</Error>
+        <Error type="detailError">There was an error</Error>
       </CarDetailsContainer>
     );
   }
@@ -200,7 +194,9 @@ const CarDetails = () => {
               Delete Car
             </Button>
           </Buttons>
-          {errorDeleteCar && <Error>There was an error</Error>}
+          {errorDeleteCar && (
+            <Error type="normalError">There was an error Deleting Car</Error>
+          )}
         </CarDetail>
       )}
     </CarDetailsContainer>

@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import BrandModelDropdowns from '../components/BrandModelDropdowns';
 import Button from '../components/Button';
 import Dropdown from '../components/Dropdown';
+import Error from '../components/Error';
 import Spinner from '../components/Spinner';
 import StateCityDropdowns from '../components/StateCityDropdowns';
 import { useCreateCarMutation, useFormFieldsQuery } from '../generated/graphql';
@@ -80,19 +81,6 @@ const Submit = styled.button`
     cursor: not-allowed;
     background-color: #ccc;
   }
-`;
-
-export const Error = styled.p`
-  margin: 0;
-  font-size: 1.2rem;
-  color: ${(props) => props.theme.colors.errorColorLight};
-`;
-
-const ErrorForm = styled.p`
-  margin: 0 auto;
-  font-size: 2rem;
-  color: white;
-  text-align: center;
 `;
 
 export interface IFormInputs {
@@ -179,7 +167,7 @@ const CarForm = () => {
   if (fieldsError) {
     return (
       <ContainerCreateCar>
-        <ErrorForm>There was an error</ErrorForm>
+        <Error type="normalError">There was an error</Error>
       </ContainerCreateCar>
     );
   }
@@ -196,7 +184,7 @@ const CarForm = () => {
               <label>Title</label>
               <input type="text" {...register('title')} />
               {errors?.title?.message && (
-                <Error>{errors?.title?.message}</Error>
+                <Error type="warningError">{errors?.title?.message}</Error>
               )}
             </div>
 
@@ -220,7 +208,7 @@ const CarForm = () => {
               <label>Odometer</label>
               <input type="number" {...register('odometer')} />
               {errors?.odometer?.message && (
-                <Error>{errors?.odometer?.message}</Error>
+                <Error type="warningError">{errors?.odometer?.message}</Error>
               )}
             </div>
 
@@ -231,7 +219,9 @@ const CarForm = () => {
                 {...register('sale_date')}
                 min={moment().format('YYYY-MM-DD')}
               />
-              {errors?.sale_date?.message && <Error>Select a Date</Error>}
+              {errors?.sale_date?.message && (
+                <Error type="warningError">Select a Date</Error>
+              )}
             </div>
 
             <StateCityDropdowns
@@ -245,21 +235,25 @@ const CarForm = () => {
             <div>
               <label>Year</label>
               <input type="number" {...register('year')} />
-              {errors?.year?.message && <Error>{errors?.year?.message}</Error>}
+              {errors?.year?.message && (
+                <Error type="warningError">{errors?.year?.message}</Error>
+              )}
             </div>
 
             <div>
               <label>Price</label>
               <input type="number" min="0" {...register('price')} />
               {errors?.price?.message && (
-                <Error>{errors?.price?.message}</Error>
+                <Error type="warningError">{errors?.price?.message}</Error>
               )}
             </div>
 
             <div>
               <label>Vin</label>
               <input type="text" {...register('vin')} />
-              {errors?.vin?.message && <Error>{errors?.vin?.message}</Error>}
+              {errors?.vin?.message && (
+                <Error type="warningError">{errors?.vin?.message}</Error>
+              )}
             </div>
 
             <div>
@@ -290,7 +284,9 @@ const CarForm = () => {
               {loadingInsertCar ? 'Loading...' : 'Create'}
             </Button>
           </FormCreateCar>
-          {errorInsertCar && <Error>{errorInsertCar.message}</Error>}
+          {errorInsertCar && (
+            <Error type="warningError">{errorInsertCar.message}</Error>
+          )}
         </ContainerForm>
       )}
     </ContainerCreateCar>

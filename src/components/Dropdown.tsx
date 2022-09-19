@@ -1,6 +1,7 @@
 import { UseFormRegister } from 'react-hook-form';
 
-import { Error, IFormInputs } from '../pages/CarForm';
+import Error from '../components/Error';
+import { IFormInputs } from '../pages/CarForm';
 
 type FormImputKeys = 'brand' | 'model' | 'color' | 'state' | 'city';
 
@@ -35,7 +36,7 @@ const Dropdown = ({
           </option>
         ))}
       </select>
-      {isError && <Error>Select one option</Error>}
+      {isError && <Error type="warningError">Select one option</Error>}
     </div>
   );
 };

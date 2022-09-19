@@ -7,6 +7,7 @@ import { Cars } from '../generated/graphql';
 import { getVariablesQueryCars } from '../utils/getVariablesQueryCars';
 import CarCard from './CarCard';
 import Description from './Description';
+import Error from './Error';
 import Filters from './Filters';
 import Spinner from './Spinner';
 
@@ -22,12 +23,6 @@ const CarListContainer = styled.div`
   flex-direction: column;
 `;
 
-const Error = styled.p`
-  text-align: center;
-  font-weight: bold;
-  font-size: 2rem;
-`;
-
 const CarsList = () => {
   const { user, favorites } = useAppContext();
   const [search] = useSearchParams();
@@ -36,7 +31,7 @@ const CarsList = () => {
   const {
     loading: loadingCars,
     data: dataCars,
-    error: erroCars,
+    error: errorCars,
   } = useCarsQuery({
     variables: {
       orderBy,
@@ -49,7 +44,7 @@ const CarsList = () => {
       <Filters />
       <CarListContainer>
         <Description />
-        {erroCars && <Error>There was an error</Error>}
+        {errorCars && <Error type="normalError">There was an error</Error>}
         {loadingCars ? (
           <Spinner />
         ) : (

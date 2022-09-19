@@ -7,6 +7,7 @@ import { Cars } from '../generated/graphql';
 import { getVariablesQueryCars } from '../utils/getVariablesQueryCars';
 import CarCard from './CarCard';
 import Description from './Description';
+import Error from './Error';
 import Filters from './Filters';
 import Spinner from './Spinner';
 
@@ -20,12 +21,6 @@ const FavoritesContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-`;
-
-const Error = styled.p`
-  text-align: center;
-  font-weight: bold;
-  font-size: 2rem;
 `;
 
 const NotFound = styled.p`
@@ -61,7 +56,7 @@ const Favorites = () => {
       <Filters />
       <FavoritesContainer>
         <Description />
-        {errorCars && <Error>There was an error</Error>}
+        {errorCars && <Error type="normalError">There was an error</Error>}
         {loadingCars ? (
           <Spinner />
         ) : (

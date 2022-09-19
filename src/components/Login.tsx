@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { IoMdCloseCircle } from 'react-icons/io';
 import styled from 'styled-components';
 
+import Error from '../components/Error';
 import { useAppContext } from '../context/appContext';
 import { useUserLazyQuery } from '../generated/graphql';
 import useLocalStorage from '../hooks/useLocalStorage';
@@ -77,13 +78,6 @@ const Submit = styled.button`
   }
 `;
 
-const Error = styled.p`
-  color: white;
-  background-color: ${(props) => props.theme.colors.errorColorLight};
-  margin: 0;
-  text-align: center;
-  padding: 0.5rem 1rem;
-`;
 interface LoginFormInputs {
   email: string;
 }
@@ -124,7 +118,9 @@ const Login = () => {
           onClick={() => setIsLoginModalOpen(false)}
         />
         <InputEmail placeholder="Your email..." {...register('email')} />
-        {errors?.email?.message && <Error>{errors?.email?.message}</Error>}
+        {errors?.email?.message && (
+          <Error type="loginError">{errors?.email?.message}</Error>
+        )}
         <Button
           type="submit"
           onClick={handleSubmit(onSubmit)}
@@ -133,7 +129,7 @@ const Login = () => {
         >
           {loading ? 'loading...' : 'login'}
         </Button>
-        {error && <Error>There was an error</Error>}
+        {error && <Error type="loginError">There was an error</Error>}
       </Form>
     </Container>
   );
