@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoMdCloseCircle } from 'react-icons/io';
 import styled from 'styled-components';
@@ -95,18 +94,15 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>({ resolver: yupResolver(loginSchema) });
-  const [execute, { loading, data, error }] = useUserLazyQuery();
   const { setUser, setIsLoginModalOpen } = useAppContext();
   const { setLocalStorage } = useLocalStorage();
-
-  useEffect(() => {
-    if (data?.users?.length && !loading && !error) {
+  const [execute, { loading, error }] = useUserLazyQuery({
+    onCompleted(data) {
       setUser(data.users.at(0));
       setLocalStorage('user', data.users.at(0));
       setIsLoginModalOpen(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, error, loading]);
+    },
+  });
 
   const onSubmit = (data: LoginFormInputs) => {
     execute({
