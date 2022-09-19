@@ -1,16 +1,11 @@
 interface ConditionProp {
-  condition: string
+  condition: string;
 }
 
-const Condition = ({condition}: ConditionProp) => (
+const Condition = ({ condition }: ConditionProp) => (
   <div>
-    {condition === 'A'
-      ? 'Salvage Title'
-      : condition === 'N'
-      ? 'New'
-      : 'N/A'
-    }
+    {condition === 'A' ? 'Salvage Title' : condition === 'N' ? 'New' : 'N/A'}
   </div>
-)
+);
 
-export default Condition
+export default Condition;

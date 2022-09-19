@@ -25,7 +25,7 @@ const DescriptionVehDesc = styled.div`
 
 const BranModel = styled.div`
   width: 10%;
-`
+`;
 
 const ConditionDesc = styled.div`
   width: 10%;
@@ -39,7 +39,6 @@ const Others = styled.div`
   width: 10%;
 `;
 
-
 const Description = () => {
   return (
     <Container>
@@ -48,10 +47,10 @@ const Description = () => {
       <DescriptionVehDesc>Vehicle Information</DescriptionVehDesc>
       <BranModel>Brand/Model</BranModel>
       <ConditionDesc>Condition</ConditionDesc>
-      <SalesDesc>Sales Information</SalesDesc> 
-      <Others>Others</Others>     
+      <SalesDesc>Sales Information</SalesDesc>
+      <Others>Others</Others>
     </Container>
-  )
-}
+  );
+};
 
-export default Description
+export default Description;

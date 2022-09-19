@@ -1,11 +1,12 @@
 import { ApolloProvider } from '@apollo/client';
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 import { client } from './config/apollo';
 import { AppContextProvider } from './context/appContext';
+import CarDetails from './pages/CarDetails';
 import CarForm from './pages/CarForm';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
-import CarDetails from './pages/CarDetails';
 
 const App = () => {
   return (
@@ -13,16 +14,16 @@ const App = () => {
       <AppContextProvider>
         <BrowserRouter>
           <Routes>
-            <Route path='/' element={<Home/>}/>
-            <Route path='/dashboard' element={<Dashboard/>}/>
-            <Route path='/car-form' element={<CarForm/>}/>
-            <Route path='/favorites' element={<Dashboard/>}/>
-            <Route path='/car-details/:id' element={<CarDetails/>}/>
+            <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/car-form" element={<CarForm />} />
+            <Route path="/favorites" element={<Dashboard />} />
+            <Route path="/car-details/:id" element={<CarDetails />} />
           </Routes>
         </BrowserRouter>
       </AppContextProvider>
     </ApolloProvider>
-  )
-}
+  );
+};
 
 export default App;

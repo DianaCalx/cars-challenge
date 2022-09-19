@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ThemeProvider } from 'styled-components';
+
 import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { ThemeProvider } from "styled-components";
 import './index.css';
+import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,18 +12,19 @@ const root = ReactDOM.createRoot(
 
 const theme = {
   colors: {
-    mainColor: "#0352db",
-    secondaryColor : "#ABABAF",
-    errorColorLight: "#f52e2ef6",
-    errorColorDark: "#e00000",
-    successColor: "#1e78ff",
-    successColor2: "#0066ff",
-    neutralColor: "#f8f9fa",
-    darkColor: "#ffb838",
-    darkColor2: "rgb(255, 166, 0)",
-    starColor: '#c06500'
+    mainColor: '#0352db',
+    secondaryColor: '#ABABAF',
+    errorColorLight: '#f52e2ef6',
+    errorColorDark: '#e00000',
+    successColor: '#1e78ff',
+    successColor2: '#0066ff',
+    neutralColor: '#f8f9fa',
+    darkColor: '#ffb838',
+    darkColor2: 'rgb(255, 166, 0)',
+    starColor: '#c06500',
   },
-  gradient: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%)"
+  gradient:
+    'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%)',
 };
 
 root.render(

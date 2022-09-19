@@ -1,10 +1,11 @@
-import { useAppContext } from '../context/appContext';
-import Login from '../components/Login';
-import Header from '../components/Header';
 import styled from 'styled-components';
 
+import Header from '../components/Header';
+import Login from '../components/Login';
+import { useAppContext } from '../context/appContext';
+
 const HomePage = styled.div`
-  background-color: ${props => props.theme.colors.mainColor};
+  background-color: ${(props) => props.theme.colors.mainColor};
   height: 100vh;
   padding: 1.5rem;
   display: flex;
@@ -18,7 +19,7 @@ const Greeting = styled.div`
   align-items: center;
   font-weight: bold;
   font-size: 9rem;
-  font-family: "Dancing Script", sans-serif;
+  font-family: 'Dancing Script', sans-serif;
   color: white;
 `;
 
@@ -27,11 +28,11 @@ const Home = () => {
 
   return (
     <HomePage>
-      { isLoginModalOpen  && <Login />}
+      {isLoginModalOpen && <Login />}
       <Header />
       <Greeting>Welcome</Greeting>
     </HomePage>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

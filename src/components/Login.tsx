@@ -1,13 +1,14 @@
-import { useForm } from 'react-hook-form';
-import { yupResolver } from "@hookform/resolvers/yup";
-import { IoMdCloseCircle } from 'react-icons/io';
-import { useUserLazyQuery } from '../generated/graphql';
-import { useAppContext } from '../context/appContext';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';
-import Button from './Button';
+import { useForm } from 'react-hook-form';
+import { IoMdCloseCircle } from 'react-icons/io';
 import styled from 'styled-components';
+
+import { useAppContext } from '../context/appContext';
+import { useUserLazyQuery } from '../generated/graphql';
+import useLocalStorage from '../hooks/useLocalStorage';
 import { loginSchema } from '../utils/yupSchemas';
+import Button from './Button';
 
 const Container = styled.div`
   position: fixed;
@@ -35,13 +36,13 @@ const Form = styled.form`
   flex-direction: column;
   gap: 1rem;
   padding: 3rem;
-  background: ${props => props.theme.gradient};
+  background: ${(props) => props.theme.gradient};
   z-index: 100;
   border-radius: 1rem;
 `;
 
 const XButton = styled(IoMdCloseCircle)`
-  fill: ${props => props.theme.colors.errorColorLight};
+  fill: ${(props) => props.theme.colors.errorColorLight};
   position: absolute;
   top: -4rem;
   right: -0.5rem;
@@ -67,66 +68,79 @@ const Submit = styled.button`
   font-size: 1.7rem;
   font-weight: bold;
   cursor: pointer;
-  border: 2px solid ${props => props.theme.colors.successColor};
+  border: 2px solid ${(props) => props.theme.colors.successColor};
   border-radius: 0.5rem;
-  background: ${props => props.theme.colors.successColor}; 
+  background: ${(props) => props.theme.colors.successColor};
   color: white;
 
-  &:hover{
-    background: ${props => props.theme.colors.successColor2};
+  &:hover {
+    background: ${(props) => props.theme.colors.successColor2};
   }
 `;
 
 const Error = styled.p`
- color: white;
- background-color: ${props => props.theme.colors.errorColorLight};
- margin:0;
- text-align: center;
- padding: 0.5rem 1rem;
+  color: white;
+  background-color: ${(props) => props.theme.colors.errorColorLight};
+  margin: 0;
+  text-align: center;
+  padding: 0.5rem 1rem;
 `;
 interface LoginFormInputs {
-  email: string
-};
+  email: string;
+}
 
 const Login = () => {
-
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({resolver: yupResolver(loginSchema)});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>({ resolver: yupResolver(loginSchema) });
   const [execute, { loading, data, error }] = useUserLazyQuery();
   const { setUser, setIsLoginModalOpen } = useAppContext();
   const { setLocalStorage } = useLocalStorage();
 
-  useEffect(() => {  
+  useEffect(() => {
     if (data?.users?.length && !loading && !error) {
       setUser(data.users.at(0));
       setLocalStorage('user', data.users.at(0));
       setIsLoginModalOpen(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, error, loading]);
 
-  const onSubmit= (data:LoginFormInputs) => {
-    execute({ 
+  const onSubmit = (data: LoginFormInputs) => {
+    execute({
       variables: {
         where: {
           email: {
-            _eq: data.email
-          }
-        }
-      }
+            _eq: data.email,
+          },
+        },
+      },
     });
   };
 
   return (
     <Container>
       <Form>
-        <Button StyledButton={XButton} onClick={() => setIsLoginModalOpen(false)} />
-        <InputEmail placeholder="Your email..." {...register("email")} />
+        <Button
+          StyledButton={XButton}
+          onClick={() => setIsLoginModalOpen(false)}
+        />
+        <InputEmail placeholder="Your email..." {...register('email')} />
         {errors?.email?.message && <Error>{errors?.email?.message}</Error>}
-        <Button type="submit" onClick={handleSubmit(onSubmit)} StyledButton={Submit} disabled={loading}>{loading ? 'loading...': 'login'}</Button>
-        { error && <Error>There was an error</Error> }
+        <Button
+          type="submit"
+          onClick={handleSubmit(onSubmit)}
+          StyledButton={Submit}
+          disabled={loading}
+        >
+          {loading ? 'loading...' : 'login'}
+        </Button>
+        {error && <Error>There was an error</Error>}
       </Form>
     </Container>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

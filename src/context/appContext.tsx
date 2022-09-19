@@ -1,4 +1,11 @@
-import { ReactNode, createContext, useContext, useState, useEffect }  from 'react';
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+
 import { Users, useUserLazyQuery } from '../generated/graphql';
 import useLocalStorage from '../hooks/useLocalStorage';
 
@@ -7,13 +14,13 @@ type AppContextValue = {
   isLoginModalOpen: boolean;
   setUser: React.Dispatch<React.SetStateAction<Users | undefined>>;
   setIsLoginModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  favorites: number[],
-  setFavorites: React.Dispatch<React.SetStateAction<number[]>>
-}
+  favorites: number[];
+  setFavorites: React.Dispatch<React.SetStateAction<number[]>>;
+};
 
 type AppContextProviderProps = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 const AppContext = createContext<AppContextValue>({
   user: undefined,
@@ -21,28 +28,27 @@ const AppContext = createContext<AppContextValue>({
   setUser: () => {},
   setIsLoginModalOpen: () => {},
   favorites: [],
-  setFavorites: () => {}
+  setFavorites: () => {},
 });
 
-export const AppContextProvider = ({children}: AppContextProviderProps) => {
+export const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const [user, setUser] = useState<Users>();
   const [favorites, setFavorites] = useState<number[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [execute, { loading, data, error }] = useUserLazyQuery();
   const { getLocalStorage, removeLocalStorage } = useLocalStorage();
 
-
   useEffect(() => {
     const userLocalStorage = getLocalStorage('user');
     if (userLocalStorage && !user) {
-      execute({ 
+      execute({
         variables: {
           where: {
             email: {
-              _eq: userLocalStorage.email
-            }
-          }
-        }
+              _eq: userLocalStorage.email,
+            },
+          },
+        },
       });
     }
   }, [execute, getLocalStorage, user]);
@@ -56,21 +62,26 @@ export const AppContextProvider = ({children}: AppContextProviderProps) => {
     }
   }, [data, error, loading, removeLocalStorage]);
 
-  return <AppContext.Provider value={{
-    user,
-    isLoginModalOpen,
-    setUser,
-    setIsLoginModalOpen,
-    favorites,
-    setFavorites
-  }}>{children}</AppContext.Provider>
-}
+  return (
+    <AppContext.Provider
+      value={{
+        user,
+        isLoginModalOpen,
+        setUser,
+        setIsLoginModalOpen,
+        favorites,
+        setFavorites,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};
 
 export const useAppContext = () => {
   const context = useContext(AppContext);
-  if(!context) {
-    throw new Error("Context cannot be reached");
-    
+  if (!context) {
+    throw new Error('Context cannot be reached');
   }
   return context;
-}
+};

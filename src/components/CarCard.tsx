@@ -1,14 +1,19 @@
-import Image from './Image';
-import Condition from './Condition';
-import styled from 'styled-components';
 import { HiOutlineStar, HiStar } from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { useAppContext } from '../context/appContext';
+import {
+  useAddFavoriteCarMutation,
+  useRemoveFavoriteCarMutation,
+} from '../generated/graphql';
 import Button from './Button';
 import { CarItem } from './CarsList';
-import { useAddFavoriteCarMutation, useRemoveFavoriteCarMutation } from '../generated/graphql';
-import { useAppContext } from '../context/appContext';
-import { useNavigate } from 'react-router-dom';
+import Condition from './Condition';
+import Image from './Image';
+
 interface CarCardProps {
-  car: CarItem
+  car: CarItem;
 }
 
 const CarContainer = styled.div`
@@ -31,14 +36,14 @@ const ImageCar = styled.div`
 `;
 
 const InformationLot = styled.div`
-display: flex;
-flex-direction: column;
-width: 25%;
-p {
   display: flex;
   flex-direction: column;
-  font-weight: bold;
-    span{
+  width: 25%;
+  p {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    span {
       font-weight: lighter;
     }
   }
@@ -52,7 +57,7 @@ const DescriptionVehicle = styled.div`
     display: flex;
     flex-direction: column;
     font-weight: bold;
-    span{
+    span {
       font-weight: lighter;
     }
   }
@@ -64,7 +69,7 @@ const BrandModel = styled.div`
     display: flex;
     flex-direction: column;
     font-weight: bold;
-    span{
+    span {
       font-weight: lighter;
     }
   }
@@ -83,13 +88,13 @@ const Sales = styled.div`
 const FillStar = styled(HiStar)`
   cursor: pointer;
   font-size: 3rem;
-  color:  ${props => props.theme.colors.darkColor2};
+  color: ${(props) => props.theme.colors.darkColor2};
 `;
 
 const OutlineStar = styled(HiOutlineStar)`
   cursor: pointer;
   font-size: 3rem;
-  color:  ${props => props.theme.colors.darkColor2};
+  color: ${(props) => props.theme.colors.darkColor2};
 `;
 
 const DetailsButton = styled.button`
@@ -99,12 +104,12 @@ const DetailsButton = styled.button`
   font-size: 1.7rem;
   font-weight: bold;
   cursor: pointer;
-  border: 2px solid ${props => props.theme.colors.darkColor};
+  border: 2px solid ${(props) => props.theme.colors.darkColor};
   border-radius: 0.5rem;
-  background: ${props => props.theme.colors.darkColor}; 
+  background: ${(props) => props.theme.colors.darkColor};
 
-  &:hover{
-    background: ${props => props.theme.colors.darkColor2};
+  &:hover {
+    background: ${(props) => props.theme.colors.darkColor2};
   }
 `;
 
@@ -112,8 +117,10 @@ const CarCard = ({ car }: CarCardProps) => {
   const navigate = useNavigate();
   const { user, setIsLoginModalOpen, setFavorites } = useAppContext();
 
-  const [addFavorite, { loading: loadingAddFavorite}] = useAddFavoriteCarMutation();
-  const [removeFavorite, { loading: loadingRemoveFavorite}] = useRemoveFavoriteCarMutation();
+  const [addFavorite, { loading: loadingAddFavorite }] =
+    useAddFavoriteCarMutation();
+  const [removeFavorite, { loading: loadingRemoveFavorite }] =
+    useRemoveFavoriteCarMutation();
 
   const handleFavoriteButton = () => {
     if (!user) {
@@ -122,69 +129,88 @@ const CarCard = ({ car }: CarCardProps) => {
     }
     if (!loadingAddFavorite && !loadingRemoveFavorite) {
       if (car.isFavorite) {
-        setFavorites(prevFav => prevFav.filter(fav => fav !== car.id))
+        setFavorites((prevFav) => prevFav.filter((fav) => fav !== car.id));
         removeFavorite({
           variables: {
             where: {
-              _and: [{
-                user_id: {
-                  _eq: user?.id
+              _and: [
+                {
+                  user_id: {
+                    _eq: user?.id,
+                  },
+                  car_id: {
+                    _eq: car.id,
+                  },
                 },
-                car_id: {
-                  _eq: car.id
-                }
-              }]
-            }
-          }
+              ],
+            },
+          },
         });
       } else {
-        setFavorites(prevFav => [...prevFav, car.id])
+        setFavorites((prevFav) => [...prevFav, car.id]);
         addFavorite({
           variables: {
             object: {
               car_id: car.id,
-              user_id: user?.id
-            }
-          }
+              user_id: user?.id,
+            },
+          },
         });
       }
     }
-  }
+  };
 
   return (
     <CarContainer>
       <ImageCar>
-        <Image/>
+        <Image />
       </ImageCar>
       <InformationLot>
         <p>{car.title}</p>
-        <p>Batch number <span>{car.batch}</span></p>
-        <p>Vin number <span>{car.vin}</span></p>
+        <p>
+          Batch number <span>{car.batch}</span>
+        </p>
+        <p>
+          Vin number <span>{car.vin}</span>
+        </p>
         <Button
           StyledButton={car.isFavorite ? FillStar : OutlineStar}
           onClick={handleFavoriteButton}
         />
       </InformationLot>
       <DescriptionVehicle>
-        <p>Odometer <span>{car.odometer}</span></p>
-        <p>Price <span>{car.price}</span></p>
+        <p>
+          Odometer <span>{car.odometer}</span>
+        </p>
+        <p>
+          Price <span>{car.price}</span>
+        </p>
       </DescriptionVehicle>
       <BrandModel>
-        <p>Brand <span>{car.model.name}</span></p>
-        <p>Model <span>{car.model.brand.name}</span></p>
+        <p>
+          Brand <span>{car.model.name}</span>
+        </p>
+        <p>
+          Model <span>{car.model.brand.name}</span>
+        </p>
       </BrandModel>
       <Conditions>
-        <Condition condition={car.condition}/>
+        <Condition condition={car.condition} />
       </Conditions>
       <Sales>
-        <p>{car.city.state.name} - {car.city.name}</p>
+        <p>
+          {car.city.state.name} - {car.city.name}
+        </p>
         <p>{car.sale_date}</p>
       </Sales>
-      <Button StyledButton={DetailsButton} onClick={()=>navigate(`/car-details/${car.id}`)}>
+      <Button
+        StyledButton={DetailsButton}
+        onClick={() => navigate(`/car-details/${car.id}`)}
+      >
         Details
       </Button>
-    </CarContainer>   
-  )
-}
+    </CarContainer>
+  );
+};
 
-export default CarCard
+export default CarCard;

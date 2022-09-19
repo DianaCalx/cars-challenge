@@ -1,11 +1,12 @@
-import { useCarQuery, useDeleteCarMutation } from '../generated/graphql';
-import { useParams, useNavigate, Navigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import Swal from 'sweetalert2';
+
+import Button from '../components/Button';
 import Condition from '../components/Condition';
 import Image from '../components/Image';
-import Button from '../components/Button';
-import styled from 'styled-components';
 import Spinner from '../components/Spinner';
-import Swal from 'sweetalert2';
+import { useCarQuery, useDeleteCarMutation } from '../generated/graphql';
 
 const CarDetailsContainer = styled.div`
   width: 100%;
@@ -14,13 +15,13 @@ const CarDetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  background: ${props => props.theme.gradient};
+  background: ${(props) => props.theme.gradient};
 `;
 
 const CarDetail = styled.div`
-  div{
+  div {
     font-weight: bold;
-    span{
+    span {
       font-weight: lighter;
     }
     &:not(:last-of-type) {
@@ -35,22 +36,22 @@ const CarDetail = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  background-color: ${props => props.theme.colors.errorColorLight};
+  background-color: ${(props) => props.theme.colors.errorColorLight};
   border: none;
   color: white;
   font-weight: bold;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  :hover{
-    background-color: ${props => props.theme.colors.errorColorDark};
+  :hover {
+    background-color: ${(props) => props.theme.colors.errorColorDark};
   }
 `;
 
 const CarTitle = styled.div`
   text-align: center;
   font-size: 3rem;
-  font-family: "Dancing Script", sans-serif;
+  font-family: 'Dancing Script', sans-serif;
 `;
 
 const Buttons = styled.div`
@@ -68,7 +69,6 @@ const Error = styled.p`
 `;
 
 const CarDetails = () => {
-
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -76,93 +76,135 @@ const CarDetails = () => {
     variables: {
       where: {
         id: {
-          _eq: Number(id)
-        }
-      }
-    }
+          _eq: Number(id),
+        },
+      },
+    },
   });
 
-  const [deleteCarMutation, {error: errorDeleteCar}] = useDeleteCarMutation({
+  const [deleteCarMutation, { error: errorDeleteCar }] = useDeleteCarMutation({
     optimisticResponse: {
       delete_cars_by_pk: {
-       id: Number(id)
-      }
+        id: Number(id),
+      },
     },
     update(cache, { data }) {
       cache.modify({
         fields: {
           cars: (existingFieldsData) => {
-            return existingFieldsData.filter((car: any) => car.__ref !== `cars:${data?.delete_cars_by_pk?.id}`);
-          }
+            return existingFieldsData.filter(
+              (car: any) => car.__ref !== `cars:${data?.delete_cars_by_pk?.id}`
+            );
+          },
         },
-        optimistic: true
+        optimistic: true,
       });
-    }
+    },
   });
 
-  const deleteCar = (id:number) => {
+  const deleteCar = (id: number) => {
     Swal.fire({
       title: 'Are you sure that you want to delete this car?',
       showDenyButton: true,
       confirmButtonText: 'Delete',
       denyButtonText: "Don't delete",
-    }).then(async result => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         navigate('/dashboard');
         await deleteCarMutation({
           variables: {
-            deleteCarsByPkId: id
-          }
-        })
+            deleteCarsByPkId: id,
+          },
+        });
         Swal.fire('Deleted', '', 'success');
       } else if (result.isDenied) {
         Swal.fire('Task was not deleted');
       }
     });
+  };
+
+  const {
+    title,
+    batch,
+    model,
+    odometer,
+    price,
+    vin,
+    year,
+    color,
+    sale_date,
+    city,
+    condition,
+  } = data?.cars?.at(0) || {};
+
+  if (error) {
+    return (
+      <CarDetailsContainer>
+        <Error>There was an error</Error>
+      </CarDetailsContainer>
+    );
   }
 
-  const { title, batch, model, odometer, price, vin, year, color, sale_date, city, condition } = data?.cars?.at(0) || {};
-
-  if(error) {
-    return(
-    <CarDetailsContainer>
-      <Error>There was an error</Error>
-    </CarDetailsContainer>
-    )
-  }
-
-  if(!title && !loading) {
-    return  <Navigate to='/dashboard'/>
+  if (!title && !loading) {
+    return <Navigate to="/dashboard" />;
   }
 
   return (
     <CarDetailsContainer>
-      { loading 
-      ? <Spinner/> 
-        :<CarDetail>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <CarDetail>
           <CarTitle>Car Details</CarTitle>
-          <Image/>
+          <Image />
           <div>{title}</div>
-          <div>Batch: <span>{batch}</span></div>
-          <div>Brand: <span>{model?.brand?.name}</span></div>
-          <div>Model: <span>{model?.name}</span></div>
-          <div>Odometer: <span>{odometer}</span></div>
-          <div>Price: <span>{price}</span></div>
-          <div>Vin: <span>{vin}</span></div>
-          <div>Year: <span>{year}</span></div>
-          <div>Color: <span>{color?.name}</span></div>
-          <div>Sale Date: <span>{sale_date}</span></div>
-          <div>State: <span>{city?.state?.name}</span></div>
-          <div>State: <span>{city?.name}</span></div>
-          <Condition condition={condition}/>
+          <div>
+            Batch: <span>{batch}</span>
+          </div>
+          <div>
+            Brand: <span>{model?.brand?.name}</span>
+          </div>
+          <div>
+            Model: <span>{model?.name}</span>
+          </div>
+          <div>
+            Odometer: <span>{odometer}</span>
+          </div>
+          <div>
+            Price: <span>{price}</span>
+          </div>
+          <div>
+            Vin: <span>{vin}</span>
+          </div>
+          <div>
+            Year: <span>{year}</span>
+          </div>
+          <div>
+            Color: <span>{color?.name}</span>
+          </div>
+          <div>
+            Sale Date: <span>{sale_date}</span>
+          </div>
+          <div>
+            State: <span>{city?.state?.name}</span>
+          </div>
+          <div>
+            State: <span>{city?.name}</span>
+          </div>
+          <Condition condition={condition} />
           <Buttons>
-            <Button StyledButton={DeleteButton} onClick={()=>deleteCar(Number(id))}>Delete Car</Button>
+            <Button
+              StyledButton={DeleteButton}
+              onClick={() => deleteCar(Number(id))}
+            >
+              Delete Car
+            </Button>
           </Buttons>
           {errorDeleteCar && <Error>There was an error</Error>}
         </CarDetail>
-      }
+      )}
     </CarDetailsContainer>
-  )
-}
+  );
+};
 
-export default CarDetails
+export default CarDetails;

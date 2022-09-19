@@ -1,7 +1,8 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { useAppContext } from '../context/appContext';
 import useLocalStorage from '../hooks/useLocalStorage';
-import { useNavigate, useLocation} from 'react-router-dom';
 import Button from './Button';
 
 const HeaderContainer = styled.header`
@@ -31,12 +32,12 @@ const StyledButton = styled.button`
   font-size: 1.7rem;
   font-weight: bold;
   cursor: pointer;
-  border: 2px solid ${props => props.theme.colors.darkColor};
+  border: 2px solid ${(props) => props.theme.colors.darkColor};
   border-radius: 0.5rem;
-  background: ${props => props.theme.colors.darkColor}; 
+  background: ${(props) => props.theme.colors.darkColor};
 
-  &:hover{
-    background: ${props => props.theme.colors.darkColor2};
+  &:hover {
+    background: ${(props) => props.theme.colors.darkColor2};
   }
 `;
 
@@ -47,18 +48,18 @@ const LogButton = styled.button`
   font-size: 1.7rem;
   font-weight: bold;
   cursor: pointer;
-  border: 2px solid ${props => props.theme.colors.successColor};
+  border: 2px solid ${(props) => props.theme.colors.successColor};
   border-radius: 0.5rem;
-  background: ${props => props.theme.colors.successColor}; 
+  background: ${(props) => props.theme.colors.successColor};
   color: white;
 
-  &:hover{
-    background: ${props => props.theme.colors.successColor2};
+  &:hover {
+    background: ${(props) => props.theme.colors.successColor2};
   }
 `;
 
 const Header = () => {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   const { user, setUser, setIsLoginModalOpen } = useAppContext();
   const { removeLocalStorage } = useLocalStorage();
   const navigate = useNavigate();
@@ -66,26 +67,51 @@ const Header = () => {
   const onSubmitLogout = () => {
     removeLocalStorage('user');
     setUser(undefined);
-  }
+  };
 
   return (
     <HeaderContainer>
-      {user && <UserName>{`Welcome ${user.first_name} ${user.last_name}!`}</UserName>}
+      {user && (
+        <UserName>{`Welcome ${user.first_name} ${user.last_name}!`}</UserName>
+      )}
       <Buttons>
-        {
-          pathname === '/dashboard' && <Button StyledButton={StyledButton} onClick={() => navigate('/car-form')}>Create Car</Button>
-        }
-        {
-          user && <Button StyledButton={StyledButton} onClick={() => navigate('/favorites')}>My Favorites</Button>
-        }
-        <Button StyledButton={StyledButton} onClick={() => navigate('/dashboard')}>Cars</Button>
-        { user 
-          ? <Button StyledButton={LogButton} onClick={onSubmitLogout}>Logout</Button>
-          : <Button StyledButton={LogButton} onClick={()=> setIsLoginModalOpen(true)}>Login</Button>
-        }       
+        {pathname === '/dashboard' && (
+          <Button
+            StyledButton={StyledButton}
+            onClick={() => navigate('/car-form')}
+          >
+            Create Car
+          </Button>
+        )}
+        {user && (
+          <Button
+            StyledButton={StyledButton}
+            onClick={() => navigate('/favorites')}
+          >
+            My Favorites
+          </Button>
+        )}
+        <Button
+          StyledButton={StyledButton}
+          onClick={() => navigate('/dashboard')}
+        >
+          Cars
+        </Button>
+        {user ? (
+          <Button StyledButton={LogButton} onClick={onSubmitLogout}>
+            Logout
+          </Button>
+        ) : (
+          <Button
+            StyledButton={LogButton}
+            onClick={() => setIsLoginModalOpen(true)}
+          >
+            Login
+          </Button>
+        )}
       </Buttons>
     </HeaderContainer>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
