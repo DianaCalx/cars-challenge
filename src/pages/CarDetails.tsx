@@ -36,19 +36,6 @@ const CarDetail = styled.div`
   border-radius: 0.5rem;
 `;
 
-const DeleteButton = styled.button`
-  background-color: ${(props) => props.theme.colors.errorColorLight};
-  border: none;
-  color: white;
-  font-weight: bold;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  :hover {
-    background-color: ${(props) => props.theme.colors.errorColorDark};
-  }
-`;
-
 const CarTitle = styled.div`
   text-align: center;
   font-size: 3rem;
@@ -188,7 +175,7 @@ const CarDetails = () => {
           <Condition condition={condition} />
           <Buttons>
             <Button
-              StyledButton={DeleteButton}
+              styleButton="DeleteButton"
               onClick={() => deleteCar(Number(id))}
             >
               Delete Car

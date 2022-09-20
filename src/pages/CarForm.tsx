@@ -65,24 +65,6 @@ const Conditions = styled.div`
   text-align: center;
 `;
 
-const Submit = styled.button`
-  height: 3rem;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 0.5rem;
-  border: none;
-  background-color: ${(props) => props.theme.colors.successColor};
-  :hover {
-    background-color: ${(props) => props.theme.colors.successColor2};
-  }
-  :disabled {
-    cursor: not-allowed;
-    background-color: #ccc;
-  }
-`;
-
 export interface IFormInputs {
   title: string;
   brand: number;
@@ -271,7 +253,7 @@ const CarForm = () => {
               </div>
               <Button
                 onClick={handleSubmit(onSubmit)}
-                StyledButton={Submit}
+                styleButton="SubmitForm"
                 type="submit"
                 disabled={loadingInsertCar}
               >

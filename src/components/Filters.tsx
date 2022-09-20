@@ -26,22 +26,6 @@ const Filter = styled.input`
   margin-right: 0.5rem;
 `;
 
-const ButtonSearch = styled.button`
-  min-width: 13rem;
-  height: 3.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 1.7rem;
-  font-weight: bold;
-  cursor: pointer;
-  border: 2px solid ${(props) => props.theme.colors.darkColor};
-  border-radius: 0.5rem;
-  background: ${(props) => props.theme.colors.darkColor};
-
-  &:hover {
-    background: ${(props) => props.theme.colors.darkColor2};
-  }
-`;
-
 export interface FilterFormInputs {
   search?: string;
   sale_date?: string;
@@ -77,7 +61,7 @@ const Filters = () => {
           defaultValue={search}
         ></Filter>
         <Button
-          StyledButton={ButtonSearch}
+          styleButton="PrimaryButton"
           type="submit"
           onClick={handleSubmit(onSubmit)}
         >

@@ -25,39 +25,6 @@ const Buttons = styled.div`
   gap: 1rem;
 `;
 
-const StyledButton = styled.button`
-  min-width: 13rem;
-  height: 4rem;
-  padding: 0.5rem 1rem;
-  font-size: 1.7rem;
-  font-weight: bold;
-  cursor: pointer;
-  border: 2px solid ${(props) => props.theme.colors.darkColor};
-  border-radius: 0.5rem;
-  background: ${(props) => props.theme.colors.darkColor};
-
-  &:hover {
-    background: ${(props) => props.theme.colors.darkColor2};
-  }
-`;
-
-const LogButton = styled.button`
-  min-width: 13rem;
-  height: 4rem;
-  padding: 0.5rem 1rem;
-  font-size: 1.7rem;
-  font-weight: bold;
-  cursor: pointer;
-  border: 2px solid ${(props) => props.theme.colors.successColor};
-  border-radius: 0.5rem;
-  background: ${(props) => props.theme.colors.successColor};
-  color: white;
-
-  &:hover {
-    background: ${(props) => props.theme.colors.successColor2};
-  }
-`;
-
 const Header = () => {
   const { pathname } = useLocation();
   const { user, setUser, setIsLoginModalOpen } = useAppContext();
@@ -77,7 +44,7 @@ const Header = () => {
       <Buttons>
         {pathname === '/dashboard' && (
           <Button
-            StyledButton={StyledButton}
+            styleButton="PrimaryButton"
             onClick={() => navigate('/car-form')}
           >
             Create Car
@@ -85,25 +52,25 @@ const Header = () => {
         )}
         {user && (
           <Button
-            StyledButton={StyledButton}
+            styleButton="PrimaryButton"
             onClick={() => navigate('/favorites')}
           >
             My Favorites
           </Button>
         )}
         <Button
-          StyledButton={StyledButton}
+          styleButton="PrimaryButton"
           onClick={() => navigate('/dashboard')}
         >
           Cars
         </Button>
         {user ? (
-          <Button StyledButton={LogButton} onClick={onSubmitLogout}>
+          <Button styleButton="SecondaryButton" onClick={onSubmitLogout}>
             Logout
           </Button>
         ) : (
           <Button
-            StyledButton={LogButton}
+            styleButton="SecondaryButton"
             onClick={() => setIsLoginModalOpen(true)}
           >
             Login

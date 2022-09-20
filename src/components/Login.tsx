@@ -1,7 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { IoMdCloseCircle } from 'react-icons/io';
 import styled from 'styled-components';
 
 import Error from '../components/Error';
@@ -42,17 +40,6 @@ const Form = styled.form`
   border-radius: 1rem;
 `;
 
-const XButton = styled(IoMdCloseCircle)`
-  fill: ${(props) => props.theme.colors.errorColorLight};
-  position: absolute;
-  top: -4rem;
-  right: -0.5rem;
-  width: 4rem;
-  height: 4rem;
-  padding: 0.5rem;
-  cursor: pointer;
-`;
-
 const InputEmail = styled.input`
   background-color: white;
   border-style: none;
@@ -60,23 +47,6 @@ const InputEmail = styled.input`
   border-radius: 0.5rem;
   padding: 0.4rem;
   width: 20rem;
-`;
-
-const Submit = styled.button`
-  min-width: 13rem;
-  height: 3.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 1.7rem;
-  font-weight: bold;
-  cursor: pointer;
-  border: 2px solid ${(props) => props.theme.colors.successColor};
-  border-radius: 0.5rem;
-  background: ${(props) => props.theme.colors.successColor};
-  color: white;
-
-  &:hover {
-    background: ${(props) => props.theme.colors.successColor2};
-  }
 `;
 
 interface LoginFormInputs {
@@ -115,7 +85,7 @@ const Login = () => {
     <Container>
       <Form>
         <Button
-          StyledButton={XButton}
+          styleButton="XButton"
           onClick={() => setIsLoginModalOpen(false)}
         />
         <InputEmail placeholder="Your email..." {...register('email')} />
@@ -125,7 +95,7 @@ const Login = () => {
         <Button
           type="submit"
           onClick={handleSubmit(onSubmit)}
-          StyledButton={Submit}
+          styleButton="Submit"
           disabled={loading}
         >
           {loading ? 'loading...' : 'login'}

@@ -1,4 +1,3 @@
-import { HiOutlineStar, HiStar } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -85,34 +84,6 @@ const Sales = styled.div`
   width: 15%;
 `;
 
-const FillStar = styled(HiStar)`
-  cursor: pointer;
-  font-size: 3rem;
-  color: ${(props) => props.theme.colors.darkColor2};
-`;
-
-const OutlineStar = styled(HiOutlineStar)`
-  cursor: pointer;
-  font-size: 3rem;
-  color: ${(props) => props.theme.colors.darkColor2};
-`;
-
-const DetailsButton = styled.button`
-  width: 10%;
-  height: 3.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 1.7rem;
-  font-weight: bold;
-  cursor: pointer;
-  border: 2px solid ${(props) => props.theme.colors.darkColor};
-  border-radius: 0.5rem;
-  background: ${(props) => props.theme.colors.darkColor};
-
-  &:hover {
-    background: ${(props) => props.theme.colors.darkColor2};
-  }
-`;
-
 const CarCard = ({ car }: CarCardProps) => {
   const navigate = useNavigate();
   const { user, setIsLoginModalOpen, setFavorites } = useAppContext();
@@ -174,7 +145,7 @@ const CarCard = ({ car }: CarCardProps) => {
           Vin number <span>{car.vin}</span>
         </p>
         <Button
-          StyledButton={car.isFavorite ? FillStar : OutlineStar}
+          styleButton={car.isFavorite ? 'FillStar' : 'OutlineStar'}
           onClick={handleFavoriteButton}
         />
       </InformationLot>
@@ -204,7 +175,7 @@ const CarCard = ({ car }: CarCardProps) => {
         <p>{car.sale_date}</p>
       </Sales>
       <Button
-        StyledButton={DetailsButton}
+        styleButton="DetailsButton"
         onClick={() => navigate(`/car-details/${car.id}`)}
       >
         Details
