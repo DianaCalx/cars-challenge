@@ -1,7 +1,6 @@
-import { UseFormRegister } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import Error from '../components/Error';
-import { IFormInputs } from '../pages/CarForm';
 
 type FormImputKeys = 'brand' | 'model' | 'color' | 'state' | 'city';
 
@@ -14,20 +13,18 @@ interface DropdownProps {
         name: string;
       }[]
     | undefined;
-  isError: boolean;
-  register: UseFormRegister<IFormInputs>;
 }
 
-const Dropdown = ({
-  label,
-  fieldName,
-  options = [],
-  isError,
-  register,
-}: DropdownProps) => {
+const Dropdown = ({ label, fieldName, options = [] }: DropdownProps) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
   return (
     <div>
       <label>{label}</label>
+
       <select {...register(fieldName)} disabled={!options.length}>
         <option value="">Select</option>
         {options.map(({ id, name }) => (
@@ -36,7 +33,9 @@ const Dropdown = ({
           </option>
         ))}
       </select>
-      {isError && <Error type="warningError">Select one option</Error>}
+      {errors[fieldName]?.message && (
+        <Error type="warningError">Select one option</Error>
+      )}
     </div>
   );
 };
