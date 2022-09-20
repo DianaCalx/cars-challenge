@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import CarsList from '../components/CarsList';
@@ -7,9 +7,7 @@ import Favorites from '../components/Favorites';
 import Header from '../components/Header';
 import Login from '../components/Login';
 import { useAppContext } from '../context/appContext';
-import { useFavoritesLazyQuery } from '../generated/graphql';
 import useLocalStorage from '../hooks/useLocalStorage';
-import { getVariablesQueryCars } from '../utils/getVariablesQueryCars';
 
 const DashboardPage = styled.div`
   display: flex;
@@ -24,34 +22,10 @@ const DashboarHeader = styled.div`
 `;
 
 const Dashboard = () => {
-  const { isLoginModalOpen, user, setFavorites } = useAppContext();
-  const [search] = useSearchParams();
-  const { whereUserCars } = getVariablesQueryCars(search, user?.id);
+  const { isLoginModalOpen, user } = useAppContext();
   const { getLocalStorage } = useLocalStorage();
   const { pathname } = useLocation();
-  const [refectchFavorites, { data: dataFavorites }] = useFavoritesLazyQuery();
-
-  useEffect(() => {
-    if (user) {
-      refectchFavorites({
-        variables: {
-          whereUserCars,
-        },
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  useEffect(() => {
-    if (!user) {
-      setFavorites([]);
-    } else if (dataFavorites?.user_cars) {
-      const favoriteCars = dataFavorites.user_cars.map(
-        (favoriteCar) => favoriteCar.car_id
-      );
-      setFavorites(favoriteCars);
-    }
-  }, [dataFavorites?.user_cars, setFavorites, user]);
+  const [favorites, setFavorites] = useState<number[]>([]);
 
   if (!user && pathname === '/favorites' && !getLocalStorage('user')) {
     return <Navigate to="/dashboard" replace />;
@@ -64,8 +38,12 @@ const Dashboard = () => {
       </DashboarHeader>
       <DashboardPage>
         {isLoginModalOpen && <Login />}
-        {pathname === '/favorites' && <Favorites />}
-        {pathname === '/dashboard' && <CarsList />}
+        {pathname === '/favorites' && (
+          <Favorites setFavorites={setFavorites} favorites={favorites} />
+        )}
+        {pathname === '/dashboard' && (
+          <CarsList setFavorites={setFavorites} favorites={favorites} />
+        )}
       </DashboardPage>
     </>
   );
