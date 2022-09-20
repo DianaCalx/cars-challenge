@@ -1,8 +1,9 @@
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAppContext } from '../context/appContext';
-import { useCarsQuery } from '../generated/graphql';
+import { useCarsQuery, useFavoritesLazyQuery } from '../generated/graphql';
 import { Cars } from '../generated/graphql';
 import { getVariablesQueryCars } from '../utils/getVariablesQueryCars';
 import CarCard from './CarCard';
@@ -13,6 +14,12 @@ import Spinner from './Spinner';
 
 export interface CarItem extends Cars {
   isFavorite: boolean;
+}
+
+interface DataFavorites {
+  __typename: 'user_cars';
+  id: number;
+  car_id: number;
 }
 
 const FavoritesContainer = styled.div`
@@ -30,10 +37,42 @@ const NotFound = styled.p`
   text-align: center;
 `;
 
-const Favorites = () => {
-  const { user, favorites } = useAppContext();
+interface PropsFavorites {
+  favorites: number[];
+  setFavorites: React.Dispatch<React.SetStateAction<number[]>>;
+}
+
+const Favorites = ({ favorites, setFavorites }: PropsFavorites) => {
+  const { user } = useAppContext();
   const [search] = useSearchParams();
-  const { orderBy, whereCars } = getVariablesQueryCars(search, user?.id);
+  const { orderBy, whereCars, whereUserCars } = getVariablesQueryCars(
+    search,
+    user?.id
+  );
+  const [refectchFavorites, { data: dataFavorites }] = useFavoritesLazyQuery();
+
+  useEffect(() => {
+    if (user) {
+      refectchFavorites({
+        variables: {
+          whereUserCars,
+        },
+      });
+    }
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) {
+      setFavorites([]);
+    } else if (dataFavorites?.user_cars) {
+      const favoriteCars = dataFavorites.user_cars.map(
+        (favoriteCar) => favoriteCar.car_id
+      );
+      setFavorites(favoriteCars);
+    }
+  }, [dataFavorites?.user_cars, setFavorites, user]);
 
   const {
     loading: loadingCars,
@@ -66,7 +105,16 @@ const Favorites = () => {
               isFavorite: favorites.includes(car.id),
             };
             if (carWithFavorite.isFavorite) {
-              return <CarCard key={car.id} car={carWithFavorite as CarItem} />;
+              return (
+                <CarCard
+                  key={car.id}
+                  car={carWithFavorite as CarItem}
+                  setFavorites={setFavorites}
+                  dataFavorites={
+                    (dataFavorites?.user_cars as DataFavorites[]) || []
+                  }
+                />
+              );
             }
             return null;
           })
