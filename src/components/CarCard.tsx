@@ -13,6 +13,12 @@ import Image from './Image';
 
 interface CarCardProps {
   car: CarItem;
+  setFavorites: React.Dispatch<React.SetStateAction<number[]>>;
+  dataFavorites: {
+    __typename: 'user_cars';
+    id: number;
+    car_id: number;
+  }[];
 }
 
 const CarContainer = styled.div`
@@ -84,14 +90,68 @@ const Sales = styled.div`
   width: 15%;
 `;
 
-const CarCard = ({ car }: CarCardProps) => {
+interface userCar {
+  __ref?: string;
+  __typename?: string;
+  id?: number;
+  car_id?: number;
+}
+
+const CarCard = ({ car, setFavorites, dataFavorites }: CarCardProps) => {
   const navigate = useNavigate();
-  const { user, setIsLoginModalOpen, setFavorites } = useAppContext();
+  const { user, setIsLoginModalOpen } = useAppContext();
 
   const [addFavorite, { loading: loadingAddFavorite }] =
-    useAddFavoriteCarMutation();
+    useAddFavoriteCarMutation({
+      optimisticResponse: {
+        insert_user_cars_one: {
+          id: Number((Math.random() * 100).toFixed(0)),
+          car_id: car.id,
+        },
+      },
+      update(cache, { data }) {
+        cache.modify({
+          fields: {
+            user_cars: (existingFieldsData) => {
+              return [...existingFieldsData, data?.insert_user_cars_one];
+            },
+          },
+          optimistic: true,
+        });
+      },
+    });
+
   const [removeFavorite, { loading: loadingRemoveFavorite }] =
-    useRemoveFavoriteCarMutation();
+    useRemoveFavoriteCarMutation({
+      optimisticResponse: {
+        delete_user_cars: {
+          affected_rows: 1,
+          returning: [
+            {
+              car_id: car.id,
+            },
+          ],
+        },
+      },
+      update(cache, { data }) {
+        cache.modify({
+          fields: {
+            user_cars: (existingFieldsData) => {
+              const favoriteId = dataFavorites.find(
+                (dataFavorite) => dataFavorite.car_id === car.id
+              )?.id;
+              return existingFieldsData.filter((favorites: userCar) => {
+                if (favorites.__ref) {
+                  return favorites.__ref !== `user_cars:${favoriteId}`;
+                }
+                return favorites.id !== favoriteId;
+              });
+            },
+          },
+          optimistic: true,
+        });
+      },
+    });
 
   const handleFavoriteButton = () => {
     if (!user) {
