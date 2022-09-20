@@ -14,8 +14,6 @@ type AppContextValue = {
   isLoginModalOpen: boolean;
   setUser: React.Dispatch<React.SetStateAction<Users | undefined>>;
   setIsLoginModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  favorites: number[];
-  setFavorites: React.Dispatch<React.SetStateAction<number[]>>;
 };
 
 type AppContextProviderProps = {
@@ -27,13 +25,10 @@ const AppContext = createContext<AppContextValue>({
   isLoginModalOpen: false,
   setUser: () => {},
   setIsLoginModalOpen: () => {},
-  favorites: [],
-  setFavorites: () => {},
 });
 
 export const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const [user, setUser] = useState<Users>();
-  const [favorites, setFavorites] = useState<number[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [execute, { loading, data, error }] = useUserLazyQuery();
   const { getLocalStorage, removeLocalStorage } = useLocalStorage();
@@ -69,8 +64,6 @@ export const AppContextProvider = ({ children }: AppContextProviderProps) => {
         isLoginModalOpen,
         setUser,
         setIsLoginModalOpen,
-        favorites,
-        setFavorites,
       }}
     >
       {children}
