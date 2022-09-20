@@ -39,6 +39,18 @@ const CarsList = () => {
     },
   });
 
+  if (!dataCars?.cars.length && !loadingCars) {
+    return (
+      <>
+        <Filters />
+        <CarListContainer>
+          <Description />
+          <Error type="normalError">There are no cars</Error>
+        </CarListContainer>
+      </>
+    );
+  }
+
   return (
     <>
       <Filters />
