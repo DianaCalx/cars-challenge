@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import moment from 'moment';
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
@@ -101,12 +101,13 @@ export interface IFormInputs {
 const CarForm = () => {
   const navigate = useNavigate();
 
+  const methods = useForm<IFormInputs>({ resolver: yupResolver(formSchema) });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
-  } = useForm<IFormInputs>({ resolver: yupResolver(formSchema) });
+  } = methods;
 
   const {
     loading: fieldsLoading,
@@ -117,17 +118,7 @@ const CarForm = () => {
   const [
     insertCarsOneMutation,
     { data: dataInsertCar, error: errorInsertCar, loading: loadingInsertCar },
-  ] = useCreateCarMutation({
-    update(cache, { data }) {
-      cache.modify({
-        fields: {
-          cars: (existingFieldsData) => {
-            return [...existingFieldsData, data?.insert_cars_one];
-          },
-        },
-      });
-    },
-  });
+  ] = useCreateCarMutation();
 
   useEffect(() => {
     if (dataInsertCar) {
@@ -161,6 +152,22 @@ const CarForm = () => {
       variables: {
         object,
       },
+      optimisticResponse: {
+        insert_cars_one: {
+          id: Number((Math.random() * 100).toFixed(0)),
+          ...object,
+        },
+      },
+      update(cache, { data }) {
+        cache.modify({
+          fields: {
+            cars: (existingFieldsData) => {
+              return [...existingFieldsData, data?.insert_cars_one];
+            },
+          },
+          optimistic: true,
+        });
+      },
     });
   };
 
@@ -177,117 +184,105 @@ const CarForm = () => {
       {fieldsLoading ? (
         <Spinner />
       ) : (
-        <ContainerForm>
-          <Title>Create Car</Title>
-          <FormCreateCar>
-            <div>
-              <label>Title</label>
-              <input type="text" {...register('title')} />
-              {errors?.title?.message && (
-                <Error type="warningError">{errors?.title?.message}</Error>
-              )}
-            </div>
+        <FormProvider {...methods}>
+          <ContainerForm>
+            <Title>Create Car</Title>
+            <FormCreateCar>
+              <div>
+                <label>Title</label>
+                <input type="text" {...register('title')} />
+                {errors?.title?.message && (
+                  <Error type="warningError">{errors?.title?.message}</Error>
+                )}
+              </div>
 
-            <BrandModelDropdowns
-              brands={fieldsData?.brands}
-              isErrorBrand={!!errors?.brand?.message}
-              isErrorModel={!!errors?.model?.message}
-              register={register}
-              watch={watch}
-            />
+              <BrandModelDropdowns brands={fieldsData?.brands} />
 
-            <Dropdown
-              label="Color"
-              fieldName="color"
-              options={fieldsData?.colors}
-              isError={!!errors?.color?.message}
-              register={register}
-            />
-
-            <div>
-              <label>Odometer</label>
-              <input type="number" {...register('odometer')} />
-              {errors?.odometer?.message && (
-                <Error type="warningError">{errors?.odometer?.message}</Error>
-              )}
-            </div>
-
-            <div>
-              <label>Sale Date</label>
-              <input
-                type="date"
-                {...register('sale_date')}
-                min={moment().format('YYYY-MM-DD')}
+              <Dropdown
+                label="Color"
+                fieldName="color"
+                options={fieldsData?.colors}
               />
-              {errors?.sale_date?.message && (
-                <Error type="warningError">Select a Date</Error>
-              )}
-            </div>
 
-            <StateCityDropdowns
-              states={fieldsData?.states}
-              isErrorState={!!errors?.state?.message}
-              isErrorCity={!!errors?.city?.message}
-              register={register}
-              watch={watch}
-            />
+              <div>
+                <label>Odometer</label>
+                <input type="number" {...register('odometer')} />
+                {errors?.odometer?.message && (
+                  <Error type="warningError">{errors?.odometer?.message}</Error>
+                )}
+              </div>
 
-            <div>
-              <label>Year</label>
-              <input type="number" {...register('year')} />
-              {errors?.year?.message && (
-                <Error type="warningError">{errors?.year?.message}</Error>
-              )}
-            </div>
+              <div>
+                <label>Sale Date</label>
+                <input
+                  type="date"
+                  {...register('sale_date')}
+                  min={moment().format('YYYY-MM-DD')}
+                />
+                {errors?.sale_date?.message && (
+                  <Error type="warningError">Select a Date</Error>
+                )}
+              </div>
 
-            <div>
-              <label>Price</label>
-              <input type="number" min="0" {...register('price')} />
-              {errors?.price?.message && (
-                <Error type="warningError">{errors?.price?.message}</Error>
-              )}
-            </div>
+              <StateCityDropdowns states={fieldsData?.states} />
 
-            <div>
-              <label>Vin</label>
-              <input type="text" {...register('vin')} />
-              {errors?.vin?.message && (
-                <Error type="warningError">{errors?.vin?.message}</Error>
-              )}
-            </div>
+              <div>
+                <label>Year</label>
+                <input type="number" {...register('year')} />
+                {errors?.year?.message && (
+                  <Error type="warningError">{errors?.year?.message}</Error>
+                )}
+              </div>
 
-            <div>
-              <label>Condition</label>
-              <Conditions>
-                <label htmlFor="A">
-                  <input type="radio" value="A" {...register('condition')} />
-                  Salvage Title
-                </label>
+              <div>
+                <label>Price</label>
+                <input type="number" min="0" {...register('price')} />
+                {errors?.price?.message && (
+                  <Error type="warningError">{errors?.price?.message}</Error>
+                )}
+              </div>
 
-                <label htmlFor="N">
-                  <input
-                    defaultChecked
-                    type="radio"
-                    value="N"
-                    {...register('condition')}
-                  />
-                  New
-                </label>
-              </Conditions>
-            </div>
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              StyledButton={Submit}
-              type="submit"
-              disabled={loadingInsertCar}
-            >
-              {loadingInsertCar ? 'Loading...' : 'Create'}
-            </Button>
-          </FormCreateCar>
-          {errorInsertCar && (
-            <Error type="warningError">{errorInsertCar.message}</Error>
-          )}
-        </ContainerForm>
+              <div>
+                <label>Vin</label>
+                <input type="text" {...register('vin')} />
+                {errors?.vin?.message && (
+                  <Error type="warningError">{errors?.vin?.message}</Error>
+                )}
+              </div>
+
+              <div>
+                <label>Condition</label>
+                <Conditions>
+                  <label htmlFor="A">
+                    <input type="radio" value="A" {...register('condition')} />
+                    Salvage Title
+                  </label>
+
+                  <label htmlFor="N">
+                    <input
+                      defaultChecked
+                      type="radio"
+                      value="N"
+                      {...register('condition')}
+                    />
+                    New
+                  </label>
+                </Conditions>
+              </div>
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                StyledButton={Submit}
+                type="submit"
+                disabled={loadingInsertCar}
+              >
+                {loadingInsertCar ? 'Loading...' : 'Create'}
+              </Button>
+            </FormCreateCar>
+            {errorInsertCar && (
+              <Error type="warningError">{errorInsertCar.message}</Error>
+            )}
+          </ContainerForm>
+        </FormProvider>
       )}
     </ContainerCreateCar>
   );
