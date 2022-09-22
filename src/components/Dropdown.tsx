@@ -25,10 +25,18 @@ const Dropdown = ({ label, fieldName, options = [] }: DropdownProps) => {
     <div>
       <label>{label}</label>
 
-      <select {...register(fieldName)} disabled={!options.length}>
+      <select
+        {...register(fieldName)}
+        disabled={!options.length}
+        data-testid={`select-${fieldName}`}
+      >
         <option value="">Select</option>
         {options.map(({ id, name }) => (
-          <option key={`${id}-${name}`} value={id}>
+          <option
+            data-testid={`select-option-${name}`}
+            key={`${id}-${name}`}
+            value={id}
+          >
             {name}
           </option>
         ))}
