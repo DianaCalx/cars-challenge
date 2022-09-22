@@ -78,7 +78,7 @@ const CarsList = ({ favorites, setFavorites }: PropsCarsList) => {
     },
   });
 
-  if (!dataCars?.cars.length && !loadingCars) {
+  if (!dataCars?.cars.length && !loadingCars && !errorCars) {
     return (
       <>
         <Filters />
