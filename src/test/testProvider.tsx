@@ -1,4 +1,5 @@
 import { ApolloProvider } from '@apollo/client';
+import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { RenderOptions, render } from '@testing-library/react';
 import React, { FC, ReactElement } from 'react';
 import { BrowserRouter } from 'react-router-dom';
@@ -24,21 +25,36 @@ const theme = {
     'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(0,95,255,1) 100%)',
 };
 
-const TestProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
+interface TestProviderProps {
+  children: React.ReactNode;
+  mocks: MockedResponse<Record<string, any>>[];
+}
+
+const TestProvider: FC<TestProviderProps> = ({ children, mocks }) => {
   return (
     <ThemeProvider theme={theme}>
       <ApolloProvider client={client}>
         <AppContextProvider>
-          <BrowserRouter>{children}</BrowserRouter>
+          <BrowserRouter>
+            <MockedProvider mocks={mocks} addTypename={false}>
+              {children}
+            </MockedProvider>
+          </BrowserRouter>
         </AppContextProvider>
       </ApolloProvider>
     </ThemeProvider>
   );
 };
 
-export const customRender = (
+export function customRender(
   component: ReactElement,
+  mocks: MockedResponse<Record<string, any>>[],
   options?: Omit<RenderOptions, 'wrapper'>
-) => render(component, { wrapper: TestProvider, ...options });
+) {
+  return render(component, {
+    wrapper: () => <TestProvider mocks={mocks}>{component}</TestProvider>,
+    ...options,
+  });
+}
 
 export { customRender as render };
