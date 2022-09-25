@@ -36,7 +36,7 @@ const Dashboard = () => {
       <DashboarHeader>
         <Header />
       </DashboarHeader>
-      <DashboardPage>
+      <DashboardPage data-testid={'dashboard-test'}>
         {isLoginModalOpen && <Login />}
         {pathname === '/favorites' && (
           <Favorites setFavorites={setFavorites} favorites={favorites} />
