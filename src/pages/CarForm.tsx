@@ -80,7 +80,11 @@ export interface IFormInputs {
   vin: string;
 }
 
-const CarForm = () => {
+interface CarFormProps {
+  testBatch?: string;
+}
+
+const CarForm = ({ testBatch }: CarFormProps) => {
   const navigate = useNavigate();
 
   const methods = useForm<IFormInputs>({ resolver: yupResolver(formSchema) });
@@ -115,7 +119,7 @@ const CarForm = () => {
 
   const onSubmit = (data: IFormInputs) => {
     const object = {
-      batch: uuidv4(),
+      batch: testBatch ?? uuidv4(),
       title: data.title,
       brand_id: data.brand,
       model_id: data.model,
@@ -172,7 +176,11 @@ const CarForm = () => {
             <FormCreateCar>
               <div>
                 <label>Title</label>
-                <input type="text" {...register('title')} />
+                <input
+                  type="text"
+                  {...register('title')}
+                  data-testid={'input-title'}
+                />
                 {errors?.title?.message && (
                   <Error type="warningError">{errors?.title?.message}</Error>
                 )}
@@ -188,7 +196,11 @@ const CarForm = () => {
 
               <div>
                 <label>Odometer</label>
-                <input type="number" {...register('odometer')} />
+                <input
+                  type="number"
+                  {...register('odometer')}
+                  data-testid={'input-odometer'}
+                />
                 {errors?.odometer?.message && (
                   <Error type="warningError">{errors?.odometer?.message}</Error>
                 )}
@@ -200,6 +212,7 @@ const CarForm = () => {
                   type="date"
                   {...register('sale_date')}
                   min={moment().format('YYYY-MM-DD')}
+                  data-testid={'input-sale-date'}
                 />
                 {errors?.sale_date?.message && (
                   <Error type="warningError">Select a Date</Error>
@@ -210,7 +223,11 @@ const CarForm = () => {
 
               <div>
                 <label>Year</label>
-                <input type="number" {...register('year')} />
+                <input
+                  type="number"
+                  {...register('year')}
+                  data-testid={'input-year'}
+                />
                 {errors?.year?.message && (
                   <Error type="warningError">{errors?.year?.message}</Error>
                 )}
@@ -218,7 +235,12 @@ const CarForm = () => {
 
               <div>
                 <label>Price</label>
-                <input type="number" min="0" {...register('price')} />
+                <input
+                  type="number"
+                  min="0"
+                  {...register('price')}
+                  data-testid={'input-price'}
+                />
                 {errors?.price?.message && (
                   <Error type="warningError">{errors?.price?.message}</Error>
                 )}
@@ -226,7 +248,11 @@ const CarForm = () => {
 
               <div>
                 <label>Vin</label>
-                <input type="text" {...register('vin')} />
+                <input
+                  type="text"
+                  {...register('vin')}
+                  data-testid={'input-vin'}
+                />
                 {errors?.vin?.message && (
                   <Error type="warningError">{errors?.vin?.message}</Error>
                 )}
@@ -256,6 +282,7 @@ const CarForm = () => {
                 styleButton="SubmitForm"
                 type="submit"
                 disabled={loadingInsertCar}
+                data-testid={'create-car'}
               >
                 {loadingInsertCar ? 'Loading...' : 'Create'}
               </Button>
