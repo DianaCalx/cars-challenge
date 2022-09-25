@@ -75,7 +75,7 @@ const Submit = styled.button`
   }
 `;
 
-const XButton = styled(IoMdCloseCircle)`
+const CloseButton = styled(IoMdCloseCircle)`
   fill: ${(props) => props.theme.colors.errorColorLight};
   position: absolute;
   top: -4rem;
@@ -171,9 +171,9 @@ const Button = ({
       );
     case 'XButton':
       return (
-        <XButton type={type} onClick={onClick}>
+        <CloseButton type={type} onClick={onClick}>
           {children}
-        </XButton>
+        </CloseButton>
       );
     case 'DeleteButton':
       return (
