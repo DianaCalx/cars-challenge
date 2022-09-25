@@ -90,35 +90,54 @@ const Favorites = ({ favorites, setFavorites }: PropsFavorites) => {
     },
   });
 
+  if (errorCars) {
+    return (
+      <>
+        <Filters />
+        <FavoritesContainer>
+          <Description />
+          <Error type="normalError">There was an error</Error>
+        </FavoritesContainer>
+      </>
+    );
+  }
+
+  if (loadingCars) {
+    return (
+      <>
+        <Filters />
+        <FavoritesContainer>
+          <Description />
+          <Spinner />
+        </FavoritesContainer>
+      </>
+    );
+  }
+
   return (
     <>
       <Filters />
       <FavoritesContainer>
         <Description />
-        {errorCars && <Error type="normalError">There was an error</Error>}
-        {loadingCars ? (
-          <Spinner />
-        ) : (
-          dataCars?.cars.map((car) => {
-            const carWithFavorite = {
-              ...car,
-              isFavorite: favorites.includes(car.id),
-            };
-            if (carWithFavorite.isFavorite) {
-              return (
-                <CarCard
-                  key={car.id}
-                  car={carWithFavorite as CarItem}
-                  setFavorites={setFavorites}
-                  dataFavorites={
-                    (dataFavorites?.user_cars as DataFavorites[]) || []
-                  }
-                />
-              );
-            }
-            return null;
-          })
-        )}
+        {dataCars?.cars.map((car) => {
+          const carWithFavorite = {
+            ...car,
+            isFavorite: favorites.includes(car.id),
+          };
+          if (carWithFavorite.isFavorite) {
+            return (
+              <CarCard
+                key={car.id}
+                car={carWithFavorite as CarItem}
+                setFavorites={setFavorites}
+                dataFavorites={
+                  (dataFavorites?.user_cars as DataFavorites[]) || []
+                }
+              />
+            );
+          }
+          return null;
+        })}
         {!favorites.length && !loadingCars && (
           <NotFound>Favorite cars were not found</NotFound>
         )}
