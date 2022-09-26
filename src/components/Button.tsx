@@ -169,7 +169,7 @@ const Button = ({
           {children}
         </Submit>
       );
-    case 'XButton':
+    case 'CloseButton':
       return (
         <CloseButton type={type} onClick={onClick}>
           {children}
