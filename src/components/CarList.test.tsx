@@ -87,7 +87,9 @@ const mocksError: MockedResponse<Record<string, any>>[] = [
 describe('Test in CarList Component', () => {
   it('Should show the cars', async () => {
     render(<CarsList favorites={[]} setFavorites={() => {}} />, mocksCars);
-    expect(await screen.findByText('Ford Mustang 2021')).toBeInTheDocument();
+    expect(
+      await screen.findByText(`${carsDataTest[0].title}`)
+    ).toBeInTheDocument();
   });
 
   it('Should show a Spinner and a message of Empty Data', async () => {
