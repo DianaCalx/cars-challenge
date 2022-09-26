@@ -154,9 +154,15 @@ describe('Test in CarForm Component', () => {
 
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
     expect(await screen.findByText('Create Car')).toBeInTheDocument();
-    expect(screen.getByTestId('select-option-Jeep')).toBeInTheDocument();
-    expect(screen.getByTestId('select-option-Red')).toBeInTheDocument();
-    expect(screen.getByTestId('select-option-UTAH')).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`select-option-${brandsDataTest[0].name}`)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`select-option-${colorsDataTest[0].name}`)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`select-option-${statesDataTest[0].name}`)
+    ).toBeInTheDocument();
   });
 
   it('Should show an error message when you click on the Create Button', async () => {
@@ -224,12 +230,6 @@ describe('Test in CarForm Component', () => {
       target: { value: 1 },
     });
 
-    await waitFor(() => {
-      fireEvent.change(screen.getByTestId('select-model'), {
-        target: { value: 1 },
-      });
-    });
-
     fireEvent.change(screen.getByTestId('select-color'), {
       target: { value: 1 },
     });
@@ -244,12 +244,6 @@ describe('Test in CarForm Component', () => {
 
     fireEvent.change(screen.getByTestId('select-state'), {
       target: { value: 1 },
-    });
-
-    await waitFor(() => {
-      fireEvent.change(screen.getByTestId('select-city'), {
-        target: { value: 1 },
-      });
     });
 
     fireEvent.change(screen.getByTestId('input-year'), {
