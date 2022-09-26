@@ -1,3 +1,5 @@
+import { Users } from '../generated/graphql';
+
 export const carsDataTest = [
   {
     batch: '521161a4-0022-452c-92c6-76fcfde50e4f',
@@ -250,4 +252,13 @@ export const resultCreateCarDataTest = {
   ...carCreateDataTest,
   id: 500,
   __typename: 'cars',
+};
+
+export const testUser: Users = {
+  id: 7,
+  first_name: 'Diana',
+  last_name: 'Calderón',
+  email: 'dianacalderon@ravn.co',
+  uuid: '2307a94b-bbed-4a6c-a23e-5afcbb3ec092',
+  __typename: 'users',
 };
