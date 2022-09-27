@@ -39,7 +39,9 @@ const Header = () => {
   return (
     <HeaderContainer>
       {user && (
-        <UserName>{`Welcome ${user.first_name} ${user.last_name}!`}</UserName>
+        <UserName
+          data-testid={'greeting-user'}
+        >{`Welcome ${user.first_name} ${user.last_name}!`}</UserName>
       )}
       <Buttons>
         {pathname === '/dashboard' && (
