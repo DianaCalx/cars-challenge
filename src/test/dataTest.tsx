@@ -262,3 +262,15 @@ export const testUser: Users = {
   uuid: '2307a94b-bbed-4a6c-a23e-5afcbb3ec092',
   __typename: 'users',
 };
+
+export const invalidEmailUser = 'dianacalderon@.com';
+
+export const nonExistentEmailUser = 'dianacalderon@raven.com';
+
+export const favoritesCars = [
+  {
+    id: 1225,
+    car_id: 236,
+    __typename: 'user_cars',
+  },
+];
