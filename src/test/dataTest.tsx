@@ -255,10 +255,10 @@ export const resultCreateCarDataTest = {
 };
 
 export const testUser: Users = {
-  id: 7,
-  first_name: 'Diana',
-  last_name: 'Calderón',
   email: 'dianacalderon@ravn.co',
+  first_name: 'Diana',
+  id: 7,
+  last_name: 'Calderón',
   uuid: '2307a94b-bbed-4a6c-a23e-5afcbb3ec092',
   __typename: 'users',
 };
