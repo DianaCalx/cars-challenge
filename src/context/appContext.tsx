@@ -18,6 +18,7 @@ type AppContextValue = {
 
 type AppContextProviderProps = {
   children: ReactNode;
+  testUser?: Users;
 };
 
 const AppContext = createContext<AppContextValue>({
@@ -27,7 +28,10 @@ const AppContext = createContext<AppContextValue>({
   setIsLoginModalOpen: () => {},
 });
 
-export const AppContextProvider = ({ children }: AppContextProviderProps) => {
+export const AppContextProvider = ({
+  children,
+  testUser,
+}: AppContextProviderProps) => {
   const [user, setUser] = useState<Users>();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [execute, { loading, data, error }] = useUserLazyQuery();
@@ -60,7 +64,7 @@ export const AppContextProvider = ({ children }: AppContextProviderProps) => {
   return (
     <AppContext.Provider
       value={{
-        user,
+        user: testUser ?? user,
         isLoginModalOpen,
         setUser,
         setIsLoginModalOpen,
