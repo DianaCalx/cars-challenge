@@ -135,13 +135,13 @@ const Button = ({
   switch (styleButton) {
     case 'FillStar':
       return (
-        <FillStar type={type} onClick={onClick}>
+        <FillStar type={type} onClick={onClick} data-testid={'fill-star'}>
           {children}
         </FillStar>
       );
     case 'OutlineStar':
       return (
-        <OutlineStar type={type} onClick={onClick}>
+        <OutlineStar type={type} onClick={onClick} data-testid={'outline-star'}>
           {children}
         </OutlineStar>
       );
