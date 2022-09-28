@@ -1,5 +1,11 @@
 import { Users } from '../generated/graphql';
 
+export interface DataFavorites {
+  __typename: 'user_cars';
+  id: number;
+  car_id: number;
+}
+
 export const carsDataTest = [
   {
     batch: '521161a4-0022-452c-92c6-76fcfde50e4f',
@@ -113,6 +119,16 @@ export const carsDataTest = [
     vin: '1M8GDM9A_KP042711',
   },
 ];
+
+export const carFavorite = {
+  ...carsDataTest[0],
+  isFavorite: true,
+};
+
+export const carNotFavorite = {
+  ...carsDataTest[0],
+  isFavorite: false,
+};
 
 export const brandsDataTest = [
   {
@@ -267,7 +283,7 @@ export const invalidEmailUser = 'dianacalderon@.com';
 
 export const nonExistentEmailUser = 'dianacalderon@raven.com';
 
-export const favoritesCars = [
+export const favoritesCars: DataFavorites[] = [
   {
     id: 1225,
     car_id: 236,
