@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
@@ -61,13 +62,25 @@ const Login = () => {
   } = useForm<LoginFormInputs>({ resolver: yupResolver(loginSchema) });
   const { setUser, setIsLoginModalOpen } = useAppContext();
   const { setLocalStorage } = useLocalStorage();
-  const [execute, { loading, error }] = useUserLazyQuery({
+  const [messageWrongEmail, setMessageWrongEmail] = useState('');
+  const [execute, { loading, error, data }] = useUserLazyQuery({
     onCompleted(data) {
-      setUser(data.users.at(0));
-      setLocalStorage('user', data.users.at(0));
-      setIsLoginModalOpen(false);
+      if (data && data.users.length > 0) {
+        setUser(data.users.at(0));
+        setLocalStorage('user', data.users.at(0));
+        setIsLoginModalOpen(false);
+      }
     },
   });
+
+  useEffect(() => {
+    if (data?.users.length === 0) {
+      setMessageWrongEmail("This email doesn't exist");
+      setTimeout(() => {
+        setMessageWrongEmail('');
+      }, 2000);
+    }
+  }, [data]);
 
   const onSubmit = (data: LoginFormInputs) => {
     execute({
@@ -85,12 +98,19 @@ const Login = () => {
     <Container>
       <Form>
         <Button
-          styleButton="XButton"
+          styleButton="CloseButton"
           onClick={() => setIsLoginModalOpen(false)}
         />
-        <InputEmail placeholder="Your email..." {...register('email')} />
+        <InputEmail
+          placeholder="Your email..."
+          {...register('email')}
+          data-testid={'input-login'}
+        />
         {errors?.email?.message && (
           <Error type="loginError">{errors?.email?.message}</Error>
+        )}
+        {messageWrongEmail && (
+          <Error type="loginError">{messageWrongEmail}</Error>
         )}
         <Button
           type="submit"
