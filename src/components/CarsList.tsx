@@ -16,7 +16,7 @@ export interface CarItem extends Cars {
   isFavorite: boolean;
 }
 
-interface DataFavorites {
+export interface DataFavorites {
   __typename: 'user_cars';
   id: number;
   car_id: number;
