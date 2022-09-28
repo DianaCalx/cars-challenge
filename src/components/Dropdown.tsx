@@ -2,11 +2,11 @@ import { useFormContext } from 'react-hook-form';
 
 import Error from '../components/Error';
 
-type FormImputKeys = 'brand' | 'model' | 'color' | 'state' | 'city';
+type FormInputKeys = 'brand' | 'model' | 'color' | 'state' | 'city';
 
 interface DropdownProps {
   label: string;
-  fieldName: FormImputKeys;
+  fieldName: FormInputKeys;
   options:
     | {
         id: number;
