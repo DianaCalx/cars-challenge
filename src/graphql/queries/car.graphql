@@ -1,7 +1,7 @@
-#import { carFields } from '../fragments/car.graphql'
+#import { CarFields } from '../fragments/car.graphql'
 
 query Car($where: cars_bool_exp) {
   cars(where: $where) {
-    ...carFields
+    ...CarFields
   }
 }

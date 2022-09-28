@@ -1,4 +1,4 @@
-fragment carFields on cars {
+fragment CarFields on cars {
   id
   title
   model {

@@ -1,8 +1,8 @@
-#import { carFields } from '../fragments/car.graphql'
+#import { CarFields } from '../fragments/car.graphql'
 
 query Cars($orderBy: [cars_order_by!], $whereCars: cars_bool_exp) {
   cars(where: $whereCars, order_by: $orderBy) {
-    ...carFields
+    ...CarFields
   }
 }
 
