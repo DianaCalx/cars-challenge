@@ -58,6 +58,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<LoginFormInputs>({ resolver: yupResolver(loginSchema) });
   const { setUser, setIsLoginModalOpen } = useAppContext();
@@ -78,9 +79,10 @@ const Login = () => {
       setMessageWrongEmail("This email doesn't exist");
       setTimeout(() => {
         setMessageWrongEmail('');
+        reset();
       }, 2000);
     }
-  }, [data]);
+  }, [data, reset]);
 
   const onSubmit = (data: LoginFormInputs) => {
     execute({
