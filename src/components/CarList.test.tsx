@@ -1,11 +1,13 @@
 /* eslint-disable testing-library/no-wait-for-side-effects */
 import { MockedResponse } from '@apollo/client/testing';
 import '@testing-library/jest-dom';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { GraphQLError } from 'graphql';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { CarsDocument, FavoritesDocument } from '../generated/graphql';
 import { carsDataTest, favoritesCars } from '../test/dataTest';
+import { renderMemory } from '../test/testMemoryRouterProvider';
 import { render } from '../test/testProvider';
 import CarsList from './CarsList';
 
@@ -122,11 +124,43 @@ const mocksCarsFavorites: MockedResponse<Record<string, any>>[] = [
   },
 ];
 
+const mocksFilterCar: MockedResponse<Record<string, any>>[] = [
+  {
+    request: {
+      query: CarsDocument,
+      variables: {
+        orderBy: {
+          sale_date: 'desc',
+        },
+        whereCars: {
+          _or: [
+            {
+              title: {
+                _iregex: 'Rav 4 2017',
+              },
+            },
+            {
+              vin: {
+                _iregex: 'Rav 4 2017',
+              },
+            },
+          ],
+        },
+      },
+    },
+    result: {
+      data: {
+        cars: [carsDataTest[0], carsDataTest[1]],
+      },
+    },
+  },
+];
+
 describe('Test in CarList Component', () => {
   it('Should show the cars', async () => {
     render(<CarsList favorites={[]} setFavorites={() => {}} />, mocksCars);
     expect(
-      await screen.findByText(`${carsDataTest[0].title}`)
+      await screen.findByText(`${carsDataTest[3].title}`)
     ).toBeInTheDocument();
   });
 
@@ -163,5 +197,31 @@ describe('Test in CarList Component', () => {
       await screen.findByText(`${carsDataTest[0].title}`)
     ).toBeInTheDocument();
     expect(screen.getByTestId('outline-star')).toBeInTheDocument();
+  });
+
+  it('Should show a filter cars', async () => {
+    renderMemory(
+      <MemoryRouter initialEntries={['/dashboard?search=Rav+4+2017&sort=desc']}>
+        <Routes>
+          <Route
+            path="/dashboard"
+            element={<CarsList favorites={[]} setFavorites={() => {}} />}
+          />
+        </Routes>
+      </MemoryRouter>,
+      mocksFilterCar
+    );
+
+    await waitFor(() => {
+      const favoritesCars = screen.getAllByText('Rav 4 2017');
+      expect(favoritesCars).toHaveLength(2);
+    });
+    const favoritesCarsSort = screen.getAllByTestId('sale-date-testid');
+    expect(favoritesCarsSort[0]).toHaveTextContent(
+      `${carsDataTest[0].sale_date}`
+    );
+    expect(favoritesCarsSort[1]).toHaveTextContent(
+      `${carsDataTest[1].sale_date}`
+    );
   });
 });
