@@ -36,7 +36,7 @@ const CarContainer = styled.div`
   }
 `;
 
-const ImageCar = styled.div`
+const CarImage = styled.div`
   width: 15%;
 `;
 
@@ -54,7 +54,7 @@ const InformationLot = styled.div`
   }
 `;
 
-const DescriptionVehicle = styled.div`
+const VehicleDescription = styled.div`
   display: flex;
   flex-direction: column;
   width: 15%;
@@ -193,9 +193,9 @@ const CarCard = ({ car, setFavorites, dataFavorites }: CarCardProps) => {
 
   return (
     <CarContainer>
-      <ImageCar>
+      <CarImage>
         <Image />
-      </ImageCar>
+      </CarImage>
       <InformationLot>
         <p>{car.title}</p>
         <p>
@@ -209,14 +209,14 @@ const CarCard = ({ car, setFavorites, dataFavorites }: CarCardProps) => {
           onClick={handleFavoriteButton}
         />
       </InformationLot>
-      <DescriptionVehicle>
+      <VehicleDescription>
         <p>
           Odometer <span>{car.odometer}</span>
         </p>
         <p>
           Price <span>{car.price}</span>
         </p>
-      </DescriptionVehicle>
+      </VehicleDescription>
       <BrandModel>
         <p>
           Brand <span>{car.model.name}</span>
@@ -232,7 +232,7 @@ const CarCard = ({ car, setFavorites, dataFavorites }: CarCardProps) => {
         <p>
           {car.city.state.name} - {car.city.name}
         </p>
-        <p>{car.sale_date}</p>
+        <p data-testid={'sale-date-testid'}>{car.sale_date}</p>
       </Sales>
       <Button
         styleButton="DetailsButton"
