@@ -222,7 +222,7 @@ describe('Test in CarForm Component', () => {
 
     expect(await screen.findByText('Create Car')).toBeInTheDocument();
 
-    fireEvent.change(screen.getByTestId('input-title'), {
+    fireEvent.change(screen.getByLabelText('Title'), {
       target: { value: 'Jeep Patriot 2022' },
     });
 
@@ -234,11 +234,11 @@ describe('Test in CarForm Component', () => {
       target: { value: 1 },
     });
 
-    fireEvent.change(screen.getByTestId('input-odometer'), {
+    fireEvent.change(screen.getByLabelText('Odometer'), {
       target: { value: '500' },
     });
 
-    fireEvent.change(screen.getByTestId('input-sale-date'), {
+    fireEvent.change(screen.getByLabelText('Sale Date'), {
       target: { value: '2022-10-08' },
     });
 
@@ -246,15 +246,15 @@ describe('Test in CarForm Component', () => {
       target: { value: 1 },
     });
 
-    fireEvent.change(screen.getByTestId('input-year'), {
+    fireEvent.change(screen.getByLabelText('Year'), {
       target: { value: '2022' },
     });
 
-    fireEvent.change(screen.getByTestId('input-price'), {
+    fireEvent.change(screen.getByLabelText('Price'), {
       target: { value: '20000' },
     });
 
-    fireEvent.change(screen.getByTestId('input-vin'), {
+    fireEvent.change(screen.getByLabelText('Vin'), {
       target: { value: '1M8GDM9A_KP042700' },
     });
 
