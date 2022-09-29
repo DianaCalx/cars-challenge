@@ -6,9 +6,9 @@ import {
   useAddFavoriteCarMutation,
   useRemoveFavoriteCarMutation,
 } from '../generated/graphql';
+import { getCondition } from '../utils/getCondition';
 import Button from './Button';
 import { CarItem } from './CarsList';
-import Condition from './Condition';
 import Image from './Image';
 
 interface CarCardProps {
@@ -225,9 +225,7 @@ const CarCard = ({ car, setFavorites, dataFavorites }: CarCardProps) => {
           Model <span>{car.model.brand.name}</span>
         </p>
       </BrandModel>
-      <Conditions>
-        <Condition condition={car.condition} />
-      </Conditions>
+      <Conditions>{getCondition(car.condition)}</Conditions>
       <Sales>
         <p>
           {car.city.state.name} - {car.city.name}

@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
 import Button from '../components/Button';
-import Condition from '../components/Condition';
 import Error from '../components/Error';
 import Image from '../components/Image';
 import Spinner from '../components/Spinner';
 import { useCarQuery, useDeleteCarMutation } from '../generated/graphql';
+import { getCondition } from '../utils/getCondition';
 
 const CarDetailsContainer = styled.div`
   width: 100%;
@@ -82,7 +82,6 @@ const CarDetails = () => {
       });
     },
   });
-
   const deleteCar = (id: number) => {
     Swal.fire({
       title: 'Are you sure that you want to delete this car?',
@@ -172,7 +171,9 @@ const CarDetails = () => {
           <div>
             State: <span>{city?.name}</span>
           </div>
-          <Condition condition={condition} />
+          <div>
+            Condition: <span>{getCondition(condition)}</span>
+          </div>
           <Buttons>
             <Button
               styleButton="DeleteButton"
