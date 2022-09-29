@@ -45,6 +45,43 @@ export const carsDataTest = [
     __typename: 'cars',
   },
   {
+    batch: '721161a4-0022-452c-92c6-76fcfde50e5f',
+    city: {
+      __typename: 'cities',
+      name: 'San Diego',
+      id: 6,
+      state: {
+        __typename: 'states',
+        id: 2,
+        name: 'CALIFORNIA',
+      },
+    },
+    color: {
+      __typename: 'colors',
+      id: 3,
+      name: 'Black',
+    },
+    condition: 'N',
+    id: 100,
+    model: {
+      __typename: 'models',
+      id: 6,
+      name: 'Rav4',
+      brand: {
+        __typename: 'brands',
+        id: 2,
+        name: 'Toyota',
+      },
+    },
+    odometer: 25000,
+    price: '$9,600.00',
+    sale_date: '2022-09-22',
+    title: 'Rav 4 2017',
+    vin: 'MTE4596',
+    year: 2017,
+    __typename: 'cars',
+  },
+  {
     __typename: 'cars',
     id: 238,
     title: 'Ford Mustang 2021',
