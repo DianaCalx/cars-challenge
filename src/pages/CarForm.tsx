@@ -175,12 +175,8 @@ const CarForm = ({ testBatch }: CarFormProps) => {
             <Title>Create Car</Title>
             <FormCreateCar>
               <div>
-                <label>Title</label>
-                <input
-                  type="text"
-                  {...register('title')}
-                  data-testid={'input-title'}
-                />
+                <label htmlFor="title">Title</label>
+                <input id="title" type="text" {...register('title')} />
                 {errors?.title?.message && (
                   <Error type="warningError">{errors?.title?.message}</Error>
                 )}
@@ -195,24 +191,20 @@ const CarForm = ({ testBatch }: CarFormProps) => {
               />
 
               <div>
-                <label>Odometer</label>
-                <input
-                  type="number"
-                  {...register('odometer')}
-                  data-testid={'input-odometer'}
-                />
+                <label htmlFor="odometer">Odometer</label>
+                <input id="odometer" type="number" {...register('odometer')} />
                 {errors?.odometer?.message && (
                   <Error type="warningError">{errors?.odometer?.message}</Error>
                 )}
               </div>
 
               <div>
-                <label>Sale Date</label>
+                <label htmlFor="sale_date">Sale Date</label>
                 <input
+                  id="sale_date"
                   type="date"
                   {...register('sale_date')}
                   min={moment().format('YYYY-MM-DD')}
-                  data-testid={'input-sale-date'}
                 />
                 {errors?.sale_date?.message && (
                   <Error type="warningError">Select a Date</Error>
@@ -222,24 +214,20 @@ const CarForm = ({ testBatch }: CarFormProps) => {
               <StateCityDropdowns states={fieldsData?.states} />
 
               <div>
-                <label>Year</label>
-                <input
-                  type="number"
-                  {...register('year')}
-                  data-testid={'input-year'}
-                />
+                <label htmlFor="year">Year</label>
+                <input id="year" type="number" {...register('year')} />
                 {errors?.year?.message && (
                   <Error type="warningError">{errors?.year?.message}</Error>
                 )}
               </div>
 
               <div>
-                <label>Price</label>
+                <label htmlFor="price">Price</label>
                 <input
+                  id="price"
                   type="number"
                   min="0"
                   {...register('price')}
-                  data-testid={'input-price'}
                 />
                 {errors?.price?.message && (
                   <Error type="warningError">{errors?.price?.message}</Error>
@@ -247,12 +235,8 @@ const CarForm = ({ testBatch }: CarFormProps) => {
               </div>
 
               <div>
-                <label>Vin</label>
-                <input
-                  type="text"
-                  {...register('vin')}
-                  data-testid={'input-vin'}
-                />
+                <label htmlFor="vin">Vin</label>
+                <input id="vin" type="text" {...register('vin')} />
                 {errors?.vin?.message && (
                   <Error type="warningError">{errors?.vin?.message}</Error>
                 )}
