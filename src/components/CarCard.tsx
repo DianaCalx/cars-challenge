@@ -99,7 +99,7 @@ interface userCar {
 
 const CarCard = ({ car, setFavorites, dataFavorites }: CarCardProps) => {
   const navigate = useNavigate();
-  const { user, setIsLoginModalOpen } = useAppContext();
+  const { user, openLoginModal } = useAppContext();
 
   const [addFavorite, { loading: loadingAddFavorite }] =
     useAddFavoriteCarMutation({
@@ -155,7 +155,7 @@ const CarCard = ({ car, setFavorites, dataFavorites }: CarCardProps) => {
 
   const handleFavoriteButton = () => {
     if (!user) {
-      setIsLoginModalOpen(true);
+      openLoginModal();
       return;
     }
     if (!loadingAddFavorite && !loadingRemoveFavorite) {

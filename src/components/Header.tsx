@@ -27,13 +27,13 @@ const Buttons = styled.div`
 
 const Header = () => {
   const { pathname } = useLocation();
-  const { user, setUser, setIsLoginModalOpen } = useAppContext();
+  const { user, logoutUser, openLoginModal } = useAppContext();
   const { removeLocalStorage } = useLocalStorage();
   const navigate = useNavigate();
 
   const onSubmitLogout = () => {
     removeLocalStorage('user');
-    setUser(undefined);
+    logoutUser();
   };
 
   return (
@@ -73,7 +73,7 @@ const Header = () => {
         ) : (
           <Button
             styleButton="SecondaryButton"
-            onClick={() => setIsLoginModalOpen(true)}
+            onClick={() => openLoginModal()}
           >
             Login
           </Button>

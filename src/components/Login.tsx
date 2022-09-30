@@ -61,15 +61,15 @@ const Login = () => {
     reset,
     formState: { errors },
   } = useForm<LoginFormInputs>({ resolver: yupResolver(loginSchema) });
-  const { setUser, setIsLoginModalOpen } = useAppContext();
+  const { loginUser, closeLoginModal } = useAppContext();
   const { setLocalStorage } = useLocalStorage();
   const [messageWrongEmail, setMessageWrongEmail] = useState('');
   const [execute, { loading, error, data }] = useUserLazyQuery({
     onCompleted(data) {
       if (data && data.users.length > 0) {
-        setUser(data.users.at(0));
+        loginUser(data.users.at(0));
         setLocalStorage('user', data.users.at(0));
-        setIsLoginModalOpen(false);
+        closeLoginModal();
       }
     },
   });
@@ -99,10 +99,7 @@ const Login = () => {
   return (
     <Container>
       <Form>
-        <Button
-          styleButton="CloseButton"
-          onClick={() => setIsLoginModalOpen(false)}
-        />
+        <Button styleButton="CloseButton" onClick={() => closeLoginModal()} />
         <InputEmail
           placeholder="Your email..."
           {...register('email')}
