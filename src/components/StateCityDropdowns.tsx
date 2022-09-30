@@ -13,7 +13,7 @@ interface DropdownProps {
     | undefined;
 }
 
-const BrandModelDropdowns = ({ states }: DropdownProps) => {
+const StateCityDropdowns = ({ states }: DropdownProps) => {
   const { watch } = useFormContext();
   const [fetchCities, { data: citiesData }] = useCitiesLazyQuery();
   const selectedState = watch('state');
@@ -40,4 +40,4 @@ const BrandModelDropdowns = ({ states }: DropdownProps) => {
   );
 };
 
-export default BrandModelDropdowns;
+export default StateCityDropdowns;
