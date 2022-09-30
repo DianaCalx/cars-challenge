@@ -12,8 +12,10 @@ import useLocalStorage from '../hooks/useLocalStorage';
 type AppContextValue = {
   user: Users | undefined;
   isLoginModalOpen: boolean;
-  setUser: React.Dispatch<React.SetStateAction<Users | undefined>>;
-  setIsLoginModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  loginUser: Function;
+  logoutUser: Function;
+  openLoginModal: Function;
+  closeLoginModal: Function;
 };
 
 type AppContextProviderProps = {
@@ -24,8 +26,10 @@ type AppContextProviderProps = {
 const AppContext = createContext<AppContextValue>({
   user: undefined,
   isLoginModalOpen: false,
-  setUser: () => {},
-  setIsLoginModalOpen: () => {},
+  loginUser: () => {},
+  logoutUser: () => {},
+  openLoginModal: () => {},
+  closeLoginModal: () => {},
 });
 
 export const AppContextProvider = ({
@@ -36,6 +40,22 @@ export const AppContextProvider = ({
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [execute, { loading, data, error }] = useUserLazyQuery();
   const { getLocalStorage, removeLocalStorage } = useLocalStorage();
+
+  const openLoginModal = () => {
+    setIsLoginModalOpen(true);
+  };
+
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
+
+  const loginUser = (user: Users) => {
+    setUser(user);
+  };
+
+  const logoutUser = () => {
+    setUser(undefined);
+  };
 
   useEffect(() => {
     const userLocalStorage = getLocalStorage('user');
@@ -66,8 +86,10 @@ export const AppContextProvider = ({
       value={{
         user: testUser ?? user,
         isLoginModalOpen,
-        setUser,
-        setIsLoginModalOpen,
+        loginUser,
+        logoutUser,
+        closeLoginModal,
+        openLoginModal,
       }}
     >
       {children}
