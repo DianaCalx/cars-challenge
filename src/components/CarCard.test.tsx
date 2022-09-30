@@ -78,7 +78,7 @@ const mocksCar: MockedResponse<Record<string, any>>[] = [
   },
 ];
 
-describe('Test in Favorites Component', () => {
+describe('Test in CarCard Component', () => {
   it('Should show the car', async () => {
     renderUserContext(
       <CarCard
