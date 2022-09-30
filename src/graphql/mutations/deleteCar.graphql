@@ -1,0 +1,5 @@
+mutation DeleteCar($deleteCarsByPkId: Int!) {
+  delete_cars_by_pk(id: $deleteCarsByPkId) {
+    id
+  }
+}

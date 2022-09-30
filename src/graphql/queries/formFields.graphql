@@ -1,0 +1,28 @@
+query FormFields {
+  brands {
+    id
+    name
+  }
+  colors {
+    id
+    name
+  }
+  states {
+    id
+    name
+  }
+}
+
+query Models($where: models_bool_exp) {
+  models(where: $where) {
+    id
+    name
+  }
+}
+
+query Cities($where: cities_bool_exp) {
+  cities(where: $where) {
+    id
+    name
+  }
+}

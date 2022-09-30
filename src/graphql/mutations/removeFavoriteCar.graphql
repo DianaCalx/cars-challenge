@@ -1,0 +1,8 @@
+mutation RemoveFavoriteCar($where: user_cars_bool_exp!) {
+  delete_user_cars(where: $where) {
+    affected_rows
+    returning {
+      car_id
+    }
+  }
+}
