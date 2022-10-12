@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
-import Error from '../components/Error';
+import Error from './error';
 import { useAppContext } from '../context/appContext';
 import { useUserLazyQuery } from '../generated/graphql';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { loginSchema } from '../utils/yupSchemas';
-import Button from './Button';
+import Button from './button';
 
 const Container = styled.div`
   position: fixed;
@@ -103,14 +103,10 @@ const Login = () => {
         <InputEmail
           placeholder="Your email..."
           {...register('email')}
-          data-testid={'input-login'}
+          data-testid="input-login"
         />
-        {errors?.email?.message && (
-          <Error type="loginError">{errors?.email?.message}</Error>
-        )}
-        {messageWrongEmail && (
-          <Error type="loginError">{messageWrongEmail}</Error>
-        )}
+        {errors?.email?.message ? <Error type="loginError">{errors?.email?.message}</Error> : null}
+        {messageWrongEmail ? <Error type="loginError">{messageWrongEmail}</Error> : null}
         <Button
           type="submit"
           onClick={handleSubmit(onSubmit)}
@@ -119,7 +115,7 @@ const Login = () => {
         >
           {loading ? 'loading...' : 'login'}
         </Button>
-        {error && <Error type="loginError">There was an error</Error>}
+        {error ? <Error type="loginError">There was an error</Error> : null}
       </Form>
     </Container>
   );

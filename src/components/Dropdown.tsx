@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
-import Error from '../components/Error';
+import Error from './error';
 
 type FormInputKeys = 'brand' | 'model' | 'color' | 'state' | 'city';
 
@@ -27,7 +27,7 @@ const Dropdown = ({ label, fieldName, options = [] }: DropdownProps) => {
 
       <select
         {...register(fieldName)}
-        disabled={!options.length}
+        disabled={options.length === 0}
         data-testid={`select-${fieldName}`}
       >
         <option value="">Select</option>
@@ -41,9 +41,7 @@ const Dropdown = ({ label, fieldName, options = [] }: DropdownProps) => {
           </option>
         ))}
       </select>
-      {errors[fieldName]?.message && (
-        <Error type="warningError">Select one option</Error>
-      )}
+      {errors[fieldName]?.message ? <Error type="warningError">Select one option</Error> : null}
     </div>
   );
 };

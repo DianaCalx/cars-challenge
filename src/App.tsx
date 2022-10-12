@@ -3,10 +3,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { client } from './config/apollo';
 import { AppContextProvider } from './context/appContext';
-import CarDetails from './pages/CarDetails';
-import CarForm from './pages/CarForm';
-import Dashboard from './pages/Dashboard';
-import Home from './pages/Home';
+import CarDetails from './pages/car-details';
+import CarForm from './pages/car-form';
+import Dashboard from './pages/dashboard';
+import Home from './pages/home';
 
 const App = () => {
   return (

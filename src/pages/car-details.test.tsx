@@ -5,10 +5,10 @@ import { GraphQLError } from 'graphql';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { CarDocument, DeleteCarDocument } from '../generated/graphql';
-import { carsDataTest } from '../test/dataTest';
-import { renderMemory } from '../test/testMemoryRouterProvider';
-import CarDetails from './CarDetails';
-import Dashboard from './Dashboard';
+import { carsDataTest } from '../test/data-test';
+import { renderMemory } from '../test/test-memory-router-provider';
+import CarDetails from './car-details';
+import Dashboard from './dashboard';
 
 window.scrollTo = jest.fn();
 

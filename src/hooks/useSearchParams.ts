@@ -9,12 +9,12 @@ export const useSearchParams = () => {
 
   const searchParams = Object.fromEntries(search);
 
-  const setSearchParam = (params: searchParams) => {
+  const setSearchParameter = (params: searchParams) => {
     const newParams = { ...searchParams, ...params };
 
-    for (let propName in newParams) { 
-      if (!newParams[propName]) {
-        delete newParams[propName];
+    for (const propertyName in newParams) { 
+      if (!newParams[propertyName]) {
+        delete newParams[propertyName];
       }
     }
 
@@ -23,6 +23,6 @@ export const useSearchParams = () => {
 
   return {
     searchParams,
-    setSearchParam
+    setSearchParam: setSearchParameter
   };
 }

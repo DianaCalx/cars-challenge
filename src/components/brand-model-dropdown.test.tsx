@@ -6,11 +6,11 @@ import { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { ModelsDocument } from '../generated/graphql';
-import { IFormInputs } from '../pages/CarForm';
-import { brandsDataTest, modelsDataTest } from '../test/dataTest';
-import { render } from '../test/testProvider';
+import { IFormInputs } from '../pages/car-form';
+import { brandsDataTest, modelsDataTest } from '../test/data-test';
+import { render } from '../test/test-provider';
 import { formSchema } from '../utils/yupSchemas';
-import BrandModelDropdowns from './BrandModelDropdowns';
+import BrandModelDropdowns from './brand-model-dropdowns';
 
 const mocksModels: MockedResponse<Record<string, any>>[] = [
   {

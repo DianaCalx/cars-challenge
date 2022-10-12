@@ -6,10 +6,10 @@ import {
   useAddFavoriteCarMutation,
   useRemoveFavoriteCarMutation,
 } from '../generated/graphql';
-import { getCondition } from '../utils/getCondition';
-import Button from './Button';
-import { CarItem } from './CarsList';
-import Image from './Image';
+import { getCondition } from '../utils/get-condition';
+import Button from './button';
+import { CarItem } from './cars-list';
+import Image from './image';
 
 interface CarCardProps {
   car: CarItem;
@@ -230,7 +230,7 @@ const CarCard = ({ car, setFavorites, dataFavorites }: CarCardProps) => {
         <p>
           {car.city.state.name} - {car.city.name}
         </p>
-        <p data-testid={'sale-date-testid'}>{car.sale_date}</p>
+        <p data-testid="sale-date-testid">{car.sale_date}</p>
       </Sales>
       <Button
         styleButton="DetailsButton"

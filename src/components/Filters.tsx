@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import * as Yup from 'yup';
 
 import { useSearchParams } from '../hooks/useSearchParams';
-import Button from './Button';
+import Button from './button';
 
 const FormFilter = styled.div`
   display: flex;
@@ -59,7 +59,7 @@ const Filters = () => {
           type="text"
           {...register('search')}
           defaultValue={search}
-        ></Filter>
+         />
         <Button
           styleButton="PrimaryButton"
           type="submit"

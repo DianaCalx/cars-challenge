@@ -6,11 +6,11 @@ import { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { CitiesDocument } from '../generated/graphql';
-import { IFormInputs } from '../pages/CarForm';
-import { citiesDataTest, statesDataTest } from '../test/dataTest';
-import { render } from '../test/testProvider';
+import { IFormInputs } from '../pages/car-form';
+import { citiesDataTest, statesDataTest } from '../test/data-test';
+import { render } from '../test/test-provider';
 import { formSchema } from '../utils/yupSchemas';
-import StateCityDropdowns from './StateCityDropdowns';
+import StateCityDropdowns from './state-city-dropdowns';
 
 const mocksCities: MockedResponse<Record<string, any>>[] = [
   {

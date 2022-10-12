@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { MockedResponse } from '@apollo/client/testing';
 import '@testing-library/jest-dom';
 import { screen, waitFor } from '@testing-library/react';
@@ -7,15 +8,16 @@ import {
   AddFavoriteCarDocument,
   RemoveFavoriteCarDocument,
 } from '../generated/graphql';
-import { carFavorite, carNotFavorite, favoritesCars } from '../test/dataTest';
-import { renderUserContext } from '../test/testUserContextProvider';
-import CarCard from './CarCard';
-import { DataFavorites } from './CarsList';
-import { CarItem } from './Favorites';
+import { carFavorite, carNotFavorite, favoritesCars } from '../test/data-test';
+import { renderUserContext } from '../test/test-user-context-provider';
+import CarCard from './car-card';
+import { DataFavorites } from './cars-list';
+import { CarItem } from './favorites';
 
 let addMutationFavoriteCalled = false;
 let removeMutationFavoriteCalled = false;
 
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 const mocksCar: MockedResponse<Record<string, any>>[] = [
   {
     request: {
@@ -82,8 +84,9 @@ describe('Test in CarCard Component', () => {
   it('Should show the car', async () => {
     renderUserContext(
       <CarCard
-        key={'testkey'}
+        key="testkey"
         car={carFavorite as CarItem}
+        // eslint-disable-next-line   @typescript-eslint/no-empty-function
         setFavorites={() => {}}
         dataFavorites={favoritesCars as DataFavorites[]}
       />,
@@ -95,8 +98,9 @@ describe('Test in CarCard Component', () => {
   it('Should add favorite car', async () => {
     renderUserContext(
       <CarCard
-        key={'testkey'}
+        key="testkey"
         car={carNotFavorite as CarItem}
+        // eslint-disable-next-line   @typescript-eslint/no-empty-function
         setFavorites={() => {}}
         dataFavorites={[]}
       />,
@@ -116,8 +120,9 @@ describe('Test in CarCard Component', () => {
   it('Should remove favorite car', async () => {
     renderUserContext(
       <CarCard
-        key={'testkey'}
+        key="testkey"
         car={carFavorite as CarItem}
+        // eslint-disable-next-line   @typescript-eslint/no-empty-function
         setFavorites={() => {}}
         dataFavorites={favoritesCars}
       />,

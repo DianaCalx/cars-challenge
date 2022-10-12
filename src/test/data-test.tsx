@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Users } from '../generated/graphql';
 
 export interface DataFavorites {
@@ -36,7 +37,7 @@ export const carsDataTest = [
         name: 'Toyota',
       },
     },
-    odometer: 45000,
+    odometer: 45_000,
     price: '$10,600.00',
     sale_date: '2022-09-23',
     title: 'Rav 4 2017',
@@ -73,7 +74,7 @@ export const carsDataTest = [
         name: 'Toyota',
       },
     },
-    odometer: 25000,
+    odometer: 25_000,
     price: '$9,600.00',
     sale_date: '2022-09-22',
     title: 'Rav 4 2017',
@@ -100,7 +101,7 @@ export const carsDataTest = [
       id: 5,
       name: 'Gray',
     },
-    odometer: 10000,
+    odometer: 10_000,
     sale_date: '2022-10-25',
     city: {
       __typename: 'cities',
@@ -296,7 +297,7 @@ export const carCreateDataTest = {
   city_id: 1,
   state_id: 1,
   year: 2022,
-  price: 20000,
+  price: 20_000,
   condition: 'N',
   vin: '1M8GDM9A_KP042700',
 };

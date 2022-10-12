@@ -1,9 +1,11 @@
 /* eslint-disable testing-library/no-wait-for-multiple-assertions */
-
+/* eslint-disable camelcase */
+/* eslint-disable testing-library/prefer-user-event */
 /* eslint-disable testing-library/no-wait-for-side-effects */
 import { MockedResponse } from '@apollo/client/testing';
 import '@testing-library/jest-dom';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import {
   CitiesDocument,
@@ -19,9 +21,9 @@ import {
   modelsDataTest,
   resultCreateCarDataTest,
   statesDataTest,
-} from '../test/dataTest';
-import { render } from '../test/testProvider';
-import CarForm from './CarForm';
+} from '../test/data-test';
+import { render } from '../test/test-provider';
+import CarForm from './car-form';
 
 const mocksFields: MockedResponse<Record<string, any>>[] = [
   {
@@ -169,7 +171,7 @@ describe('Test in CarForm Component', () => {
     render(<CarForm />, mocksFields);
 
     expect(await screen.findByText('Create Car')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Create'));
+    userEvent.click(screen.getByText('Create'));
     expect(
       await screen.findByText('title must be at least 8 characters')
     ).toBeInTheDocument();

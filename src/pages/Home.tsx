@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import Header from '../components/Header';
-import Login from '../components/Login';
+import Header from '../components/header';
+import Login from '../components/login';
 import { useAppContext } from '../context/appContext';
 
 const HomePage = styled.div`
@@ -28,7 +28,7 @@ const Home = () => {
 
   return (
     <HomePage>
-      {isLoginModalOpen && <Login />}
+      {isLoginModalOpen ? <Login /> : null}
       <Header />
       <Greeting>Welcome</Greeting>
     </HomePage>

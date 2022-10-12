@@ -7,11 +7,11 @@ import {
   invalidEmailUser,
   nonExistentEmailUser,
   testUser,
-} from '../test/dataTest';
-import { render } from '../test/testProvider';
-import { renderUserContext } from '../test/testUserContextProvider';
-import Header from './Header';
-import Login from './Login';
+} from '../test/data-test';
+import { render } from '../test/test-provider';
+import { renderUserContext } from '../test/test-user-context-provider';
+import Header from './header';
+import Login from './login';
 
 const mockUser: MockedResponse<Record<string, any>>[] = [
   {

@@ -3,14 +3,14 @@ import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAppContext } from '../context/appContext';
-import { useCarsQuery, useFavoritesLazyQuery } from '../generated/graphql';
-import { Cars } from '../generated/graphql';
-import { getVariablesQueryCars } from '../utils/getVariablesQueryCars';
-import CarCard from './CarCard';
-import Description from './Description';
-import Error from './Error';
-import Filters from './Filters';
-import Spinner from './Spinner';
+import { useCarsQuery, useFavoritesLazyQuery , Cars } from '../generated/graphql';
+
+import { getVariablesQueryCars } from '../utils/get-variables-query-cars';
+import CarCard from './car-card';
+import Description from './description';
+import Error from './error';
+import Filters from './filters';
+import Spinner from './spinner';
 
 export interface CarItem extends Cars {
   isFavorite: boolean;
@@ -138,9 +138,7 @@ const Favorites = ({ favorites, setFavorites }: PropsFavorites) => {
           }
           return null;
         })}
-        {!favorites.length && !loadingCars && (
-          <NotFound>Favorite cars were not found</NotFound>
-        )}
+        {favorites.length === 0 && !loadingCars ? <NotFound>Favorite cars were not found</NotFound> : null}
       </FavoritesContainer>
     </>
   );

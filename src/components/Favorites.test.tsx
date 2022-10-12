@@ -4,9 +4,9 @@ import { screen } from '@testing-library/react';
 import { GraphQLError } from 'graphql';
 
 import { CarsDocument, FavoritesDocument } from '../generated/graphql';
-import { carsDataTest } from '../test/dataTest';
-import { renderUserContext } from '../test/testUserContextProvider';
-import Favorites from './Favorites';
+import { carsDataTest } from '../test/data-test';
+import { renderUserContext } from '../test/test-user-context-provider';
+import Favorites from './favorites';
 
 const mocksCars: MockedResponse<Record<string, any>>[] = [
   {

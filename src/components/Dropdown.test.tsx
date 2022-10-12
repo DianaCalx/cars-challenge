@@ -4,10 +4,10 @@ import { render, screen } from '@testing-library/react';
 import { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { IFormInputs } from '../pages/CarForm';
-import { colorsDataTest } from '../test/dataTest';
+import { IFormInputs } from '../pages/car-form';
+import { colorsDataTest } from '../test/data-test';
 import { formSchema } from '../utils/yupSchemas';
-import Dropdown from './Dropdown';
+import Dropdown from './dropdown';
 
 describe('Test Dropdown Component', () => {
   it('Should show the select options', () => {

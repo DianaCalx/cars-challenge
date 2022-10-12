@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import CarsList from '../components/CarsList';
-import Favorites from '../components/Favorites';
-import Header from '../components/Header';
-import Login from '../components/Login';
+import CarsList from '../components/cars-list';
+import Favorites from '../components/favorites';
+import Header from '../components/header';
+import Login from '../components/login';
 import { useAppContext } from '../context/appContext';
 import useLocalStorage from '../hooks/useLocalStorage';
 
@@ -36,14 +36,10 @@ const Dashboard = () => {
       <DashboarHeader>
         <Header />
       </DashboarHeader>
-      <DashboardPage data-testid={'dashboard-test'}>
-        {isLoginModalOpen && <Login />}
-        {pathname === '/favorites' && (
-          <Favorites setFavorites={setFavorites} favorites={favorites} />
-        )}
-        {pathname === '/dashboard' && (
-          <CarsList setFavorites={setFavorites} favorites={favorites} />
-        )}
+      <DashboardPage data-testid="dashboard-test">
+        {isLoginModalOpen ? <Login /> : null}
+        {pathname === '/favorites' ? <Favorites setFavorites={setFavorites} favorites={favorites} /> : null}
+        {pathname === '/dashboard' ? <CarsList setFavorites={setFavorites} favorites={favorites} /> : null}
       </DashboardPage>
     </>
   );

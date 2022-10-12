@@ -1,1 +1,2 @@
-/// <reference types="react-scripts" />
+/* eslint-comments/no-unlimited-disable*/
+// / <reference types="react-scripts" />

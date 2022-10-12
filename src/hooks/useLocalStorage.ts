@@ -5,9 +5,10 @@ const useLocalStorage = () => {
     if (localStorage.getItem(key)) {
       return JSON.parse(localStorage.getItem(key) || '')
     }
-    return undefined;
+
   }, []);
 
+  // eslint-disable-next-line prefer-arrow-callback
   const setLocalStorage = useCallback(function setItem<T>(key: string, newData: T) {
     localStorage.setItem(key, JSON.stringify(newData))
   }, []);

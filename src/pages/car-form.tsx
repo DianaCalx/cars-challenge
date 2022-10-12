@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { yupResolver } from '@hookform/resolvers/yup';
 import moment from 'moment';
 import { useEffect } from 'react';
@@ -7,12 +8,12 @@ import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
 
-import BrandModelDropdowns from '../components/BrandModelDropdowns';
-import Button from '../components/Button';
-import Dropdown from '../components/Dropdown';
-import Error from '../components/Error';
-import Spinner from '../components/Spinner';
-import StateCityDropdowns from '../components/StateCityDropdowns';
+import BrandModelDropdowns from '../components/brand-model-dropdowns';
+import Button from '../components/button';
+import Dropdown from '../components/dropdown';
+import Error from '../components/error';
+import Spinner from '../components/spinner';
+import StateCityDropdowns from '../components/state-city-dropdowns';
 import { useCreateCarMutation, useFormFieldsQuery } from '../generated/graphql';
 import { formSchema } from '../utils/yupSchemas';
 
@@ -177,9 +178,7 @@ const CarForm = ({ testBatch }: CarFormProps) => {
               <div>
                 <label htmlFor="title">Title</label>
                 <input id="title" type="text" {...register('title')} />
-                {errors?.title?.message && (
-                  <Error type="warningError">{errors?.title?.message}</Error>
-                )}
+                {errors?.title?.message ? <Error type="warningError">{errors?.title?.message}</Error> : null}
               </div>
 
               <BrandModelDropdowns brands={fieldsData?.brands} />
@@ -193,9 +192,7 @@ const CarForm = ({ testBatch }: CarFormProps) => {
               <div>
                 <label htmlFor="odometer">Odometer</label>
                 <input id="odometer" type="number" {...register('odometer')} />
-                {errors?.odometer?.message && (
-                  <Error type="warningError">{errors?.odometer?.message}</Error>
-                )}
+                {errors?.odometer?.message ? <Error type="warningError">{errors?.odometer?.message}</Error> : null}
               </div>
 
               <div>
@@ -206,9 +203,7 @@ const CarForm = ({ testBatch }: CarFormProps) => {
                   {...register('sale_date')}
                   min={moment().format('YYYY-MM-DD')}
                 />
-                {errors?.sale_date?.message && (
-                  <Error type="warningError">Select a Date</Error>
-                )}
+                {errors?.sale_date?.message ? <Error type="warningError">Select a Date</Error> : null}
               </div>
 
               <StateCityDropdowns states={fieldsData?.states} />
@@ -216,9 +211,7 @@ const CarForm = ({ testBatch }: CarFormProps) => {
               <div>
                 <label htmlFor="year">Year</label>
                 <input id="year" type="number" {...register('year')} />
-                {errors?.year?.message && (
-                  <Error type="warningError">{errors?.year?.message}</Error>
-                )}
+                {errors?.year?.message ? <Error type="warningError">{errors?.year?.message}</Error> : null}
               </div>
 
               <div>
@@ -229,17 +222,13 @@ const CarForm = ({ testBatch }: CarFormProps) => {
                   min="0"
                   {...register('price')}
                 />
-                {errors?.price?.message && (
-                  <Error type="warningError">{errors?.price?.message}</Error>
-                )}
+                {errors?.price?.message ? <Error type="warningError">{errors?.price?.message}</Error> : null}
               </div>
 
               <div>
                 <label htmlFor="vin">Vin</label>
                 <input id="vin" type="text" {...register('vin')} />
-                {errors?.vin?.message && (
-                  <Error type="warningError">{errors?.vin?.message}</Error>
-                )}
+                {errors?.vin?.message ? <Error type="warningError">{errors?.vin?.message}</Error> : null}
               </div>
 
               <div>
@@ -266,14 +255,12 @@ const CarForm = ({ testBatch }: CarFormProps) => {
                 styleButton="SubmitForm"
                 type="submit"
                 disabled={loadingInsertCar}
-                data-testid={'create-car'}
+                data-testid="create-car"
               >
                 {loadingInsertCar ? 'Loading...' : 'Create'}
               </Button>
             </FormCreateCar>
-            {errorInsertCar && (
-              <Error type="warningError">{errorInsertCar.message}</Error>
-            )}
+            {errorInsertCar ? <Error type="warningError">{errorInsertCar.message}</Error> : null}
           </ContainerForm>
         </FormProvider>
       )}

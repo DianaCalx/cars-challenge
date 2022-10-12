@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useModelsLazyQuery } from '../generated/graphql';
-import Dropdown from './Dropdown';
+import Dropdown from './dropdown';
 
 interface DropdownProps {
   brands:

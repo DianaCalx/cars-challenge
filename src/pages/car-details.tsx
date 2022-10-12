@@ -2,12 +2,12 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
-import Button from '../components/Button';
-import Error from '../components/Error';
-import Image from '../components/Image';
-import Spinner from '../components/Spinner';
+import Button from '../components/button';
+import Error from '../components/error';
+import Image from '../components/image';
+import Spinner from '../components/spinner';
 import { useCarQuery, useDeleteCarMutation } from '../generated/graphql';
-import { getCondition } from '../utils/getCondition';
+import { getCondition } from '../utils/get-condition';
 
 const CarDetailsContainer = styled.div`
   width: 100%;
@@ -182,9 +182,7 @@ const CarDetails = () => {
               Delete Car
             </Button>
           </Buttons>
-          {errorDeleteCar && (
-            <Error type="normalError">There was an error Deleting Car</Error>
-          )}
+          {errorDeleteCar ? <Error type="normalError">There was an error Deleting Car</Error> : null}
         </CarDetail>
       )}
     </CarDetailsContainer>

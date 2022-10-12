@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
@@ -3549,46 +3550,46 @@ export type UserQueryVariables = Exact<{
 export type UserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, first_name: string, last_name: string, email: string, uuid: any }> };
 
 export const CarFieldsFragmentDoc = gql`
-    fragment carFields on cars {
-  id
-  title
-  model {
+  fragment carFields on cars {
     id
-    name
-    brand {
+    title
+    model {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
+    color {
       id
       name
     }
-  }
-  color {
-    id
-    name
-  }
-  odometer
-  sale_date
-  city {
-    name
-    id
-    state {
-      id
+    odometer
+    sale_date
+    city {
       name
+      id
+      state {
+        id
+        name
+      }
     }
+    year
+    condition
+    price
+    batch
+    vin
   }
-  year
-  condition
-  price
-  batch
-  vin
-}
-    `;
+`;
 export const AddFavoriteCarDocument = gql`
-    mutation AddFavoriteCar($object: user_cars_insert_input!) {
-  insert_user_cars_one(object: $object) {
-    id
-    car_id
+  mutation AddFavoriteCar($object: user_cars_insert_input!) {
+    insert_user_cars_one(object: $object) {
+      id
+      car_id
+    }
   }
-}
-    `;
+`;
 export type AddFavoriteCarMutationFn = Apollo.MutationFunction<AddFavoriteCarMutation, AddFavoriteCarMutationVariables>;
 
 /**
@@ -3616,25 +3617,25 @@ export type AddFavoriteCarMutationHookResult = ReturnType<typeof useAddFavoriteC
 export type AddFavoriteCarMutationResult = Apollo.MutationResult<AddFavoriteCarMutation>;
 export type AddFavoriteCarMutationOptions = Apollo.BaseMutationOptions<AddFavoriteCarMutation, AddFavoriteCarMutationVariables>;
 export const CreateCarDocument = gql`
-    mutation CreateCar($object: cars_insert_input!) {
-  insert_cars_one(object: $object) {
-    id
-    title
-    brand_id
-    model_id
-    color_id
-    odometer
-    sale_date
-    state_id
-    city_id
-    year
-    condition
-    price
-    batch
-    vin
+  mutation CreateCar($object: cars_insert_input!) {
+    insert_cars_one(object: $object) {
+      id
+      title
+      brand_id
+      model_id
+      color_id
+      odometer
+      sale_date
+      state_id
+      city_id
+      year
+      condition
+      price
+      batch
+      vin
+    }
   }
-}
-    `;
+`;
 export type CreateCarMutationFn = Apollo.MutationFunction<CreateCarMutation, CreateCarMutationVariables>;
 
 /**
@@ -3662,12 +3663,12 @@ export type CreateCarMutationHookResult = ReturnType<typeof useCreateCarMutation
 export type CreateCarMutationResult = Apollo.MutationResult<CreateCarMutation>;
 export type CreateCarMutationOptions = Apollo.BaseMutationOptions<CreateCarMutation, CreateCarMutationVariables>;
 export const DeleteCarDocument = gql`
-    mutation DeleteCar($deleteCarsByPkId: Int!) {
-  delete_cars_by_pk(id: $deleteCarsByPkId) {
-    id
+  mutation DeleteCar($deleteCarsByPkId: Int!) {
+    delete_cars_by_pk(id: $deleteCarsByPkId) {
+      id
+    }
   }
-}
-    `;
+`;
 export type DeleteCarMutationFn = Apollo.MutationFunction<DeleteCarMutation, DeleteCarMutationVariables>;
 
 /**
@@ -3695,15 +3696,15 @@ export type DeleteCarMutationHookResult = ReturnType<typeof useDeleteCarMutation
 export type DeleteCarMutationResult = Apollo.MutationResult<DeleteCarMutation>;
 export type DeleteCarMutationOptions = Apollo.BaseMutationOptions<DeleteCarMutation, DeleteCarMutationVariables>;
 export const RemoveFavoriteCarDocument = gql`
-    mutation RemoveFavoriteCar($where: user_cars_bool_exp!) {
-  delete_user_cars(where: $where) {
-    affected_rows
-    returning {
-      car_id
+  mutation RemoveFavoriteCar($where: user_cars_bool_exp!) {
+    delete_user_cars(where: $where) {
+      affected_rows
+      returning {
+        car_id
+      }
     }
   }
-}
-    `;
+`;
 export type RemoveFavoriteCarMutationFn = Apollo.MutationFunction<RemoveFavoriteCarMutation, RemoveFavoriteCarMutationVariables>;
 
 /**
@@ -3731,12 +3732,13 @@ export type RemoveFavoriteCarMutationHookResult = ReturnType<typeof useRemoveFav
 export type RemoveFavoriteCarMutationResult = Apollo.MutationResult<RemoveFavoriteCarMutation>;
 export type RemoveFavoriteCarMutationOptions = Apollo.BaseMutationOptions<RemoveFavoriteCarMutation, RemoveFavoriteCarMutationVariables>;
 export const CarDocument = gql`
-    query Car($where: cars_bool_exp) {
-  cars(where: $where) {
-    ...carFields
+  query Car($where: cars_bool_exp) {
+    cars(where: $where) {
+      ...carFields
+    }
   }
-}
-    ${CarFieldsFragmentDoc}`;
+      ${CarFieldsFragmentDoc}
+`;
 
 /**
  * __useCarQuery__
@@ -3766,12 +3768,13 @@ export type CarQueryHookResult = ReturnType<typeof useCarQuery>;
 export type CarLazyQueryHookResult = ReturnType<typeof useCarLazyQuery>;
 export type CarQueryResult = Apollo.QueryResult<CarQuery, CarQueryVariables>;
 export const CarsDocument = gql`
-    query Cars($orderBy: [cars_order_by!], $whereCars: cars_bool_exp) {
-  cars(where: $whereCars, order_by: $orderBy) {
-    ...carFields
+  query Cars($orderBy: [cars_order_by!], $whereCars: cars_bool_exp) {
+    cars(where: $whereCars, order_by: $orderBy) {
+      ...carFields
+    }
   }
-}
-    ${CarFieldsFragmentDoc}`;
+      ${CarFieldsFragmentDoc}
+`;
 
 /**
  * __useCarsQuery__
@@ -3802,13 +3805,13 @@ export type CarsQueryHookResult = ReturnType<typeof useCarsQuery>;
 export type CarsLazyQueryHookResult = ReturnType<typeof useCarsLazyQuery>;
 export type CarsQueryResult = Apollo.QueryResult<CarsQuery, CarsQueryVariables>;
 export const FavoritesDocument = gql`
-    query Favorites($whereUserCars: user_cars_bool_exp) {
-  user_cars(where: $whereUserCars) {
-    id
-    car_id
+  query Favorites($whereUserCars: user_cars_bool_exp) {
+    user_cars(where: $whereUserCars) {
+      id
+      car_id
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useFavoritesQuery__
@@ -3838,21 +3841,21 @@ export type FavoritesQueryHookResult = ReturnType<typeof useFavoritesQuery>;
 export type FavoritesLazyQueryHookResult = ReturnType<typeof useFavoritesLazyQuery>;
 export type FavoritesQueryResult = Apollo.QueryResult<FavoritesQuery, FavoritesQueryVariables>;
 export const FormFieldsDocument = gql`
-    query FormFields {
-  brands {
-    id
-    name
+  query FormFields {
+    brands {
+      id
+      name
+    }
+    colors {
+      id
+      name
+    }
+    states {
+      id
+      name
+    }
   }
-  colors {
-    id
-    name
-  }
-  states {
-    id
-    name
-  }
-}
-    `;
+`;
 
 /**
  * __useFormFieldsQuery__
@@ -3881,13 +3884,13 @@ export type FormFieldsQueryHookResult = ReturnType<typeof useFormFieldsQuery>;
 export type FormFieldsLazyQueryHookResult = ReturnType<typeof useFormFieldsLazyQuery>;
 export type FormFieldsQueryResult = Apollo.QueryResult<FormFieldsQuery, FormFieldsQueryVariables>;
 export const ModelsDocument = gql`
-    query Models($where: models_bool_exp) {
-  models(where: $where) {
-    id
-    name
+  query Models($where: models_bool_exp) {
+    models(where: $where) {
+      id
+      name
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useModelsQuery__
@@ -3917,13 +3920,13 @@ export type ModelsQueryHookResult = ReturnType<typeof useModelsQuery>;
 export type ModelsLazyQueryHookResult = ReturnType<typeof useModelsLazyQuery>;
 export type ModelsQueryResult = Apollo.QueryResult<ModelsQuery, ModelsQueryVariables>;
 export const CitiesDocument = gql`
-    query Cities($where: cities_bool_exp) {
-  cities(where: $where) {
-    id
-    name
+  query Cities($where: cities_bool_exp) {
+    cities(where: $where) {
+      id
+      name
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useCitiesQuery__
@@ -3953,16 +3956,16 @@ export type CitiesQueryHookResult = ReturnType<typeof useCitiesQuery>;
 export type CitiesLazyQueryHookResult = ReturnType<typeof useCitiesLazyQuery>;
 export type CitiesQueryResult = Apollo.QueryResult<CitiesQuery, CitiesQueryVariables>;
 export const UserDocument = gql`
-    query User($where: users_bool_exp) {
-  users(where: $where) {
-    id
-    first_name
-    last_name
-    email
-    uuid
+  query User($where: users_bool_exp) {
+    users(where: $where) {
+      id
+      first_name
+      last_name
+      email
+      uuid
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useUserQuery__

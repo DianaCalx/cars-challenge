@@ -4,7 +4,7 @@ export const getCondition = (conditon:string) => {
     return 'Salvage Title'
   }else if(conditon === 'N'){
     return 'New'
-  }else{
-    return 'N/A'
   }
+    return 'N/A'
+  
 }

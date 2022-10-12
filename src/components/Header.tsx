@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { useAppContext } from '../context/appContext';
 import useLocalStorage from '../hooks/useLocalStorage';
-import Button from './Button';
+import Button from './button';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -38,28 +38,22 @@ const Header = () => {
 
   return (
     <HeaderContainer>
-      {user && (
-        <UserName
-          data-testid={'greeting-user'}
-        >{`Welcome ${user.first_name} ${user.last_name}!`}</UserName>
-      )}
+      {user ? <UserName
+          data-testid="greeting-user"
+        >{`Welcome ${user.first_name} ${user.last_name}!`}</UserName> : null}
       <Buttons>
-        {pathname === '/dashboard' && (
-          <Button
+        {pathname === '/dashboard' ? <Button
             styleButton="PrimaryButton"
             onClick={() => navigate('/car-form')}
           >
             Create Car
-          </Button>
-        )}
-        {user && (
-          <Button
+          </Button> : null}
+        {user ? <Button
             styleButton="PrimaryButton"
             onClick={() => navigate('/favorites')}
           >
             My Favorites
-          </Button>
-        )}
+          </Button> : null}
         <Button
           styleButton="PrimaryButton"
           onClick={() => navigate('/dashboard')}

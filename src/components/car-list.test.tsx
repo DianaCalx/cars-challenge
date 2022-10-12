@@ -1,4 +1,4 @@
-/* eslint-disable testing-library/no-wait-for-side-effects */
+ 
 import { MockedResponse } from '@apollo/client/testing';
 import '@testing-library/jest-dom';
 import { screen, waitFor } from '@testing-library/react';
@@ -6,10 +6,10 @@ import { GraphQLError } from 'graphql';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { CarsDocument, FavoritesDocument } from '../generated/graphql';
-import { carsDataTest, favoritesCars } from '../test/dataTest';
-import { renderMemory } from '../test/testMemoryRouterProvider';
-import { render } from '../test/testProvider';
-import CarsList from './CarsList';
+import { carsDataTest, favoritesCars } from '../test/data-test';
+import { renderMemory } from '../test/test-memory-router-provider';
+import { render } from '../test/test-provider';
+import CarsList from './cars-list';
 
 const mocksCars: MockedResponse<Record<string, any>>[] = [
   {

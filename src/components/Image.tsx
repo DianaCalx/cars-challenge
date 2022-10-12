@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-
+// @ts-ignore
 import carImage from './../images/car.svg';
+
 
 const ImageComp = styled.img`
   width: 100%;

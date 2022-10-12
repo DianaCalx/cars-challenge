@@ -1,23 +1,22 @@
-import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
+import { useAppContext } from "../context/appContext";
+import { useCarsQuery, useFavoritesLazyQuery , Cars } from "../generated/graphql";
 
-import { useAppContext } from '../context/appContext';
-import { useCarsQuery, useFavoritesLazyQuery } from '../generated/graphql';
-import { Cars } from '../generated/graphql';
-import { getVariablesQueryCars } from '../utils/getVariablesQueryCars';
-import CarCard from './CarCard';
-import Description from './Description';
-import Error from './Error';
-import Filters from './Filters';
-import Spinner from './Spinner';
+import { getVariablesQueryCars } from "../utils/get-variables-query-cars";
+import CarCard from "./car-card";
+import Description from "./description";
+import Error from "./error";
+import Filters from "./filters";
+import Spinner from "./spinner";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import styled from "styled-components";
 
 export interface CarItem extends Cars {
   isFavorite: boolean;
 }
 
 export interface DataFavorites {
-  __typename: 'user_cars';
+  __typename: "user_cars";
   id: number;
   car_id: number;
 }
@@ -74,9 +73,9 @@ const CarsList = ({ favorites, setFavorites }: PropsCarsList) => {
   } = useCarsQuery({
     variables: {
       orderBy,
-      whereCars,
+      whereCars
     },
-  });
+  })
 
   if (!dataCars?.cars.length && !loadingCars && !errorCars) {
     return (
@@ -87,7 +86,7 @@ const CarsList = ({ favorites, setFavorites }: PropsCarsList) => {
           <Error type="normalError">There are no cars</Error>
         </CarListContainer>
       </>
-    );
+    )
   }
 
   return (
@@ -95,7 +94,7 @@ const CarsList = ({ favorites, setFavorites }: PropsCarsList) => {
       <Filters />
       <CarListContainer>
         <Description />
-        {errorCars && <Error type="normalError">There was an error</Error>}
+        {errorCars ? <Error type="normalError">There was an error</Error> : null}
         {loadingCars ? (
           <Spinner />
         ) : (

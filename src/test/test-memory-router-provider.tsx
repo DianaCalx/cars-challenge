@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApolloProvider } from '@apollo/client';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { RenderOptions, render } from '@testing-library/react';

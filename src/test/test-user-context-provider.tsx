@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApolloProvider } from '@apollo/client';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { RenderOptions, render } from '@testing-library/react';
@@ -7,7 +8,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { client } from '../config/apollo';
 import { AppContextProvider } from '../context/appContext';
-import { testUser } from './dataTest';
+import { testUser } from './data-test';
 
 const theme = {
   colors: {
