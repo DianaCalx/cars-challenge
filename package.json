@@ -9,6 +9,7 @@
     "@types/node": "^16.11.56",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "eslint": "^8.25.0",
     "graphql": "^16.6.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",
@@ -29,7 +30,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll",
     "eject": "react-scripts eject",
-    "codegen": "graphql-codegen --require dotenv/config"
+    "codegen": "graphql-codegen --require dotenv/config",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}' --config ./prettierrc.js"
   },
   "eslintConfig": {
     "extends": [
@@ -55,6 +59,8 @@
     "@graphql-codegen/typescript": "2.7.3",
     "@graphql-codegen/typescript-operations": "2.5.3",
     "@graphql-codegen/typescript-react-apollo": "3.3.3",
+    "@ravnhq/eslint-config": "^0.0.33",
+    "@ravnhq/prettier-config": "^1.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/react-hooks": "^8.0.1",
@@ -63,6 +69,7 @@
     "@types/react-test-renderer": "^18.0.0",
     "@types/styled-components": "^5.1.26",
     "@types/uuid": "^8.3.4",
+    "eslint-plugin-jest-dom": "^4.0.2",
     "jest": "^27.5.1",
     "prettier": "^2.7.1",
     "react-test-renderer": "^18.2.0"

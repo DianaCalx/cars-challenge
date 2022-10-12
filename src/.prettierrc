@@ -1,6 +1,0 @@
-{
-    "singleQuote": true,
-    "importOrder": ["^components/(.*)$", "^[./]" ],
-    "importOrderSeparation": true, 
-    "importOrderSortSpecifiers": true 
-}
