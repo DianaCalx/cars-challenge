@@ -23,6 +23,7 @@ const BrandModelDropdowns = ({ brands }: DropdownProps) => {
       fetchModels({
         variables: {
           where: {
+            // eslint-disable-next-line camelcase
             brand_id: {
               _eq: Number(selectedBrand),
             },

@@ -12,11 +12,13 @@ import { render } from '../test/test-provider';
 import { formSchema } from '../utils/yupSchemas';
 import BrandModelDropdowns from './brand-model-dropdowns';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mocksModels: MockedResponse<Record<string, any>>[] = [
   {
     request: {
       query: ModelsDocument,
       variables: {
+        // eslint-disable-next-line camelcase
         where: { brand_id: { _eq: 1 } },
       },
     },

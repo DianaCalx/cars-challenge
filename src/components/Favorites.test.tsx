@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { MockedResponse } from '@apollo/client/testing';
 import '@testing-library/jest-dom';
 import { screen } from '@testing-library/react';
