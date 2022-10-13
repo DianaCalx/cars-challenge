@@ -1,0 +1,4 @@
+build/**
+src/generated/**
+src/reportWebVitals.ts
+src/react-app-env.d.ts
